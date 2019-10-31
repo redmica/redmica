@@ -38,3 +38,29 @@ module Redmine
     def self.to_s; STRING end
   end
 end
+
+module RedMica
+  module VERSION
+    MAJOR = 1
+    MINOR = 0
+    TINY  = 0
+
+    BRANCH = 'devel'
+
+    # Retrieves the revision from the working copy
+    def self.revision
+      return nil if BRANCH.nil?
+      return File.read(File.join(Rails.root, '.git/refs/heads/master'))[0..6]
+    rescue
+      # Could not find the current revision
+      nil
+    end
+
+    REVISION = self.revision
+    ARRAY    = [MAJOR, MINOR, TINY, BRANCH, REVISION].compact
+    STRING   = ARRAY.join('.')
+
+    def self.to_a; ARRAY  end
+    def self.to_s; STRING end
+  end
+end
