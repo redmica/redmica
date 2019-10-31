@@ -280,7 +280,7 @@ repository_log_display_limit:
   format: int
   default: 100
 ui_theme:
-  default: ''
+  default: 'bleuclair'
 emails_footer:
   default: |-
     You have received this notification because you have either subscribed to it, or are involved in it.
