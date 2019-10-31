@@ -3,15 +3,15 @@
 module Redmine
   module Info
     class << self
-      def app_name; 'Redmine' end
-      def url; 'https://www.redmine.org/' end
+      def app_name; 'RedMica' end
+      def url; 'https://github.com/redmica/redmica' end
       def help_url; 'https://www.redmine.org/guide' end
-      def versioned_name; "#{app_name} #{Redmine::VERSION}" end
+      def versioned_name; "#{app_name} #{RedMica::VERSION}" end
 
       def environment
         s = +"Environment:\n"
         s << [
-          ["Redmine version", Redmine::VERSION],
+          ["RedMica version", "#{RedMica::VERSION} (based on Redmine #{Redmine::VERSION})"],
           ["Ruby version", "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"],
           ["Rails version", Rails::VERSION::STRING],
           ["Environment", Rails.env],
@@ -28,7 +28,7 @@ module Redmine
           end
         end
 
-        s << "Redmine plugins:\n"
+        s << "Plugins:\n"
         plugins = Redmine::Plugin.all
         if plugins.any?
           s << plugins.map {|plugin| "  %-30s %s" % [plugin.id.to_s, plugin.version.to_s]}.join("\n")
