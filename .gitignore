@@ -26,6 +26,7 @@
 /public/plugin_assets/*
 /public/themes/*
 !/public/themes/alternate
+!/public/themes/bleuclair
 !/public/themes/classic
 !/public/themes/README
 /tmp/*
