@@ -16,7 +16,6 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 * Feature redmine-4221: Force passwords to contain specified character classes
 * Feature redmine-9112: Libravatar and Gravatar-compatible servers support
 * Feature redmine-26127: Display user logins on profiles
-* Patch redmine-1237: Add support for two-factor authentication
 
 ### [Administration]
 
@@ -182,7 +181,6 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 ### [Importers]
 
 * Feature redmine-28213: Support external ID when importing issues
-* Feature redmine-28234: Add CSV Import for Time Entries
 * Feature redmine-31450: Support "YYYY/MM/DD" date format when importing issues
 
 ### [Issues]
@@ -197,7 +195,6 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 * Feature redmine-31499: Show "Due in X days" in issue details page
 * Patch redmine-28138: Add link to add a new issue on the version page
 * Patch redmine-31493: Add a link to project_issues_report from project_issues_report_details
-* Patch redmine-31505: Mark edited journal notes as "Edited"
 * Patch redmine-31994: Allow issue auto complete to return 10 issues when there is not search term provided
 
 ### [Issues filter]
@@ -255,12 +252,10 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 * Defect redmine-27101: Project identifier model constraint doesn't match with text_project_identifier_info and JS-generated identifiers
 * Feature redmine-22090: Make project settings more accessible
 * Feature redmine-31032: Display details about inheritance when editing a member roles
-* Feature redmine-32030: Show Gravatar icons in the Members tab in the project setting
 * Patch redmine-30203: Add links to administration pages in project settings
 
 ### [Projects]
 
-* Feature redmine-29482: Query system for Projects page
 * Feature redmine-32306: Add a link to projects administration page on projects page
 * Patch redmine-31355: Bookmarks and recently used projects for the project jump box
 * Patch redmine-31356: replace icon-fav with icon-user for 'my projects'
@@ -313,7 +308,6 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 * Feature redmine-5061: Show time log entries in issue history
 * Feature redmine-30464: Show estimated hours on the overview page as well as spent hours
 * Patch redmine-30233: Implement grouping time entries by creation date
-* Patch redmine-32196: Allow import time entries for other users
 
 ### [Translations]
 
@@ -338,7 +332,6 @@ Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r
 * Feature redmine-31294: Add "robohash" to "Default Gravatar image" options
 * Feature redmine-32052: Auto-complete issues #id in search form
 * Patch redmine-5899: Display user's gravatar when editing profile
-* Patch redmine-23980: Replace images with icon fonts
 * Patch redmine-26604: Set a random name attribute on all forms to prevent overwritten values after soft reload with Firefox
 * Patch redmine-26646: Remove hardcoded width in query column selects
 * Patch redmine-29289: Wrap subprojects in the overview section with an unordered list to improve customisation
