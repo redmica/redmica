@@ -1,6 +1,6 @@
 # RedMica
 
-RedMica is one of the forks of Redmine, a great open source project management software. 
+RedMica is another distribution of Redmine, a great open source project management software.
 
 The main aim of RedMica is to quickly deliver enhancements that have already been developed but have not yet been released. It can be said that RedMica is the future Redmine you can get today.
 
