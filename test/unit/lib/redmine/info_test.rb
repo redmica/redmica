@@ -24,6 +24,6 @@ class Redmine::InfoTest < ActiveSupport::TestCase
     env = Redmine::Info.environment
 
     assert_kind_of String, env
-    assert_match 'Redmine version', env
+    assert_match 'RedMica version', env
   end
 end
