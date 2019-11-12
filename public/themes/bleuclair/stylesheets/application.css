@@ -49,6 +49,10 @@ h1, h2, h3, h4 {
   #sidebar h3 {
     color: #333; }
 
+.icon {
+  padding-bottom: 2px;
+  padding-top: 2px; }
+
 .box, .mypage-box {
   background-color: #fff;
   margin-bottom: 30px;
@@ -428,48 +432,61 @@ p.percent {
     position: relative;
     top: 18px; }
 
-a[href*="activity"][title*=":"] {
+a[href*="activity"][data-absolute-date*=":"] {
   margin: 0 3px;
   box-shadow: inset 0 -1.5em 0 rgba(0, 0, 0, 0.08);
   display: inline-block;
   padding: 0 3px;
   border-radius: 3px; }
-  a[href*="activity"][title*=":"]:before {
-    content: " [" attr(title) "] "; }
+  a[href*="activity"][data-absolute-date*=":"]:before {
+    content: " [" attr(data-absolute-date) "] "; }
 
-div#issue-changesets h3 {
-  padding-left: 15px; }
+div#content .tabs ul {
+  border-bottom: 1px solid #dfe8f1; }
+  div#content .tabs ul li a {
+    background-color: #f0f0f0;
+    border: 1px solid #dfe8f1; }
+    div#content .tabs ul li a.selected {
+      background-color: #fafcfe;
+      border: 1px solid #dfe8f1;
+      border-bottom: 1px solid #fafcfe; }
 
-div#issue-changesets, div#issue-changesets div.changeset {
-  padding: 15px;
-  position: relative;
-  z-index: 40;
-  border-radius: 3px;
-  border: 1px solid #dfe8f1; }
+div#update .jstTabs.tabs li a {
+  border-bottom: 1px solid #dfe8f1; }
 
-#history {
+#history div.tabs {
+  margin-bottom: 0px; }
+  #history div.tabs ul li a.selected {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff; }
+
+#history .tab-content {
   background-color: #ffffff;
-  margin-bottom: 30px;
-  padding: 15px;
-  border-radius: 3px;
-  border: 1px solid #dfe8f1; }
-  #history .journal {
-    padding: 3px;
+  border-radius: 0px 0px 3px 3px;
+  border-right: 1px solid #dfe8f1;
+  border-left: 1px solid #dfe8f1;
+  border-bottom: 1px solid #dfe8f1;
+  padding-top: 15px;
+  padding-left: 10px; }
+  #history .tab-content.discontinuity .journal:after {
+    content: none; }
+  #history .tab-content .journal {
+    padding: 8px 3px 3px 3px;
     background-color: #ffffff;
     position: relative;
     overflow: visible; }
-    #history .journal:before {
+    #history .tab-content .journal:before {
       content: "";
       width: 8px;
       height: 8px;
       background-color: #ffffff;
       position: absolute;
       left: 6px;
-      top: 10px;
+      top: 16px;
       border-radius: 50%;
       box-shadow: 0 0 0 3px #e5e5e5;
       z-index: 1; }
-    #history .journal:after {
+    #history .tab-content .journal:after {
       content: "";
       height: 100%;
       width: 2px;
@@ -477,22 +494,19 @@ div#issue-changesets, div#issue-changesets div.changeset {
       position: absolute;
       left: 9px;
       top: 0px; }
-    #history .journal:first-of-type:after {
+    #history .tab-content .journal:first-of-type:after {
       top: 15px; }
-    #history .journal:last-of-type:after {
+    #history .tab-content .journal:last-of-type:after {
       height: 18px; }
-    #history .journal:first-of-type:last-of-type:after {
+    #history .tab-content .journal:first-of-type:last-of-type:after {
       content: none; }
-    #history .journal .contextual {
+    #history .tab-content .journal .contextual {
       padding-right: 10px;
-      padding-top: 5px;
-      margin-left: 5px; }
-      #history .journal .contextual .journal-actions, #history .journal .contextual a.journal-link {
+      padding-top: 5px; }
+      #history .tab-content .journal .contextual .journal-actions, #history .tab-content .journal .contextual a.journal-link {
         position: relative;
         z-index: 5; }
-    #history .journal div:target h4 {
-      background: initial; }
-    #history .journal > div > h4 {
+    #history .tab-content .journal .contextual + h4, #history .tab-content .journal h4 {
       left: 20px;
       position: relative;
       margin: 0 19px 0 10px;
@@ -502,37 +516,38 @@ div#issue-changesets, div#issue-changesets div.changeset {
       padding: 6px 9px;
       font-size: 0.9em;
       border-radius: 4px; }
-      #history .journal > div > h4 a[href*="activity"][title*=":"] {
+      #history .tab-content .journal .contextual + h4 a[href*="activity"][data-absolute-date*=":"], #history .tab-content .journal h4 a[href*="activity"][data-absolute-date*=":"] {
         box-shadow: none;
         padding: 0; }
-      #history .journal > div > h4:before {
+      #history .tab-content .journal .contextual + h4 .contextual:before, #history .tab-content .journal h4 .contextual:before {
         content: '';
         position: absolute;
         left: -6px;
-        top: 6px;
+        top: 8px;
         width: 0;
         height: 0;
         border-top: 5px solid transparent;
         border-bottom: 5px solid transparent;
         border-right: 6px solid #e9eaf1; }
-      #history .journal > div > h4 .gravatar {
+      #history .tab-content .journal .contextual + h4 .gravatar, #history .tab-content .journal h4 .gravatar {
         position: absolute;
         left: -35px;
-        z-index: 30;
+        top: 4px;
+        z-index: 5;
         margin-left: 0; }
-    #history .journal > div:target > h4, #history .journal:target > div > h4 {
+    #history .tab-content .journal:target .contextual + h4, #history .tab-content .journal div:target .contextual + h4 {
       background: #DDEEFF; }
-      #history .journal > div:target > h4:before, #history .journal:target > div > h4:before {
+      #history .tab-content .journal:target .contextual + h4:before, #history .tab-content .journal div:target .contextual + h4:before {
         border-right: 6px solid #DDEEFF; }
-    #history .journal .details {
+    #history .tab-content .journal .details {
       list-style: none;
       font-size: 0.9em;
       line-height: 1.5;
       margin-bottom: 1em;
       padding-left: 46px; }
-      #history .journal .details li {
+      #history .tab-content .journal .details li {
         position: relative; }
-        #history .journal .details li:after {
+        #history .tab-content .journal .details li:after {
           display: block;
           content: '';
           position: absolute;
@@ -543,9 +558,9 @@ div#issue-changesets, div#issue-changesets div.changeset {
           background-color: #ffffff;
           border: 1px solid #888;
           border-radius: 50%; }
-    #history .journal form .jstBlock, #history .journal form input, #history .journal form div[id^="template_journal"] {
-      margin-left: 32px; }
-    #history .journal .wiki:not(.wiki-preview) {
+    #history .tab-content .journal form .jstBlock, #history .tab-content .journal form input, #history .tab-content .journal div[id^="template_journal"],
+    #history .tab-content .journal .wiki:not(.wiki-preview),
+    #history .tab-content .journal.time_entry p, #history .tab-content .journal.changeset > p {
       margin-left: 32px; }
 
 .tabular p {
@@ -562,6 +577,9 @@ div#issue-changesets, div#issue-changesets div.changeset {
 
 fieldset#filters td.values input {
   height: inherit; }
+
+.jstBlock .wiki-preview {
+  border: 1px solid #dfe8f1; }
 
 div#activity dt .time {
   color: #444; }
