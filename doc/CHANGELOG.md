@@ -1,5 +1,36 @@
 # Changelog
 
+## RedMica 1.0.1 - 2019/11/18
+
+### [Redmica specific changes]
+
+* GH-6: Fix that test_environment fails due to f1544b3
+* GH-9: redmine-r18897: Fix missing icon classes
+* GH-16: Update Bleuclair theme (revision 0ad564c)
+* GH-11: redmine-r18988: Fix that receiving HTML email fails if it contains a link without an href attribute
+
+### [Issues filter]
+
+* GH-18: redmine-16904: Add anonymous user to users list in query filters
+
+### [LDAP]
+
+* GH-17: Defect redmine-32470: LDAP authentication is broken due to r18692
+
+### [Projects]
+
+* GH-7: Feature redmine-29482: Query system for Projects page
+
+### [Time tracking]
+
+* GH-12: Feature redmine-30346: Add "Target Version" to the list of "Available columns" in "Spent time" Tab
+* GH-8: Patch redmine-32196: Allow import time entries for other users
+
+### [Translations]
+
+* GH-10: Patch redmine-32320: Simplified Chinese translation for label_tomorrow, label_next_week, label_next_month, and permission_edit_own_issues
+
+
 ## RedMica 1.0.0 - 2019-11-02
 
 Based on Redmine 4.0.5.devel.18886. The database schema is the same as Redmine r18296.
