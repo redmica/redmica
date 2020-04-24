@@ -1,5 +1,8 @@
 # Redmine用テーマ "farend bleuclair"
 
+| :warning: | 利用しているRedmineのバージョンによってインストール方法が違います。インストール方法をご確認ください。 |
+| --- | --- |
+
 ## このテーマについて
 
 Redmine用のカスタムテーマです。
@@ -30,7 +33,7 @@ $ git clone -b redmine3.4 https://github.com/farend/redmine_theme_farend_bleucla
 
 - Redmine4.0.nの場合
 ```bash
-$ git clone https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
+$ git clone -b redmine4.0 https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
 
 - Redmine4.1.nの場合
@@ -59,6 +62,16 @@ $ # 終わったらctr + c, command + cで止める
 
 GNU GPL v2  
 https://github.com/farend/redmine_theme_farend_bleuclair/blob/master/LICENSE
+
+---
+
+Web fonts in [/webfonts](webfonts) uses the following library:  
+Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com  
+License - https://fontawesome.com/license/free (Fonts: SIL OFL 1.1 License)
+
+The icon [/images/search.svg](images/search.svg) uses svg files from the following library:  
+Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com  
+License - https://fontawesome.com/license/free (Icons: CC BY 4.0 License)
 
 ## 著作者
 

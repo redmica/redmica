@@ -170,8 +170,8 @@ div#update .jstTabs.tabs li a {
         }
       }
 
-      // #tab-content-changesets・#tab-time_entries内のh4要素のみ.contextualと隣接していないため個別の書き方をしている
-      .contextual + h4, & h4 {
+      // #tab-content-changesets内のh4要素のみ.contextualと隣接していないため個別の書き方をしている
+      .contextual + h4, &.changeset > h4:first-child {
         left: 20px;
         position: relative;
         margin: $note-title-margin;
@@ -257,10 +257,6 @@ div#update .jstTabs.tabs li a {
   .edit_issue & {
     padding-left: 130px;
   }
-}
-
-.tabular div.wiki-preview p {
-  padding-left: 5px;
 }
 
 .tabular label {
