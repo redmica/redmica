@@ -1,5 +1,94 @@
 # Changelog
 
+## RedMica 1.0.2 - 2020-05-13
+
+Based on Redmine 4.1.1
+
+Defect redmine-123: One user's bad email address breaks all email notifications for everyone on a project
+Defect redmine-19248: End markers in gantt PDF are misaligned
+Defect redmine-20277: "Couldn't find template for digesting" error in the log when sending a thumbnail or an attachment
+Defect redmine-21766: CSV import does not keep the project it was clicked from
+Defect redmine-23645: Gantt bars for single-day tasks may be rendered wrongly in PDF
+Defect redmine-30285: Microsoft SQL server support is broken
+Defect redmine-32194: Calendar page lacks buttons to manage custom queries
+Defect redmine-32422: Textile indentation does not work in the preview tab
+Defect redmine-32449: Diff view for .js files in repositories is broken
+Defect redmine-32469: Text copied from some applications such as MS Office and LibreOffice is pasted as an image in addition to plain text
+Defect redmine-32477: Right-aligned TOC tag is displayed in exported PDF if the text formatting setting is Markdown
+Defect redmine-32500: Spent time report csv shows translation missing text if custom fields are involved
+Defect redmine-32503: Project jump box options are not extracted correctly after searching
+Defect redmine-32525: CSV related tests fail with Rails 5.2.4
+Defect redmine-32529: The end of the URL is replaced with "undefined" in IE11 and Edge
+Defect redmine-32546: Issue relations filter lacks "is not"
+Defect redmine-32656: Drag and drop objects from Outlook to Redmine deletes the objects
+Defect redmine-32737: Duplicate sort keys for issue query cause SQL error with SQL Server
+Defect redmine-32754: Fix missing arrow icon of collapse macro
+Defect redmine-32765: ##123 syntax for linking to issues: Title cannot be distinguished from following text
+Defect redmine-32768: Internal Error when issue text custom field is shown in Spent time query results
+Defect redmine-32769: Unable to sort projects table by custom field
+Defect redmine-32772: Tabs are displayed on two lines when the total width of the tabs is greater than 2000px
+Defect redmine-32774: Creating time tracking entry for other user through rest API fails with 403
+Defect redmine-32785: X-Sendfile header field is not set if rack 2.1.0 is installed
+Defect redmine-32793: Email address with Punycode top-level domain is not accepted
+Defect redmine-32795: Remove RubyGems from Requirements in doc/INSTALL
+Defect redmine-32812: Clicking on a parent object in gantt wrongly collapses objects at the same level
+Defect redmine-32829: HTML entity is used in CSS string
+Defect redmine-32832: FrozenError when exporting content to PDF in some languages
+Defect redmine-32838: Typo in application.css: s/paddin-bottom/padding-bottom/
+Defect redmine-32839: Redmine 4.1 installation fails due to an attempt to install sprockets 4.0.0 if bundler prior to 1.15.2 is used on Ruby prior to 2.5
+Defect redmine-32858: Exporting issue as PDF fails when the issue has private journal
+Defect redmine-32859: Issue list: long text custom field missing in PDF export
+Defect redmine-32889: Responsive layout for issue tree and issue relation on issue page is broken
+Defect redmine-32896: Totals not working in projects list view
+Defect redmine-32959: Fix selected user on log time edit page when user has permissions to log time for another user
+Defect redmine-32971: New line between list items break a list
+Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
+Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
+Defect redmine-32981: Unable to distinguish disabled input fields
+Defect redmine-33027: Fix missing closing div in _time_entries_fields_mapping.html.erb
+Defect redmine-33052: Missing subject and tracker name in CSV export of time entries report
+Defect redmine-33059: "Role" dropdown in Workflow page is unexpectedly expanded  when selecting "all"
+Defect redmine-33082: Links in the last column in gantt are unclickable
+Defect redmine-33083: Projects filter "Subproject of" does not work when the given value is "My projects" or "My bookmarks"
+Defect redmine-33085: Unable to update the values of a custom field for enumerations when multiple values option is enabled
+Defect redmine-33110: Sort does not work with group by datetime columns
+Defect redmine-33113: Default version and assignee are not exposed via projects API
+Defect redmine-33163: Parent task subject column should be in the same style as Subject column
+Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
+Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
+Defect redmine-33176: Sort order icon is missing in users index
+Defect redmine-33183: Unable to edit user or group that has custom fields with text formatting enabled
+Defect redmine-33220: Parent task subject column in gantt is not fully displayed when the column is widened
+Defect redmine-33273: Total estimated time column shows up as decimal value regardless of time setting
+Defect redmine-33275: Possible values field in list format custom field form is not marked as required
+Defect redmine-33281: Totals of custom fields may not be sorted as configured
+Defect redmine-33283: Thumbnail support for PDF attachments may not be detected
+Defect redmine-33310: Warnings while running redmine:load_default_data rake task
+Defect redmine-33339: Broken layout of the preview tab of "Welcome text" setting due to unexpectedly applied padding-left
+Defect redmine-33341: Time entry user is shown twice in the User drop-down when editing spent time
+Feature redmine-32945: Show module names in bold in permission report
+Feature redmine-33156: Allow zooming on mobile devices
+Feature redmine-3800: Editing time entries should show the person involved
+Patch redmine-32341: Show tooltip when hovering on repeat-value link in Field permission tab
+Patch redmine-32436: Add support for grouping by issue on timelog view
+Patch redmine-32468: Update Rouge to 3.19.0
+Patch redmine-32540: Add missing fixtures to VersionTest
+Patch redmine-32552: Clarify that pasting images from clipboard does not support Internet Explorer
+Patch redmine-32592: Require 'mocha/minitest' instead of deprecated 'mocha/setup'
+Patch redmine-32596: fix image pasting for Edge
+Patch redmine-32599: Galician translation update
+Patch redmine-32652: Bulgarian translation
+Patch redmine-32653: Fix random test failure due to missing call to set_tmp_attachments_directory in WikiControllerTest
+Patch redmine-32659: Russian translation update for 4.1-stable
+Patch redmine-32746: Italian translation update for 4.1-stable
+Patch redmine-32788: Specify supported Ruby version in Gemfile and doc/INSTALL
+Patch redmine-32928: Czech translation for 4.1-stable
+Patch redmine-32991: Make group names bold on tracker summary view
+Patch redmine-32995: Russian translation update for 4.1-stable
+Patch redmine-33068: Update copyright year in the footer to 2020
+Patch redmine-33122: German translation update for 4.1-stable
+Patch redmine-33196: Update Rails to 5.2.4.2
+
 ## RedMica 1.0.1 - 2019-11-18
 
 ### [Redmica specific changes]
