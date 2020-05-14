@@ -1,4 +1,4 @@
-$flash-padding: 10px 12px;
+$flash-padding: 10px 12px 10px 30px;
 
 $color-flash-error-text:   #620f0f;
 $color-flash-error-bg:     #ffc6c6;
@@ -15,7 +15,7 @@ $color-flash-warning-bg:   #ffeec6;
 
 div.flash.error, #errorExplanation {
   color: $color-flash-error-text;
-  background: $color-flash-error-bg;
+  background-color: $color-flash-error-bg;
   border: none;
 }
 
