@@ -1,5 +1,102 @@
 # Changelog
 
+## RedMica 1.1.0 - 2020-05-31
+
+Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r18296 and RedMica 1.0.
+
+* GH-51: Change favicon from Redmine logo to RedMica logo
+* GH-53: Update Bleuclair theme (revision 0751018)
+* Defect redmine-5354: Updating custom fields does not trigger update to "updated_on" field in the customized object
+* Defect redmine-23055: Error with Fetch commits with Mercurial repository when log has invalid char
+* Defect redmine-27790: mercurial: error of double quotes in branch and tag names
+* Defect redmine-32125: Issues autocomplete may not find issues with a subject longer than 60 characters
+* Defect redmine-32153: Repository browser does not render previews for audio/video files
+* Defect redmine-32450: Attempts to get "tribute.min.js.map" by Chrome DevTool causes RoutingError.
+* Defect redmine-32471: Layout of the custom field edit page is different between the single edit page and the batch edit page
+* Defect redmine-32752: Ruby 2.7: Remove deprecated URI.escape/unescape
+* Defect redmine-33103: Export to PDF fails when subject of parent task is included in issue list
+* Defect redmine-33116: Successful deletion notice is not displayed after deleting some types of content
+* Defect redmine-33186: field_activity should be used rather than label_activity in the context of time tracking
+* Defect redmine-33255: Issue auto complete doesn't work for custom fields with text formatting enabled on issue bulk edit page  
+* Defect redmine-33357:  rendering extra "--" footer of git patch attachment
+* Defect redmine-33392: Fix invalid selector in function displayTabsButtons()
+* Defect redmine-33417: Updating an issue via REST API causes internal server error if invalid project id is specified
+* Defect redmine-33452: Untranslated string "diff" in journal detail
+* Feature redmine-1575: Toolbar button to insert a table
+* Feature redmine-3369: Allowed/Disallowed email domains settings to restrict users' email addresses
+* Feature redmine-4511: Allow adding user groups as watchers for issues
+* Feature redmine-7056: Download all attachments at once
+* Feature redmine-16006: Include attachments in forum post notifications
+* Feature redmine-18555: Show warning when attempting to attach more than the allowed number of attachments
+* Feature redmine-28198: Support issue relations when importing issues
+* Feature redmine-31589: Show warning and the reason when the issue cannot be closed because of open subtasks or blocking open issue(s)
+* Feature redmine-31887: Update jQuery UI to 1.12.1
+* Feature redmine-31911: Update request_store gem to 1.4
+* Feature redmine-32240: Add download buttons in Files columns of the issues list
+* Feature redmine-32528: Make languages in Highlighted code button in toolbar customizable
+* Feature redmine-32672: Add Check all / Uncheck all button to filters in permissions report
+* Feature redmine-32764: Make form validation errors more obvious for users 
+* Feature redmine-32783: Redirect to index page instead of edit page after creating a new custom field
+* Feature redmine-32818: Add a system settings for default results display format of project query
+* Feature redmine-32976: Display avatar on add watchar dialog
+* Feature redmine-32998: Change the default value for "Default Gravatar image" to "Identicons"
+* Feature redmine-33002: Include attachments in news post notifications
+* Feature redmine-33099: Add a link to the issues list in reminder email
+* Feature redmine-33126: Support custom fields when exporting users to CSV
+* Feature redmine-33174: Show groups in members box on project overview page
+* Feature redmine-33254: Show open/closed badge on issue page
+* Feature redmine-33256: Show wiki toolbar for spent time custom fields with text formatting enabled
+* Feature redmine-33296: Load default custom queries when running redmine:load_default_data rake task
+* Feature redmine-33347: Include updated_on and passwd_changed_on columns when exporting users to CSV
+* Patch redmine-22913: Auto-select fields mapping in Importing
+* Patch redmine-29285: Add "Assign to me" shortcut to issue edit form
+* Patch redmine-29838: time logging via commit message does not work when the configured activity has been overridden on the project level
+* Patch redmine-32238: Improvement of the German translation
+* Patch redmine-32380: Change Italian translation for "news"
+* Patch redmine-32400: Remove unused i18n key "button_duplicate"
+* Patch redmine-32431: Invalid association IssueCustomField#issue_custom_values
+* Patch redmine-32432: Avoid class name overlap that causes TypeError on `rake test:system test`
+* Patch redmine-32444: Add missing fixture to Redmine::WikiFormatting::MacrosTest
+* Patch redmine-32453: Update capybara (~> 3.31.0)
+* Patch redmine-32478: Add missing fixture to TimelogControllerTest
+* Patch redmine-32527: Fix ruby 2.7 warning: given argument is nil; this will raise  a TypeError in the next release
+* Patch redmine-32530: Update RuboCop to 0.81
+* Patch redmine-32531: Update RuboCop Rails to 2.5
+* Patch redmine-32542: Fix ruby 2.7 warning: The last argument is used as the keyword parameter
+* Patch redmine-32555: Update Puma (~> 4.3.1)
+* Patch redmine-32628: Notify users about high issues (only)
+* Patch redmine-32763: Update mini_magick to 4.10
+* Patch redmine-32782: Update pg gem (~> 1.2.2)
+* Patch redmine-32805: Update request_store to 1.5
+* Patch redmine-32813: Clean up toggleMultiSelect js function
+* Patch redmine-32828: Fix typos in Russian translation
+* Patch redmine-32835: Make breadcrumbs of repository browser copy-paste friendly
+* Patch redmine-32841: Drop support for Bundler prior to 1.12.0
+* Patch redmine-32886: Rails 6: Use #media_type instead of #content_type to test the MIME type of a response
+* Patch redmine-32887: Rails 6: Use "render template:" instead of "render file:" in app/views/layouts/admin.html.erb
+* Patch redmine-32888: Use stylelint to avoid errors and enforce conventions in CSS files
+* Patch redmine-32890: Fix violations reported by Stylelint
+* Patch redmine-32906: Update i18n (~> 1.8.2)
+* Patch redmine-32907: Update capybara (~> 3.31.0)
+* Patch redmine-32911: Rails 6: Fix deprecation warning "Class level methods will no longer inherit scoping"
+* Patch redmine-32924: tmp/pdf directory is no longer necessary
+* Patch redmine-32927: CSS selector in test_index_should_show_warning_when_no_workflow_is_defined is too specific
+* Patch redmine-32929: Add missing fixtures to AttachmentsControllerTest
+* Patch redmine-32937: test_revisions_latin_1_identifier should be skipped on Windows
+* Patch redmine-32950: Update simplecov to 0.18
+* Patch redmine-33036: Add missing fixture to IssuesControllerTest
+* Patch redmine-33069: Update copyright year in source files to 2020
+* Patch redmine-33208:  `--without rmagick` option for bundle command is no longer necessary
+* Patch redmine-33244: Replace "**" method with bitwise left shift in Tracker#disabled_core_fields and Tracker#core_fields
+* Patch redmine-33301: Add option to include enabled issue custom fields in projects#show API response
+* Patch redmine-33342: Remove unused i18n key "label_overall_activity" and "label_overall_spent_time"
+* Patch redmine-33367: Use more efficient "exists?" instead of "first" in tests when checking the existence of rows
+* Patch redmine-33376: Add missing fixtures to VersionsHelperTest
+* Patch redmine-33384: jQuery: replace deprecated size() method with length 
+* Patch redmine-33393: Remove unused i18n key "notice_no_issue_selected"
+* Patch redmine-33403: Change Japanese translation for text_file_repository_writable
+* Patch redmine-33437: Add missing icon class to items with icon-checked class in the context menu
+
 ## RedMica 1.0.2 - 2020-05-13
 
 Based on Redmine 4.1.1

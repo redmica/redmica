@@ -15,19 +15,8 @@ module Redmine
     # * trunk:            devel
     BRANCH = 'devel'
 
-    # Retrieves the revision from the working copy
     def self.revision
-      if File.directory?(File.join(Rails.root, '.svn'))
-        begin
-          path = Redmine::Scm::Adapters::AbstractAdapter.shell_quote(Rails.root.to_s)
-          if `#{Redmine::Scm::Adapters::SubversionAdapter.client_command} info --xml #{path}` =~ /commit\s+revision="(\d+)"/
-            return $1.to_i
-          end
-        rescue
-          # Could not find the current revision
-        end
-      end
-      nil
+      19782 # RedMica 1.1 is based on Redmine r19782
     end
 
     REVISION = self.revision
@@ -42,8 +31,8 @@ end
 module RedMica
   module VERSION
     MAJOR = 1
-    MINOR = 0
-    TINY  = 2
+    MINOR = 1
+    TINY  = 0
 
     BRANCH = 'devel'
 
