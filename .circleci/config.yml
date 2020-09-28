@@ -14,23 +14,23 @@ commands:
       - checkout
       - run:
           command: |
-            apt update
-            apt install -y build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libcurl4-openssl-dev libffi-dev pkg-config
-            apt install -y apache2 apache2-dev libapr1-dev libaprutil1-dev
-            apt install -y imagemagick libmagick++-dev ghostscript
-            apt install -y cvs mercurial subversion git bzr
-            apt install -y debconf-utils tzdata wget sudo
-            apt install -y curl unzip
+            apt-get update
+            apt-get install -y build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libcurl4-openssl-dev libffi-dev pkg-config
+            apt-get install -y apache2 apache2-dev libapr1-dev libaprutil1-dev
+            apt-get install -y imagemagick libmagick++-dev ghostscript
+            apt-get install -y cvs mercurial subversion git bzr
+            apt-get install -y debconf-utils tzdata wget sudo
+            apt-get install -y curl unzip
   setup_postgres:
     description: "setup postgres" 
     steps:
       - run:
           command: |
-            apt install -y gnupg gnupg2
+            apt-get install -y gnupg gnupg2
             echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
             wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-            apt update
-            apt install -y postgresql-client-10 postgresql-10 postgresql-server-dev-10
+            apt-get update
+            apt-get install -y postgresql-client-10 postgresql-10 postgresql-server-dev-10
             /etc/init.d/postgresql start
             su - postgres -c "psql -U postgres -d postgres -c \"alter user postgres with password 'postgres';\"" 
   setup_mysql:
@@ -42,8 +42,8 @@ commands:
             echo 'mysql-server mysql-server/root_password_again password redmine' | debconf-set-selections
             wget https://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
             apt-get install -y ./mysql-apt-config_0.8.9-1_all.deb
-            apt update
-            apt install -y --allow-unauthenticated mysql-community-server default-libmysqlclient-dev
+            apt-get update
+            apt-get install -y --allow-unauthenticated mysql-community-server default-libmysqlclient-dev
             /etc/init.d/mysql start
             mysql -u root -predmine -e "CREATE DATABASE redmine CHARACTER SET utf8mb4;" 
             mysql -u root -predmine -e "CREATE USER 'redmine'@'localhost' IDENTIFIED BY 'redmine';" 
@@ -57,8 +57,8 @@ commands:
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
             echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
             rm -rf /var/lib/apt/lists/*
-            apt update
-            apt install -y --allow-unauthenticated google-chrome-stable
+            apt-get update
+            apt-get install -y --allow-unauthenticated google-chrome-stable
             wget http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             chmod 755 chromedriver
