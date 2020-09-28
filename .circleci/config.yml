@@ -41,7 +41,7 @@ commands:
             echo 'mysql-server mysql-server/root_password password redmine' | debconf-set-selections
             echo 'mysql-server mysql-server/root_password_again password redmine' | debconf-set-selections
             wget https://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
-            apt install -y ./mysql-apt-config_0.8.9-1_all.deb
+            apt-get install -y ./mysql-apt-config_0.8.9-1_all.deb
             apt update
             apt install -y --allow-unauthenticated mysql-community-server default-libmysqlclient-dev
             /etc/init.d/mysql start
