@@ -153,10 +153,10 @@ jobs:
 workflows:
   normal:
     jobs:
-      - redmine-test
-          #filters:
-            #branches:
-              #only:
-              #  - master
-              #  - stable-1.1
-              #  - stable-1.0
+      - redmine-test:
+          filters:
+            branches:
+              only:
+                - master
+                - stable-1.1
+                - stable-1.0
