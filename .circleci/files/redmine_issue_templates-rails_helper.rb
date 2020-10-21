@@ -1,3 +1,5 @@
+# 必要なオプションを追加（['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,800']）
+
 # frozen_string_literal: true
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

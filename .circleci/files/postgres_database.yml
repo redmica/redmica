@@ -1,3 +1,4 @@
+# PostgreSQLdatabase用のdatabase.yml
 test:
   adapter: postgresql
   database: redmine
