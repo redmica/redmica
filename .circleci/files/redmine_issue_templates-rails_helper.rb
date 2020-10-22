@@ -1,4 +1,4 @@
-# 必要なオプションを追加（['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,800']）
+# Add required options（['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,800']）
 
 # frozen_string_literal: true
 
