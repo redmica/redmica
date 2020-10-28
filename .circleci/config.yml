@@ -71,7 +71,6 @@ commands:
             cp .circleci/files/skip_test.rb lib/redmine/skip_test.rb
             git clone https://github.com/akiko-pusu/redmine_issue_templates plugins/redmine_issue_templates
             cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
-            cp .circleci/files/redmine_issue_templates-rails_helper.rb plugins/redmine_issue_templates/spec/rails_helper.rb
             git clone https://github.com/onozaty/redmine-view-customize plugins/view_customize
             git clone https://github.com/vividtone/redmine_vividtone_my_page_blocks plugins/redmine_vividtone_my_page_blocks
   change_database:
