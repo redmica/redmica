@@ -1,5 +1,28 @@
 # Changelog
 
+## RedMica 1.1.1 - 2020-11-14
+
+* Defect redmine-33140: Gantt bar is not displayed if the due date is the leftmost date or the start date is the rightmost date
+* Defect redmine-33175: Starting or ending marker is not displayed if they are on the leftmost or rightmost boundary of the gantt
+* Defect redmine-33234: Vertical scroll bar in some browsers hide content
+* Defect redmine-33563: File selection buttons are not fully displayed with Google Chrome in some language
+* Defect redmine-33576: Done ratio of a parent issue may be shown as 99% even though all subtasks are completed
+* Defect redmine-33639: Cannot paste image from clipboard when copying the image from web browsers or some apps
+* Defect redmine-33689: Issues API bypasses add_issue_notes permission
+* Defect redmine-33724: Selected gantt columns are not displayed with MS Edge Legacy
+* Defect redmine-33768: Bundler may fail to install stringio if Ruby prior to 2.5 is used
+* Defect redmine-33769: When creating more than two identical attachments in a single db transaction, the first one always ends up unreadable
+* Defect redmine-33889: Do not show list for custom fields without list entry on project overview
+* Defect redmine-33926: Rake tasks "db:encrypt" and "db:decrypt" may fail due to validation error
+* Defect redmine-33935: Locked users in a group receive notifications when the group is added as a watcher
+* Defect redmine-6734: robots.txt: disallow crawling issues list with a query string
+* Defect redmine-8251: Classic Theme: Missed base line
+* Feature redmine-4511: Allow adding user groups as watchers for issues
+* Patch redmine-32888: Use stylelint to avoid errors and enforce conventions in CSS files
+* Patch redmine-33958: Jump to end of line in editor when starting list or quote
+* Patch redmine-34062: Upgrade Rails to 5.2.4.4
+* Patch redmine-34200: Portuguese (Brazil) translation for 4.1-stable
+
 ## RedMica 1.1.0 - 2020-05-31
 
 Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r18296 and RedMica 1.0.
