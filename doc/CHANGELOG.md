@@ -17,8 +17,6 @@
 * Defect redmine-33935: Locked users in a group receive notifications when the group is added as a watcher
 * Defect redmine-6734: robots.txt: disallow crawling issues list with a query string
 * Defect redmine-8251: Classic Theme: Missed base line
-* Feature redmine-4511: Allow adding user groups as watchers for issues
-* Patch redmine-32888: Use stylelint to avoid errors and enforce conventions in CSS files
 * Patch redmine-33958: Jump to end of line in editor when starting list or quote
 * Patch redmine-34062: Upgrade Rails to 5.2.4.4
 * Patch redmine-34200: Portuguese (Brazil) translation for 4.1-stable
@@ -163,7 +161,6 @@ Based on Redmine 4.1.1
 * Defect redmine-32959: Fix selected user on log time edit page when user has permissions to log time for another user
 * Defect redmine-32971: New line between list items break a list
 * Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
-* Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
 * Defect redmine-32981: Unable to distinguish disabled input fields
 * Defect redmine-33027: Fix missing closing div in _time_entries_fields_mapping.html.erb
 * Defect redmine-33052: Missing subject and tracker name in CSV export of time entries report
@@ -174,7 +171,6 @@ Based on Redmine 4.1.1
 * Defect redmine-33110: Sort does not work with group by datetime columns
 * Defect redmine-33113: Default version and assignee are not exposed via projects API
 * Defect redmine-33163: Parent task subject column should be in the same style as Subject column
-* Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
 * Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
 * Defect redmine-33176: Sort order icon is missing in users index
 * Defect redmine-33183: Unable to edit user or group that has custom fields with text formatting enabled
