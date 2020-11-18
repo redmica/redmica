@@ -1,5 +1,140 @@
 # Changelog
 
+## RedMica 1.2.0 - 2020-11-18
+
+Based on Redmine 4.1.1.devel.20401.
+
+### Accounts / authentication
+
+* Defect redmine-33601: Additional email addresses are not displayed in user profile page
+* Feature redmine-1237: Add support for two-factor authentication
+* Feature redmine-34241:  Include twofa_scheme (two-factor scheme) column when exporting users to CSV
+* Patch redmine-33929: Encrypt / decrypt TOTP secret keys with `rake db:encrypt` / `rake db:decrypt`
+
+### Activity view
+
+* Feature redmine-1422: Date selection for Activity Page
+* Feature redmine-33692: Improved view of the activity page
+
+### Code cleanup/refactoring
+
+* Defect redmine-33562: Some tests in ApplicationHelperTest are declared as private
+* Feature redmine-33383: Update jQuery to 3.5.1
+* Patch redmine-33315: IssuesSystemTest#test_bulk_watch_issues_via_context_menu randomly fails due to Capybara clicks out out of context menu
+* Patch redmine-33567: Fix typo in watchers_controller.rb
+* Patch redmine-33700: Add missing fixture to Redmine::ApiTest::ProjectsTest
+* Patch redmine-33728: Remove an unused variable in Query#add_chained_custom_field_filters
+* Patch redmine-33785: Add missing fixture to TimelogControllerTest
+* Patch redmine-33786: Add missing fixture to UsersControllerTest
+* Patch redmine-34122: Store inline autocomplete data sources in a JS variable
+* Patch redmine-34166: Fix wrong comment for Mailer.deliver_lost_password
+* Patch redmine-34169: MessagesControllerTest#test_post_new randomly fails
+
+### Documentation
+
+* Defect redmine-33939: Unnecessary translation of {{toc}} macros in Russian Wiki formatting help
+
+### Email notifications
+
+* Feature redmine-33834: Show open/closed badge in email notifications
+
+### Feeds
+
+* Defect redmine-10535: Atom feeds for the Project Activity contain incorrect hostname
+
+### Gems support
+
+* Patch redmine-32468: Update Rouge to 3.25.0
+* Patch redmine-32530: Update RuboCop to 1.0
+* Patch redmine-32531: Update RuboCop Rails to 2.8
+* Patch redmine-32763: Update mini_magick to 4.11
+* Patch redmine-34159: Update RuboCop Performance to 1.8
+
+### Hook requests
+
+* Patch redmine-34072: Hook after plugins were loaded
+
+### I18n
+
+* Defect redmine-33426: Error messages for Wiki macros are not internationalized
+* Patch redmine-33741: Decimal separator for Dutch locale should be a comma
+
+### Importers
+
+* Feature redmine-33102: Import user accounts from CSV file
+
+### Issues
+
+* Defect redmine-#34185: Trackers of subprojects are not displayed in the Issue summary page
+* Feature redmine-28471: Query links for subtasks on issue page
+* Feature redmine-31881: Add "behind-schedule" CSS class to issues
+* Feature redmine-33832: Move the "Private" badge next to the "Open/Closed" badge
+
+### Performance
+
+* Defect redmine-33289: Updating time tracking activities in project setting may take too long time
+* Patch redmine-33664: evaluate acts_as_activity_provider's scope lazily
+* Patch redmine-34150: Use match? instead of =~ when MatchData is not used
+* Patch redmine-34153: Use sum instead of inject(0, :+)
+* Patch redmine-34160: Replace Hash#merge! with Hash#[]=
+* Patch redmine-34161: Replace gsub with tr, delete, or squeeze
+
+### Permissions and roles
+
+* Patch redmine-33945: Allow normal users to delete projects with permission
+
+### Plugin API
+
+* Patch redmine-33453: Add plugin CSS classes to plugin settings views
+
+### Projects
+
+* Feature redmine-32944: Always preserve the tree structure in the project jump box
+
+### REST API
+
+* Defect redmine-33787: Redmine::ApiTest::UsersTest fail if config.time_zone is set
+* Feature redmine-33592: Include updated_on and passwd_changed_on columns in users API response
+
+### Roadmap
+
+* Defect redmine-32860: Invalid links to versions with sharing in project tree
+* Feature redmine-7956: Show Roadmap tab when subprojects have defined versions
+
+### Ruby support
+
+* Feature redmine-31500: Ruby 2.7 support
+* Feature redmine-34142: Drop Ruby 2.3 support
+
+### SEO
+
+* Feature redmine-31617: robots.txt: disallow crawling dynamically generated PDF documents
+
+### Text formatting
+
+* Feature redmine-1718: Table column sorting
+
+### Third-party libraries
+
+* Patch redmine-33424: Update Tribute to 5.1.3
+
+### Translations
+
+* Patch redmine-33763: Change Japanese translation for field_onthefly
+
+### UI
+
+* Feature redmine-29473: Submit a form with Ctrl+Enter / Command+Return
+* Patch redmine-33908: Show an icon for a bookmarked project in the projects list
+
+### UI - Responsive
+
+* Defect redmine-33913: Input fields of the login form are too small in height on mobile
+
+### Wiki
+
+* Defect redmine-31287: Ordering wiki pages should not be case sensitive
+
 ## RedMica 1.1.1 - 2020-11-14
 
 * Defect redmine-33140: Gantt bar is not displayed if the due date is the leftmost date or the start date is the rightmost date
