@@ -40,7 +40,7 @@ class FeedsTest < Redmine::IntegrationTest
       assert_select 'id', :text => 'http://www.example.com/'
       assert_select 'icon', :text => %r{^http://www.example.com/favicon.ico}
       assert_select 'updated'
-      assert_select 'generator', :text => Redmine::Info.app_name
+      assert_select 'generator', :text => 'Redmine'
     end
   end
 end
