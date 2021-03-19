@@ -1,6 +1,13 @@
 /* Redmine - project management software
    Copyright (C) 2006-2020  Jean-Philippe Lang */
 
+
+function sanitizeHTML(string) {
+  var temp = document.createElement('span');
+  temp.textContent = string;
+  return temp.innerHTML;
+}
+
 function checkAll(id, checked) {
   $('#'+id).find('input[type=checkbox]:enabled').prop('checked', checked);
 }
@@ -1101,6 +1108,9 @@ function inlineAutoComplete(element) {
       requireLeadingSpace: true,
       selectTemplate: function (issue) {
         return '#' + issue.original.id;
+      },
+      menuItemTemplate: function (issue) {
+        return sanitizeHTML(issue.original.label);
       },
       noMatchTemplate: function () {
         return '<span style:"visibility: hidden;"></span>';
