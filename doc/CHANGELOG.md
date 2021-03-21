@@ -1,5 +1,32 @@
 # Changelog
 
+## RedMica 1.2.1 - 2021-03-21
+
+* Defect redmine-33206: Unable to autoload constant Version.table_name if gems uses Version class
+* Defect redmine-33338: Property changes tab does not show journals with both property changes and notes
+* Defect redmine-33355: TypeError when attempting to update a user with a blank email address
+* Defect redmine-33360: Names of private projects are leaked by issue journal details that contain project_id changes
+* Defect redmine-33548: Column header is clickable even when the column is not actually sortable
+* Defect redmine-33550: Per role visibility settings for spent time custom fields is not properly checked
+* Defect redmine-33846: Inline issue auto complete doesn't sanitize HTML tags
+* Defect redmine-34247: Web browser freezes when displaying workflow page with a large number of issue statuses
+* Defect redmine-34297: Subprojects issues are not displayed on main project when all subprojects are closed
+* Defect redmine-34326: CSV import raises an exception if CSV header has empty columns
+* Defect redmine-34375: "is not" operator for Subproject filter incorrectly excludes closed subprojects
+* Defect redmine-34447: Typo in translation string 'setting_issue_list_default_columns': s//Isuses/Issues
+* Defect redmine-34615: 'Search' falsy parameters are not respected
+* Defect redmine-34618: Cannot sign in when both enabling two-factor authentication and changing password are required
+* Feature redmine-15212: Atom feed on project with subprojects should show in article title the name of the project
+* Feature redmine-18555: Show warning when attempting to attach more than the allowed number of attachments
+* Feature redmine-33906: Upgrade Rails to 5.2.4.5
+* Feature redmine-34123: System tests for inline auto complete feature
+* Feature redmine-34495: Don't show "Two-factor authentication" on new user form
+* Patch redmine-34439: Spanish translation update for 4.1-stable
+* Patch redmine-34461: Update Redcarpet to 3.5.1
+* Patch redmine-34479: Fix possible race condition with parallel, identical file uploads
+* Patch redmine-34595: Filter list of recent projects in the project jump box
+* Patch redmine-34700: Allow to use watch_by filter in the global issues list
+
 ## RedMica 1.2.0 - 2020-11-18
 
 Based on Redmine 4.1.1.devel.20401.
