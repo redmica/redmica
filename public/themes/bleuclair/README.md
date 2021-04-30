@@ -11,6 +11,8 @@ Redmine用のカスタムテーマです。
 また、日本語環境でも見やすくなるようにフォントサイズや行間などを変更しています。  
 メニューの位置や配色はデフォルトのテーマに近いので、既存のテーマに慣れ親しんだ方も違和感なくご利用になれます。
 
+[「今日使える明日のRedmine」RedMica](https://www.farend.co.jp/products/redmica/)(Redmine互換のオープンソースソフトウェア)にはBleuclairテーマが標準で入っています。
+
 ## 画面サンプル
 
 - チケット一覧画面
@@ -23,6 +25,8 @@ Redmine用のカスタムテーマです。
 ## インストール方法
 
 ### 1: テーマが格納されたディレクトリを作成
+
+**Gitが利用できる環境の場合:**
 
 Redmineのインストールディレクトリで以下のコマンドを実行してください。
 
@@ -40,6 +44,15 @@ $ git clone -b redmine4.0 https://github.com/farend/redmine_theme_farend_bleucla
 ```bash
 $ git clone -b redmine4.1  https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
+
+- Redmine4.2.nの場合
+```bash
+$ git clone -b redmine4.2  https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
+```
+
+**Gitが利用できない環境の場合:**
+
+https://github.com/farend/redmine_theme_farend_bleuclair/releases を確認し、利用しているRedmineと互換性のあるバージョンのzipファイルかtar.gzファイルをダウンロード・解凍し、Redmineのpublic/themesディレクトリに配置してください。
 
 ### 2: テーマの設定を変更
 
