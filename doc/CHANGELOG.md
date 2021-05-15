@@ -2,23 +2,23 @@
 
 ## RedMica 1.2.2 - 2021-05-15
 
-Defect redmine-34367: Allowed filename extensions of attachments can be circumvented
-Defect redmine-34894: User link using @ not working at the end of line
-Defect redmine-34921: Do not journalize attachments that are added during a "Copy Issue" operation
-Defect redmine-34933: Atom feed of the activity page does not contain items after the second page
-Defect redmine-34950: SysController and MailHandlerController are vulnerable to timing attack
-Defect redmine-34998: Cannot open journal dropdown menu after editing note
-Defect redmine-35045: Mail handler bypasses add_issue_notes permission
-Defect redmine-35085: Arbitrary file read in Git adapter
-Defect redmine-35087: Users without two-factor authentication enabled cannot sign out when two-factor authentication is required
-Defect redmine-35100: MailHandler raises NameError exception when generating error message
-Defect redmine-35131: Issue import - allow auto mapping for Unique ID and relation type fields
-Defect redmine-35135: FrozenError when new LDAP users try to login
-Feature redmine-34942: Support for Git repositories with default branch "main"
-Patch redmine-34955: Update copyright year in the footer to 2021
-Patch redmine-35214: Update Rails to 5.2.6
-Patch redmine-34969: Remove dependency on MimeMagic
-Patch redmine-35034: Improve loading speed of workflow page
+* Defect redmine-34367: Allowed filename extensions of attachments can be circumvented
+* Defect redmine-34894: User link using @ not working at the end of line
+* Defect redmine-34921: Do not journalize attachments that are added during a "Copy Issue" operation
+* Defect redmine-34933: Atom feed of the activity page does not contain items after the second page
+* Defect redmine-34950: SysController and MailHandlerController are vulnerable to timing attack
+* Defect redmine-34998: Cannot open journal dropdown menu after editing note
+* Defect redmine-35045: Mail handler bypasses add_issue_notes permission
+* Defect redmine-35085: Arbitrary file read in Git adapter
+* Defect redmine-35087: Users without two-factor authentication enabled cannot sign out when two-factor authentication is required
+* Defect redmine-35100: MailHandler raises NameError exception when generating error message
+* Defect redmine-35131: Issue import - allow auto mapping for Unique ID and relation type fields
+* Defect redmine-35135: FrozenError when new LDAP users try to login
+* Feature redmine-34942: Support for Git repositories with default branch "main"
+* Patch redmine-34955: Update copyright year in the footer to 2021
+* Patch redmine-35214: Update Rails to 5.2.6
+* Patch redmine-34969: Remove dependency on MimeMagic
+* Patch redmine-35034: Improve loading speed of workflow page
 
 ## RedMica 1.2.1 - 2021-03-21
 
