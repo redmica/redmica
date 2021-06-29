@@ -1,8 +1,8 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 935:
-/***/ (() => {
+/***/ (function() {
 
 function setDiscontinuityClassToTabContent(id) {
   if ($('#' + id).hasClass('selected')) {
@@ -52,7 +52,7 @@ $(function () {
   // this will later be expanded using the current controller and action to
   // allow for different sidebar states for different pages
 
-  var localStorageKey = 'redmine-sidebar-state'; // true if local storage is available
+  var localStorageKey; // true if local storage is available
 
   var canUseLocalStorage = function () {
     try {
@@ -103,10 +103,12 @@ $(function () {
 
       if (bodyClass) {
         try {
-          localStorageKey += '-' + bodyClass.split(/\s+/).filter(function (s) {
+          localStorageKey = 'redmine-sidebar-state-' + bodyClass.split(/\s+/).filter(function (s) {
             return s.match(/(action|controller)-.*/);
           }).sort().join('-');
-        } catch (e) {// in case of error (probably IE8), continue with the unmodified key
+        } catch (e) {
+          // in case of error (probably IE8), continue with the default key.
+          localStorageKey = 'redmine-sidebar-state';
         }
       }
 
@@ -127,7 +129,13 @@ window.addEventListener('DOMContentLoaded', function () {
       $('#content').prepend('<div id="sidebar-switch-panel"><a id="sidebar-switch-button" href="#"></a></div>');
     }
 
-    $('#main').collapsibleSidebar();
+    try {
+      $('#main').collapsibleSidebar();
+    } catch (e) {
+      $('#main').toggleClass('visible-sidebar', true);
+      $('div#sidebar-switch-panel').remove();
+      console.error(e);
+    }
   }
 });
 
@@ -161,38 +169,38 @@ window.addEventListener('DOMContentLoaded', function () {
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
+!function() {
 "use strict";
 /* harmony import */ var _scripts_bleuclair_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(935);
 /* harmony import */ var _scripts_bleuclair_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_scripts_bleuclair_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -200,8 +208,7 @@ var __webpack_exports__ = {};
  // When built, it will be output as bleuclair/stylesheets/theme.css
 
 
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=theme.js.map
