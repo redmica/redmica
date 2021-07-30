@@ -157,5 +157,5 @@ workflows:
             branches:
               only:
                 - master
-                - stable-1.1
-                - stable-1.0
+                - stable-1.3
+                - stable-1.2
