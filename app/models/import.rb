@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -68,7 +68,7 @@ class Import < ActiveRecord::Base
     if file_exists?
       begin
         content = File.read(filepath, 256)
-        separator = [',', ';'].sort_by {|sep| content.count(sep) }.last
+        separator = [',', ';'].sort_by {|sep| content.count(sep)}.last
       rescue => e
       end
     end

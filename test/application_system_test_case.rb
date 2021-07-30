@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,26 +18,46 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 require File.expand_path('../test_helper', __FILE__)
+require 'webdrivers/chromedriver'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   DOWNLOADS_PATH = File.expand_path(File.join(Rails.root, 'tmp', 'downloads'))
+  GOOGLE_CHROME_OPTS_ARGS = []
+
+  # Allow running Capybara default server on custom IP address and/or port
+  Capybara.server_host = ENV['CAPYBARA_SERVER_HOST'] if ENV['CAPYBARA_SERVER_HOST']
+  Capybara.server_port = ENV['CAPYBARA_SERVER_PORT'] if ENV['CAPYBARA_SERVER_PORT']
+
+  # Allow defining Google Chrome options arguments based on a comma-delimited string environment variable
+  GOOGLE_CHROME_OPTS_ARGS = ENV['GOOGLE_CHROME_OPTS_ARGS'].split(",") if ENV['GOOGLE_CHROME_OPTS_ARGS']
+
+  options = {}
+  # Allow running tests using a remote Selenium hub
+  options[:url] = ENV['SELENIUM_REMOTE_URL'] if ENV['SELENIUM_REMOTE_URL']
+  options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.chrome(
+                  'goog:chromeOptions' => {
+                    'args' => GOOGLE_CHROME_OPTS_ARGS,
+                    'prefs' => {
+                      'download.default_directory' => DOWNLOADS_PATH,
+                      'download.prompt_for_download' => false,
+                      'plugins.plugins_disabled' => ["Chrome PDF Viewer"]
+                    }
+                  }
+                )
 
   driven_by(
     :selenium, using: :chrome, screen_size: [1024, 900],
-    options: {
-      desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
-        'chromeOptions' => {
-          'prefs' => {
-            'download.default_directory' => DOWNLOADS_PATH,
-            'download.prompt_for_download' => false,
-            'plugins.plugins_disabled' => ["Chrome PDF Viewer"]
-          }
-        }
-      )
-    }
+    options: options
   )
 
   setup do
+    # Allow defining a custom app host (useful when using a remote Selenium hub)
+    if ENV['CAPYBARA_APP_HOST']
+      Capybara.configure do |config|
+        config.app_host = ENV['CAPYBARA_APP_HOST']
+      end
+    end
+
     clear_downloaded_files
     Setting.delete_all
     Setting.clear_cache
@@ -62,14 +82,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   def clear_downloaded_files
-    # https://github.com/SeleniumHQ/selenium/issues/5292
-    FileUtils.rm downloaded_files if Redmine::Platform.mswin?
+    FileUtils.rm downloaded_files
   end
 
   def downloaded_files(filename='*')
-    # https://github.com/SeleniumHQ/selenium/issues/5292
-    downloaded_path = Redmine::Platform.mswin? ? DOWNLOADS_PATH : "#{ENV['HOME']}/Downloads"
-    Dir.glob("#{downloaded_path}/#{filename}").
+    Dir.glob("#{DOWNLOADS_PATH}/#{filename}").
       reject{|f| f=~/\.(tmp|crdownload)$/}.sort_by{|f| File.mtime(f)}
   end
 

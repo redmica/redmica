@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,5 +29,12 @@ module ActivitiesHelper
       end
     end
     sorted_events
+  end
+
+  def activity_authors_options_for_select(project, selected)
+    options = []
+    options += [["<< #{l(:label_me)} >>", User.current.id]] if User.current.logged?
+    options += Query.new(project: project).users.select{|user| user.active?}.map{|user| [user.name, user.id]}
+    options_for_select(options, selected)
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,14 +32,14 @@ class EnumerationsController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.api {
+      format.api do
         @klass = Enumeration.get_subclass(params[:type])
         if @klass
           @enumerations = @klass.shared.sorted.to_a
         else
           render_404
         end
-      }
+      end
     end
   end
 
@@ -61,16 +61,16 @@ class EnumerationsController < ApplicationController
   def update
     if @enumeration.update(enumeration_params)
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_to enumerations_path
-        }
-        format.js { head 200 }
+        end
+        format.js {head 200}
       end
     else
       respond_to do |format|
-        format.html { render :action => 'edit' }
-        format.js { head 422 }
+        format.html {render :action => 'edit'}
+        format.js {head 422}
       end
     end
   end

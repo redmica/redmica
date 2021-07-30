@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -119,7 +119,7 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
         where(:custom_values => {:custom_field_id => 1, :value => 'MySQL'}).map(&:id)
     assert expected_ids.any?
     assert_select 'issues > issue > id', :count => expected_ids.count do |ids|
-       ids.each {|id| assert expected_ids.delete(id.children.first.content.to_i)}
+      ids.each {|id| assert expected_ids.delete(id.children.first.content.to_i)}
     end
   end
 
@@ -183,7 +183,7 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
     assert expected_ids.any?
 
     assert_select 'issues > issue > id', :count => expected_ids.count do |ids|
-       ids.each {|id| assert expected_ids.delete(id.children.first.content.to_i)}
+      ids.each {|id| assert expected_ids.delete(id.children.first.content.to_i)}
     end
   end
 
@@ -391,6 +391,28 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
     # the user jsmith has no permission to view the associated changeset
     assert_select 'issue changesets[type=array]' do
       assert_select 'changeset', 0
+    end
+  end
+
+  test "GET /issues/:id.xml?include=allowed_statuses should include available statuses" do
+    issue = Issue.find(1)
+    assert_equal 1, issue.tracker_id  # Bug
+    issue.update(:status_id => 2)     # Assigned
+    member = Member.find_or_new(issue.project, User.find_by_login('dlopper'))
+    assert_equal [2], member.role_ids # Developer
+
+    get '/issues/1.xml?include=allowed_statuses', :headers => credentials('dlopper', 'foo')
+    assert_response :ok
+    assert_equal 'application/xml', response.media_type
+
+    allowed_statuses = [[1, 'New'], [2, 'Assigned'], [4, 'Feedback'], [5, 'Closed'], [6, 'Rejected']]
+    assert_select 'issue allowed_statuses[type=array]' do
+      assert_select 'status', allowed_statuses.length
+      assert_select('status').each_with_index do |status, idx|
+        id, name, = allowed_statuses[idx]
+        assert_equal id.to_s, status['id']
+        assert_equal name, status['name']
+      end
     end
   end
 

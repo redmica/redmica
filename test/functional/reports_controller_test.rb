@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,38 +41,50 @@ class ReportsControllerTest < Redmine::ControllerTest
   end
 
   def test_issue_report_with_subprojects_issues
-    Setting.stubs(:display_subprojects_issues?).returns(true)
-    get(
-      :issue_report,
-      :params => {
-        :id => 1
-      }
-    )
-    assert_response :success
-    # Count subprojects issues
-    assert_select 'table.list tbody :nth-child(1):first' do
-      assert_select 'td', :text => 'Bug'
-      assert_select ':nth-child(2)', :text => '5' # open
-      assert_select ':nth-child(3)', :text => '3' # closed
-      assert_select ':nth-child(4)', :text => '8' # total
+    project = Project.find(1)
+    tracker = project.trackers.find_by(:name => 'Support request')
+    project.trackers.delete(tracker)
+
+    with_settings :display_subprojects_issues => '1' do
+      get(
+        :issue_report,
+        :params => {
+          :id => 1
+        }
+      )
+      assert_response :success
+      # Count subprojects issues
+      assert_select 'table.list tbody :nth-child(1):first' do
+        assert_select 'td', :text => 'Bug'
+        assert_select ':nth-child(2)', :text => '5' # open
+        assert_select ':nth-child(3)', :text => '3' # closed
+        assert_select ':nth-child(4)', :text => '8' # total
+      end
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 1
     end
   end
 
   def test_issue_report_without_subprojects_issues
-    Setting.stubs(:display_subprojects_issues?).returns(false)
-    get(
-      :issue_report,
-      :params => {
-        :id => 1
-      }
-    )
-    assert_response :success
-    # Do not count subprojects issues
-    assert_select 'table.list tbody :nth-child(1):first' do
-      assert_select 'td', :text => 'Bug'
-      assert_select ':nth-child(2)', :text => '3' # open
-      assert_select ':nth-child(3)', :text => '3' # closed
-      assert_select ':nth-child(4)', :text => '6' # total
+    project = Project.find(1)
+    tracker = project.trackers.find_by(:name => 'Support request')
+    project.trackers.delete(tracker)
+
+    with_settings :display_subprojects_issues => '0' do
+      get(
+        :issue_report,
+        :params => {
+          :id => 1
+        }
+      )
+      assert_response :success
+      # Do not count subprojects issues
+      assert_select 'table.list tbody :nth-child(1):first' do
+        assert_select 'td', :text => 'Bug'
+        assert_select ':nth-child(2)', :text => '3' # open
+        assert_select ':nth-child(3)', :text => '3' # closed
+        assert_select ':nth-child(4)', :text => '6' # total
+      end
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 0
     end
   end
 
@@ -90,18 +102,14 @@ class ReportsControllerTest < Redmine::ControllerTest
   end
 
   def test_get_issue_report_details_by_tracker_should_show_only_statuses_used_by_the_project
-    Setting.stubs(:display_subprojects_issues?).returns(false)
     WorkflowTransition.delete_all
     WorkflowTransition.create(:role_id => 1, :tracker_id => 1, :old_status_id => 1, :new_status_id => 5)
     WorkflowTransition.create(:role_id => 1, :tracker_id => 1, :old_status_id => 1, :new_status_id => 4)
     WorkflowTransition.create(:role_id => 1, :tracker_id => 1, :old_status_id => 2, :new_status_id => 5)
     WorkflowTransition.create(:role_id => 1, :tracker_id => 2, :old_status_id => 1, :new_status_id => 6)
-
-    get :issue_report_details, :params => {
-      :id => 1,
-      :detail => 'tracker'
-    }
-
+    with_settings :display_subprojects_issues => '0' do
+      get(:issue_report_details, :params => {:id => 1, :detail => 'tracker'})
+    end
     assert_response :success
     assert_select 'table.list tbody :nth-child(1)' do
       assert_select 'td', :text => 'Bug'
@@ -117,50 +125,62 @@ class ReportsControllerTest < Redmine::ControllerTest
   end
 
   def test_get_issue_report_details_by_tracker_with_subprojects_issues
-    Setting.stubs(:display_subprojects_issues?).returns(true)
-    get(
-      :issue_report_details,
-      :params => {
-        :id => 1,
-        :detail => 'tracker'
-      }
-    )
-    assert_response :success
-    # Count subprojects issues
-    assert_select 'table.list tbody :nth-child(1)' do
-      assert_select 'td', :text => 'Bug'
-      assert_select ':nth-child(2)', :text => '5' # status:1
-      assert_select ':nth-child(3)', :text => '-' # status:2
-      assert_select ':nth-child(4)', :text => '-' # status:3
-      assert_select ':nth-child(5)', :text => '-' # status:4
-      assert_select ':nth-child(6)', :text => '3' # status:5
-      assert_select ':nth-child(7)', :text => '-' # status:6
-      assert_select ':nth-child(8)', :text => '5' # open
-      assert_select ':nth-child(9)', :text => '3' # closed
-      assert_select ':nth-child(10)', :text => '8' # total
+    project = Project.find(1)
+    tracker = project.trackers.find_by(:name => 'Support request')
+    project.trackers.delete(tracker)
+
+    with_settings :display_subprojects_issues => '1' do
+      get(
+        :issue_report_details,
+        :params => {
+          :id => 1,
+          :detail => 'tracker'
+        }
+      )
+      assert_response :success
+      # Count subprojects issues
+      assert_select 'table.list tbody :nth-child(1)' do
+        assert_select 'td', :text => 'Bug'
+        assert_select ':nth-child(2)', :text => '5' # status:1
+        assert_select ':nth-child(3)', :text => '-' # status:2
+        assert_select ':nth-child(4)', :text => '-' # status:3
+        assert_select ':nth-child(5)', :text => '-' # status:4
+        assert_select ':nth-child(6)', :text => '3' # status:5
+        assert_select ':nth-child(7)', :text => '-' # status:6
+        assert_select ':nth-child(8)', :text => '5' # open
+        assert_select ':nth-child(9)', :text => '3' # closed
+        assert_select ':nth-child(10)', :text => '8' # total
+      end
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 1
     end
   end
 
   def test_get_issue_report_details_by_tracker_without_subprojects_issues
-    Setting.stubs(:display_subprojects_issues?).returns(false)
-    get :issue_report_details, :params => {
-      :id => 1,
-      :detail => 'tracker'
-    }
+    project = Project.find(1)
+    tracker = project.trackers.find_by(:name => 'Support request')
+    project.trackers.delete(tracker)
 
-    assert_response :success
-    # Do not count subprojects issues
-    assert_select 'table.list tbody :nth-child(1)' do
-      assert_select 'td', :text => 'Bug'
-      assert_select ':nth-child(2)', :text => '3' # status:1
-      assert_select ':nth-child(3)', :text => '-' # status:2
-      assert_select ':nth-child(4)', :text => '-' # status:3
-      assert_select ':nth-child(5)', :text => '-' # status:4
-      assert_select ':nth-child(6)', :text => '3' # status:5
-      assert_select ':nth-child(7)', :text => '-' # status:6
-      assert_select ':nth-child(8)', :text => '3' # open
-      assert_select ':nth-child(9)', :text => '3' # closed
-      assert_select ':nth-child(10)', :text => '6' # total
+    with_settings :display_subprojects_issues => '0' do
+      get :issue_report_details, :params => {
+        :id => 1,
+        :detail => 'tracker'
+      }
+
+      assert_response :success
+      # Do not count subprojects issues
+      assert_select 'table.list tbody :nth-child(1)' do
+        assert_select 'td', :text => 'Bug'
+        assert_select ':nth-child(2)', :text => '3' # status:1
+        assert_select ':nth-child(3)', :text => '-' # status:2
+        assert_select ':nth-child(4)', :text => '-' # status:3
+        assert_select ':nth-child(5)', :text => '-' # status:4
+        assert_select ':nth-child(6)', :text => '3' # status:5
+        assert_select ':nth-child(7)', :text => '-' # status:6
+        assert_select ':nth-child(8)', :text => '3' # open
+        assert_select ':nth-child(9)', :text => '3' # closed
+        assert_select ':nth-child(10)', :text => '6' # total
+      end
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 0
     end
   end
 

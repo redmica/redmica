@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,6 +51,69 @@ class TrackersControllerTest < Redmine::ControllerTest
     assert_select 'input[name=?]', 'tracker[name]'
     assert_select 'select[name=?]', 'tracker[default_status_id]' do
       assert_select 'option[value=?][selected=selected]', IssueStatus.sorted.first.id.to_s
+    end
+  end
+
+  def test_new_should_set_archived_class_for_archived_projects
+    project = Project.find(2)
+    project.update_attribute(:status, Project::STATUS_ARCHIVED)
+
+    get :new
+    assert_response :success
+    assert_select '#tracker_project_ids ul li' do
+      assert_select('> div[class*="archived"] input[name=?]', 'tracker[project_ids][]', 1) do
+        assert_select ':match("value", ?)', project.id.to_s
+      end
+      assert_select '> div:not([class*="archived"]) input[name=?]', 'tracker[project_ids][]', Project.count - 1
+    end
+  end
+
+  def test_new_with_copy
+    core_fields = ['assigned_to_id', 'category_id', 'fixed_version_id', 'parent_issue_id', 'start_date', 'due_date']
+    custom_field_ids = custom_field_ids = [1, 2, 6]
+    project_ids = [1, 3, 5]
+
+    copy_from = Tracker.find(1)
+    copy_from.core_fields = core_fields
+    copy_from.custom_field_ids = custom_field_ids
+    copy_from.project_ids = project_ids
+    copy_from.save
+
+    get :new, :params => {:copy => copy_from.id.to_s}
+    assert_response :success
+    assert_select 'input[name=?]', 'tracker[name]'
+
+    assert_select 'form' do
+      # blank name
+      assert_select 'input[name=?][value=""]', 'tracker[name]'
+      # core field checked
+      copy_from.core_fields.each do |core_field|
+        assert_select "input[type=checkbox][name=?][value=#{core_field}][checked=checked]", 'tracker[core_fields][]'
+      end
+      # core field not checked
+      copy_from.disabled_core_fields do |core_field|
+        assert_select "input[type=checkbox][name=?][value=#{core_field}]", 'tracker[core_fields][]'
+      end
+      # custom field checked
+      custom_field_ids.each do |custom_field_id|
+        assert_select "input[type=checkbox][name=?][value=#{custom_field_id}][checked=checked]", 'tracker[custom_field_ids][]'
+      end
+      # custom field not checked
+      (IssueCustomField.sorted.pluck(:id) - custom_field_ids).each do |custom_field_id|
+        assert_select "input[type=checkbox][name=?][value=#{custom_field_id}]", 'tracker[custom_field_ids][]'
+      end
+      # project checked
+      project_ids.each do |project_id|
+        assert_select "input[type=checkbox][name=?][value=#{project_id}][checked=checked]", 'tracker[project_ids][]'
+      end
+      # project not checked
+      (Project.all.pluck(:id) - project_ids).each do |project_id|
+        assert_select "input[type=checkbox][name=?][value=#{project_id}]", 'tracker[project_ids][]'
+      end
+      # workflow copy selected
+      assert_select 'select[name=?]', 'copy_workflow_from' do
+        assert_select 'option[value="1"][selected=selected]'
+      end
     end
   end
 
@@ -193,9 +256,9 @@ class TrackersControllerTest < Redmine::ControllerTest
   end
 
   def test_move_lower
-   tracker = Tracker.find_by_position(1)
-   put :update, :params => {:id => 1, :tracker => {:position => '2'}}
-   assert_equal 2, tracker.reload.position
+    tracker = Tracker.find_by_position(1)
+    put :update, :params => {:id => 1, :tracker => {:position => '2'}}
+    assert_equal 2, tracker.reload.position
   end
 
   def test_destroy

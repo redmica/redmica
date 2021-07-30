@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ require File.expand_path('../../../../../../test_helper', __FILE__)
 
 class CvsAdapterTest < ActiveSupport::TestCase
   REPOSITORY_PATH = Rails.root.join('tmp/test/cvs_repository').to_s
-  REPOSITORY_PATH.gsub!(/\//, "\\") if Redmine::Platform.mswin?
+  REPOSITORY_PATH.tr!('/', "\\") if Redmine::Platform.mswin?
   MODULE_NAME = 'test'
 
   if File.directory?(REPOSITORY_PATH)
@@ -30,9 +30,13 @@ class CvsAdapterTest < ActiveSupport::TestCase
     end
 
     def test_scm_version
-      to_test = { "\nConcurrent Versions System (CVS) 1.12.13 (client/server)\n"  => [1,12,13],
-                  "\r\n1.12.12\r\n1.12.11"                   => [1,12,12],
-                  "1.12.11\r\n1.12.10\r\n"                   => [1,12,11]}
+      to_test =
+        {
+          "\nConcurrent Versions System (CVS) 1.12.13 (client/server)\n" =>
+            [1, 12, 13],
+          "\r\n1.12.12\r\n1.12.11" => [1, 12, 12],
+          "1.12.11\r\n1.12.10\r\n" => [1, 12, 11]
+        }
       to_test.each do |s, v|
         test_scm_version_for(s, v)
       end
@@ -64,18 +68,20 @@ class CvsAdapterTest < ActiveSupport::TestCase
     end
 
     def test_path_encoding_default_utf8
-      adpt1 = Redmine::Scm::Adapters::CvsAdapter.new(
-                                MODULE_NAME,
-                                REPOSITORY_PATH
-                              )
+      adpt1 =
+        Redmine::Scm::Adapters::CvsAdapter.new(
+          MODULE_NAME,
+          REPOSITORY_PATH
+        )
       assert_equal "UTF-8", adpt1.path_encoding
-      adpt2 = Redmine::Scm::Adapters::CvsAdapter.new(
-                                MODULE_NAME,
-                                REPOSITORY_PATH,
-                                nil,
-                                nil,
-                                ""
-                              )
+      adpt2 =
+        Redmine::Scm::Adapters::CvsAdapter.new(
+          MODULE_NAME,
+          REPOSITORY_PATH,
+          nil,
+          nil,
+          ""
+        )
       assert_equal "UTF-8", adpt2.path_encoding
     end
 

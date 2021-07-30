@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@ class RoutingNewsTest < Redmine::RoutingTest
 
   def test_news
     should_route 'GET /news' => 'news#index'
+    should_route 'GET /news/new' => 'news#new'
+    should_route 'POST /news' => 'news#create'
     should_route 'GET /news.atom' => 'news#index', :format => 'atom'
     should_route 'GET /news/2' => 'news#show', :id => '2'
     should_route 'GET /news/2/edit' => 'news#edit', :id => '2'

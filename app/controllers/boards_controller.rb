@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ class BoardsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html {
+      format.html do
         sort_init 'updated_on', 'desc'
         sort_update 'created_on' => "#{Message.table_name}.id",
                     'replies' => "#{Message.table_name}.replies_count",
@@ -54,15 +54,15 @@ class BoardsController < ApplicationController
           to_a
         @message = Message.new(:board => @board)
         render :action => 'show', :layout => !request.xhr?
-      }
-      format.atom {
+      end
+      format.atom do
         @messages = @board.messages.
           reorder(:id => :desc).
           includes(:author, :board).
           limit(Setting.feeds_limit.to_i).
           to_a
         render_feed(@messages, :title => "#{@project}: #{@board}")
-      }
+      end
     end
   end
 
@@ -89,16 +89,16 @@ class BoardsController < ApplicationController
     @board.safe_attributes = params[:board]
     if @board.save
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_to_settings_in_projects
-        }
-        format.js { head 200 }
+        end
+        format.js {head 200}
       end
     else
       respond_to do |format|
-        format.html { render :action => 'edit' }
-        format.js { head 422 }
+        format.html {render :action => 'edit'}
+        format.js {head 422}
       end
     end
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,8 +42,8 @@ class RedminePluginModelGenerator < Rails::Generators::NamedBase
   def copy_templates
     template 'model.rb.erb', "#{plugin_path}/app/models/#{model.underscore}.rb"
     template 'unit_test.rb.erb', "#{plugin_path}/test/unit/#{model.underscore}_test.rb"
-
     return unless options[:migration]
+
     migration_filename = "%.14d_#{@migration_filename}.rb" % migration_number
     template "migration.rb", "#{plugin_path}/db/migrate/#{migration_filename}"
   end
@@ -51,7 +51,7 @@ class RedminePluginModelGenerator < Rails::Generators::NamedBase
   private
 
   def attributes_with_index
-    attributes.select { |a| a.has_index? || (a.reference? && options[:indexes]) }
+    attributes.select {|a| a.has_index? || (a.reference? && options[:indexes])}
   end
 
   def migration_number

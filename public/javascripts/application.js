@@ -1,12 +1,11 @@
 /* Redmine - project management software
-   Copyright (C) 2006-2020  Jean-Philippe Lang */
+   Copyright (C) 2006-2021  Jean-Philippe Lang */
 
-/* Fix for CVE-2015-9251, to be removed with JQuery >= 3.0 */
-$.ajaxPrefilter(function (s) {
-  if (s.crossDomain) {
-    s.contents.script = false;
-  }
-});
+function sanitizeHTML(string) {
+  var temp = document.createElement('span');
+  temp.textContent = string;
+  return temp.innerHTML;
+}
 
 function checkAll(id, checked) {
   $('#'+id).find('input[type=checkbox]:enabled').prop('checked', checked);
@@ -371,15 +370,29 @@ function showIssueHistory(journal, url) {
 
   switch(journal) {
     case 'notes':
+      tab_content.find('.journal').show();
       tab_content.find('.journal:not(.has-notes)').hide();
-      tab_content.find('.journal.has-notes').show();
+      tab_content.find('.journal .wiki').show();
+      tab_content.find('.journal .contextual .journal-actions').show();
+
+      // always show thumbnails in notes tab
+      var thumbnails = tab_content.find('.journal .thumbnails');
+      thumbnails.show();
+      // show journals without notes, but with thumbnails
+      thumbnails.parents('.journal').show();
       break;
     case 'properties':
-      tab_content.find('.journal.has-notes').hide();
-      tab_content.find('.journal:not(.has-notes)').show();
+      tab_content.find('.journal').show();
+      tab_content.find('.journal:not(.has-details)').hide();
+      tab_content.find('.journal .wiki').hide();
+      tab_content.find('.journal .thumbnails').hide();
+      tab_content.find('.journal .contextual .journal-actions').hide();
       break;
     default:
       tab_content.find('.journal').show();
+      tab_content.find('.journal .wiki').show();
+      tab_content.find('.journal .thumbnails').show();
+      tab_content.find('.journal .contextual .journal-actions').show();
   }
 
   return false;
@@ -570,6 +583,23 @@ function randomKey(size) {
   return key;
 }
 
+function copyTextToClipboard(target) {
+  if (target) {
+    var temp = document.createElement('textarea');
+    temp.value = target.getAttribute('data-clipboard-text');
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    if (temp.parentNode) {
+      temp.parentNode.removeChild(temp);
+    }
+    if ($(target).closest('.drdn.expanded').length) {
+      $(target).closest('.drdn.expanded').removeClass("expanded");
+    }
+  }
+  return false;
+}
+
 function updateIssueFrom(url, el) {
   $('#all_attributes input, #all_attributes textarea, #all_attributes select').each(function(){
     $(this).data('valuebeforeupdate', $(this).val());
@@ -617,6 +647,46 @@ function observeAutocompleteField(fieldId, url, options) {
   });
 }
 
+function multipleAutocompleteField(fieldId, url, options) {
+  function split(val) {
+    return val.split(/,\s*/);
+  }
+
+  function extractLast(term) {
+    return split(term).pop();
+  }
+
+  $(document).ready(function () {
+    $('#' + fieldId).autocomplete($.extend({
+      source: function (request, response) {
+        $.getJSON(url, {
+          term: extractLast(request.term)
+        }, response);
+      },
+      minLength: 2,
+      position: {collision: "flipfit"},
+      search: function () {
+        $('#' + fieldId).addClass('ajax-loading');
+      },
+      response: function () {
+        $('#' + fieldId).removeClass('ajax-loading');
+      },
+      select: function (event, ui) {
+        var terms = split(this.value);
+        // remove the current input
+        terms.pop();
+        // add the selected item
+        terms.push(ui.item.value);
+        // add placeholder to get the comma-and-space at the end
+        terms.push("");
+        this.value = terms.join(", ");
+        return false;
+      }
+    }, options));
+    $('#' + fieldId).addClass('autocomplete');
+  });
+}
+
 function observeSearchfield(fieldId, targetId, url) {
   $('#'+fieldId).each(function() {
     var $this = $(this);
@@ -652,7 +722,7 @@ $(document).ready(function(){
 
   // This variable is used to focus selected project
   var selected;
-  $(".drdn-trigger").click(function(e){
+  $(document).on('click', '.drdn-trigger', function(e){
     var drdn = $(this).closest(".drdn");
     if (drdn.hasClass("expanded")) {
       drdn.removeClass("expanded");
@@ -855,8 +925,15 @@ $(document).on('keydown', 'form textarea', function(e) {
   // Submit the form with Ctrl + Enter or Command + Return
   var targetForm = $(e.target).closest('form');
   if(e.keyCode == 13 && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey) && targetForm.length)) {
-    $(e.target).closest('form').find('textarea').blur().removeData('changed');
-    targetForm.submit();
+    // For ajax, use click() instead of submit() to prevent "Invalid form authenticity token" error
+    if (targetForm.attr('data-remote') == 'true') {
+      if (targetForm.find('input[type=submit]').length === 0) { return false; }
+      targetForm.find('textarea').blur().removeData('changed');
+      targetForm.find('input[type=submit]').first().click();
+    } else {
+      targetForm.find('textarea').blur().removeData('changed');
+      targetForm.submit();
+    }
   }
 });
 
@@ -956,7 +1033,7 @@ $(document).ready(function(){
 
   $('#history .tabs').on('click', 'a', function(e){
     var tab = $(e.target).attr('id').replace('tab-','');
-    document.cookie = 'history_last_tab=' + tab
+    document.cookie = 'history_last_tab=' + tab + '; SameSite=Lax'
   });
 });
 
@@ -1032,24 +1109,28 @@ function setupWikiTableSortableHeader() {
 }
 
 $(function () {
-    $('[title]').tooltip({
-        show: {
-          delay: 400
-        },
-        position: {
-          my: "center bottom-5",
-          at: "center top"
-        }
-    });
+  $("[title]:not(.no-tooltip)").tooltip({
+    show: {
+      delay: 400
+    },
+    position: {
+      my: "center bottom-5",
+      at: "center top"
+    }
+  });
 });
 
 function inlineAutoComplete(element) {
     'use strict';
-    // do not attach if Tribute is already initialized
-    if (element.dataset.tribute === 'true') {return;}
 
-    const issuesUrl = element.dataset.issuesUrl;
-    const usersUrl = element.dataset.usersUrl;
+    // do not attach if Tribute is already initialized
+    if (element.dataset.tribute === 'true') {return};
+
+    const getDataSource = function(entity) {
+      const dataSources = JSON.parse(rm.AutoComplete.dataSources);
+
+      return dataSources[entity];
+    }
 
     const remoteSearch = function(url, cb) {
       const xhr = new XMLHttpRequest();
@@ -1069,24 +1150,51 @@ function inlineAutoComplete(element) {
     };
 
     const tribute = new Tribute({
-      trigger: '#',
-      values: function (text, cb) {
-        if (event.target.type === 'text' && $(element).attr('autocomplete') != 'off') {
-          $(element).attr('autocomplete', 'off');
+      collection: [
+        {
+          trigger: '#',
+          values: function (text, cb) {
+            if (event.target.type === 'text' && $(element).attr('autocomplete') != 'off') {
+              $(element).attr('autocomplete', 'off');
+            }
+            remoteSearch(getDataSource('issues') + text, function (issues) {
+              return cb(issues);
+            });
+          },
+          lookup: 'label',
+          fillAttr: 'label',
+          requireLeadingSpace: true,
+          selectTemplate: function (issue) {
+            return '#' + issue.original.id;
+          },
+          menuItemTemplate: function (issue) {
+            return sanitizeHTML(issue.original.label);
+          },
+          noMatchTemplate: function () {
+            return '<span style:"visibility: hidden;"></span>';
+          }
+        },
+        {
+          trigger: '[[',
+          values: function (text, cb) {
+            remoteSearch(getDataSource('wiki_pages') + text, function (wikiPages) {
+              return cb(wikiPages);
+            });
+          },
+          lookup: 'label',
+          fillAttr: 'label',
+          requireLeadingSpace: true,
+          selectTemplate: function (wikiPage) {
+            return '[[' + wikiPage.original.value + ']]';
+          },
+          menuItemTemplate: function (wikiPage) {
+            return sanitizeHTML(wikiPage.original.label);
+          },
+          noMatchTemplate: function () {
+            return '<span style:"visibility: hidden;"></span>';
+          }
         }
-        remoteSearch(issuesUrl + text, function (issues) {
-          return cb(issues);
-        });
-      },
-      lookup: 'label',
-      fillAttr: 'label',
-      requireLeadingSpace: true,
-      selectTemplate: function (issue) {
-        return '#' + issue.original.id;
-      },
-      noMatchTemplate: function () {
-        return '<span style:"visibility: hidden;"></span>';
-      }
+      ]
     });
 
     tribute.attach(element);

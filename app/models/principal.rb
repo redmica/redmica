@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,9 +39,9 @@ class Principal < ActiveRecord::Base
   validate :validate_status
 
   # Groups and active users
-  scope :active, lambda { where(:status => STATUS_ACTIVE) }
+  scope :active, lambda {where(:status => STATUS_ACTIVE)}
 
-  scope :visible, lambda {|*args|
+  scope :visible, (lambda do |*args|
     user = args.first || User.current
 
     if user.admin?
@@ -64,9 +64,9 @@ class Principal < ActiveRecord::Base
         )
       end
     end
-  }
+  end)
 
-  scope :like, lambda {|q|
+  scope :like, (lambda do |q|
     q = q.to_s
     if q.blank?
       where({})
@@ -76,22 +76,21 @@ class Principal < ActiveRecord::Base
       sql << " OR #{table_name}.id IN (SELECT user_id FROM #{EmailAddress.table_name} WHERE LOWER(address) LIKE LOWER(:p))"
       params = {:p => pattern}
 
-      tokens = q.split(/\s+/).reject(&:blank?).map { |token| "%#{token}%" }
+      tokens = q.split(/\s+/).reject(&:blank?).map {|token| "%#{token}%"}
       if tokens.present?
         sql << ' OR ('
         sql << tokens.map.with_index do |token, index|
-          params.merge!(:"token_#{index}" => token)
+          params[:"token_#{index}"] = token
           "(LOWER(#{table_name}.firstname) LIKE LOWER(:token_#{index}) OR LOWER(#{table_name}.lastname) LIKE LOWER(:token_#{index}))"
         end.join(' AND ')
         sql << ')'
       end
-
       where(sql, params)
     end
-  }
+  end)
 
   # Principals that are members of a collection of projects
-  scope :member_of, lambda {|projects|
+  scope :member_of, (lambda do |projects|
     projects = [projects] if projects.is_a?(Project)
     if projects.blank?
       where("1=0")
@@ -101,9 +100,9 @@ class Principal < ActiveRecord::Base
       where(:status => [STATUS_LOCKED, STATUS_ACTIVE]).
       where("#{Principal.table_name}.id IN (SELECT DISTINCT user_id FROM #{Member.table_name} WHERE project_id IN (?))", ids)
     end
-  }
+  end)
   # Principals that are not members of projects
-  scope :not_member_of, lambda {|projects|
+  scope :not_member_of, (lambda do |projects|
     projects = [projects] unless projects.is_a?(Array)
     if projects.empty?
       where("1=0")
@@ -111,11 +110,11 @@ class Principal < ActiveRecord::Base
       ids = projects.map(&:id)
       where("#{Principal.table_name}.id NOT IN (SELECT DISTINCT user_id FROM #{Member.table_name} WHERE project_id IN (?))", ids)
     end
-  }
-  scope :sorted, lambda { order(*Principal.fields_for_order_statement)}
+  end)
+  scope :sorted, lambda {order(*Principal.fields_for_order_statement)}
 
   # Principals that can be added as watchers
-  scope :assignable_watchers, lambda { active.visible.where(:type => ['User', 'Group']) }
+  scope :assignable_watchers, lambda {active.visible.where(:type => ['User', 'Group'])}
 
   before_create :set_default_empty_values
   before_destroy :nullify_projects_default_assigned_to
@@ -183,11 +182,11 @@ class Principal < ActiveRecord::Base
     if principal.nil? && / /.match?(keyword)
       firstname, lastname = *(keyword.split) # "First Last Throwaway"
       principal ||=
-        principals.detect {|a|
+        principals.detect do |a|
           a.is_a?(User) &&
             firstname.casecmp(a.firstname.to_s) == 0 &&
               lastname.casecmp(a.lastname.to_s) == 0
-        }
+        end
     end
     if principal.nil?
       principal ||= principals.detect {|a| keyword.casecmp(a.name) == 0}

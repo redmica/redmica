@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,10 +28,10 @@ module Redmine
           pdf.alias_nb_pages
           pdf.footer_date = format_date(User.current.today)
           pdf.add_page
-          pdf.SetFontStyle('B',11)
+          pdf.SetFontStyle('B', 11)
           buf = "#{issue.project} - #{issue.tracker} ##{issue.id}"
           pdf.RDMMultiCell(190, 5, buf)
-          pdf.SetFontStyle('',8)
+          pdf.SetFontStyle('', 8)
           base_x = pdf.get_x
           i = 1
           issue.ancestors.visible.each do |ancestor|
@@ -40,9 +40,9 @@ module Redmine
             pdf.RDMMultiCell(190 - i, 5, buf)
             i += 1 if i < 35
           end
-          pdf.SetFontStyle('B',11)
+          pdf.SetFontStyle('B', 11)
           pdf.RDMMultiCell(190 - i, 5, issue.subject.to_s)
-          pdf.SetFontStyle('',8)
+          pdf.SetFontStyle('', 8)
           pdf.RDMMultiCell(190, 5, "#{format_time(issue.created_on)} - #{issue.author}")
           pdf.ln
 
@@ -85,12 +85,12 @@ module Redmine
           rows = left.size > right.size ? left.size : right.size
           rows.times do |i|
             heights = []
-            pdf.SetFontStyle('B',9)
+            pdf.SetFontStyle('B', 9)
             item = left[i]
             heights << pdf.get_string_height(35, item ? "#{item.first}:" : "")
             item = right[i]
             heights << pdf.get_string_height(35, item ? "#{item.first}:" : "")
-            pdf.SetFontStyle('',9)
+            pdf.SetFontStyle('', 9)
             item = left[i]
             heights << pdf.get_string_height(60, item ? item.last.to_s  : "")
             item = right[i]
@@ -98,23 +98,27 @@ module Redmine
             height = heights.max
 
             item = left[i]
-            pdf.SetFontStyle('B',9)
-            pdf.RDMMultiCell(35, height, item ? "#{item.first}:" : "", (i == 0 ? border_first_top : border_first), '', 0, 0)
-            pdf.SetFontStyle('',9)
-            pdf.RDMMultiCell(60, height, item ? item.last.to_s : "", (i == 0 ? border_last_top : border_last), '', 0, 0)
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMMultiCell(35, height, item ? "#{item.first}:" : "",
+                             (i == 0 ? border_first_top : border_first), '', 0, 0)
+            pdf.SetFontStyle('', 9)
+            pdf.RDMMultiCell(60, height, item ? item.last.to_s : "",
+                             (i == 0 ? border_last_top : border_last), '', 0, 0)
 
             item = right[i]
-            pdf.SetFontStyle('B',9)
-            pdf.RDMMultiCell(35, height, item ? "#{item.first}:" : "",  (i == 0 ? border_first_top : border_first), '', 0, 0)
-            pdf.SetFontStyle('',9)
-            pdf.RDMMultiCell(60, height, item ? item.last.to_s : "", (i == 0 ? border_last_top : border_last), '', 0, 2)
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMMultiCell(35, height, item ? "#{item.first}:" : "",
+                             (i == 0 ? border_first_top : border_first), '', 0, 0)
+            pdf.SetFontStyle('', 9)
+            pdf.RDMMultiCell(60, height, item ? item.last.to_s : "",
+                             (i == 0 ? border_last_top : border_last), '', 0, 2)
 
             pdf.set_x(base_x)
           end
 
-          pdf.SetFontStyle('B',9)
-          pdf.RDMCell(35+155, 5, l(:field_description), "LRT", 1)
-          pdf.SetFontStyle('',9)
+          pdf.SetFontStyle('B', 9)
+          pdf.RDMCell(35 + 155, 5, l(:field_description), "LRT", 1)
+          pdf.SetFontStyle('', 9)
 
           # Set resize image scale
           pdf.set_image_scale(1.6)
@@ -133,95 +137,96 @@ module Redmine
             text = show_value(value, false)
             next if text.blank?
 
-            pdf.SetFontStyle('B',9)
+            pdf.SetFontStyle('B', 9)
             pdf.RDMCell(35+155, 5, value.custom_field.name, "LRT", 1)
-            pdf.SetFontStyle('',9)
+            pdf.SetFontStyle('', 9)
             pdf.RDMwriteHTMLCell(35+155, 5, '', '', text, issue.attachments, "LRB")
           end
 
           unless issue.leaf?
             truncate_length = (!is_cjk? ? 90 : 65)
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(35+155,5, l(:label_subtask_plural) + ":", "LTR")
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMCell(35+155, 5, l(:label_subtask_plural) + ":", "LTR")
             pdf.ln
             issue_list(issue.descendants.visible.sort_by(&:lft)) do |child, level|
               buf = "#{child.tracker} # #{child.id}: #{child.subject}".
                       truncate(truncate_length)
               level = 10 if level >= 10
-              pdf.SetFontStyle('',8)
-              pdf.RDMCell(35+135,5, (level >=1 ? "  " * level : "") + buf, border_first)
-              pdf.SetFontStyle('B',8)
-              pdf.RDMCell(20,5, child.status.to_s, border_last)
+              pdf.SetFontStyle('', 8)
+              pdf.RDMCell(35 + 135, 5, (level >=1 ? "  " * level : "") + buf, border_first)
+              pdf.SetFontStyle('B', 8)
+              pdf.RDMCell(20, 5, child.status.to_s, border_last)
               pdf.ln
             end
           end
 
-          relations = issue.relations.select { |r| r.other_issue(issue).visible? }
+          relations = issue.relations.select {|r| r.other_issue(issue).visible?}
           unless relations.empty?
             truncate_length = (!is_cjk? ? 80 : 60)
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(35+155,5, l(:label_related_issues) + ":", "LTR")
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMCell(35 + 155, 5, l(:label_related_issues) + ":", "LTR")
             pdf.ln
             relations.each do |relation|
-              buf = relation.to_s(issue) {|other|
+              buf = relation.to_s(issue) do |other|
                 text = ""
                 if Setting.cross_project_issue_relations?
                   text += "#{relation.other_issue(issue).project} - "
                 end
                 text += "#{other.tracker} ##{other.id}: #{other.subject}"
                 text
-              }
+              end
               buf = buf.truncate(truncate_length)
               pdf.SetFontStyle('', 8)
               pdf.RDMCell(35+155-60, 5, buf, border_first)
-              pdf.SetFontStyle('B',8)
-              pdf.RDMCell(20,5, relation.other_issue(issue).status.to_s, "")
-              pdf.RDMCell(20,5, format_date(relation.other_issue(issue).start_date), "")
-              pdf.RDMCell(20,5, format_date(relation.other_issue(issue).due_date), border_last)
+              pdf.SetFontStyle('B', 8)
+              pdf.RDMCell(20, 5, relation.other_issue(issue).status.to_s, "")
+              pdf.RDMCell(20, 5, format_date(relation.other_issue(issue).start_date), "")
+              pdf.RDMCell(20, 5, format_date(relation.other_issue(issue).due_date), border_last)
               pdf.ln
             end
           end
-          pdf.RDMCell(190,5, "", "T")
+          pdf.RDMCell(190, 5, "", "T")
           pdf.ln
 
           if issue.changesets.any? &&
                User.current.allowed_to?(:view_changesets, issue.project)
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(190,5, l(:label_associated_revisions), "B")
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMCell(190, 5, l(:label_associated_revisions), "B")
             pdf.ln
             issue.changesets.each do |changeset|
-              pdf.SetFontStyle('B',8)
+              pdf.SetFontStyle('B', 8)
               csstr  = "#{l(:label_revision)} #{changeset.format_identifier} - "
               csstr += format_time(changeset.committed_on) + " - " + changeset.author.to_s
               pdf.RDMCell(190, 5, csstr)
               pdf.ln
               unless changeset.comments.blank?
-                pdf.SetFontStyle('',8)
+                pdf.SetFontStyle('', 8)
                 pdf.RDMwriteHTMLCell(
-                      190,5,'','',
-                      changeset.comments.to_s, issue.attachments, "")
+                  190, 5, '', '',
+                  changeset.comments.to_s, issue.attachments, ""
+                )
               end
               pdf.ln
             end
           end
 
           if assoc[:journals].present?
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(190,5, l(:label_history), "B")
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMCell(190, 5, l(:label_history), "B")
             pdf.ln
             assoc[:journals].each do |journal|
-              pdf.SetFontStyle('B',8)
+              pdf.SetFontStyle('B', 8)
               title = "##{journal.indice} - #{format_time(journal.created_on)} - #{journal.user}"
               title += " (#{l(:field_private_notes)})" if journal.private_notes?
-              pdf.RDMCell(190,5, title)
+              pdf.RDMCell(190, 5, title)
               pdf.ln
-              pdf.SetFontStyle('I',8)
+              pdf.SetFontStyle('I', 8)
               details_to_strings(journal.visible_details, true).each do |string|
-                pdf.RDMMultiCell(190,5, "- " + string)
+                pdf.RDMMultiCell(190, 5, "- " + string)
               end
               if journal.notes?
                 pdf.ln unless journal.details.empty?
-                pdf.SetFontStyle('',8)
+                pdf.SetFontStyle('', 8)
                 text =
                   textilizable(
                     journal, :notes,
@@ -230,22 +235,22 @@ module Redmine
                     :headings => false,
                     :inline_attachments => false
                   )
-                pdf.RDMwriteFormattedCell(190,5,'','', text, issue.attachments, "")
+                pdf.RDMwriteFormattedCell(190, 5, '', '', text, issue.attachments, "")
               end
               pdf.ln
             end
           end
 
           if issue.attachments.any?
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(190,5, l(:label_attachment_plural), "B")
+            pdf.SetFontStyle('B', 9)
+            pdf.RDMCell(190, 5, l(:label_attachment_plural), "B")
             pdf.ln
             issue.attachments.each do |attachment|
-              pdf.SetFontStyle('',8)
-              pdf.RDMCell(80,5, attachment.filename)
-              pdf.RDMCell(20,5, number_to_human_size(attachment.filesize),0,0,"R")
-              pdf.RDMCell(25,5, format_date(attachment.created_on),0,0,"R")
-              pdf.RDMCell(65,5, attachment.author.name,0,0,"R")
+              pdf.SetFontStyle('', 8)
+              pdf.RDMCell(80, 5, attachment.filename)
+              pdf.RDMCell(20, 5, number_to_human_size(attachment.filesize), 0, 0, "R")
+              pdf.RDMCell(25, 5, format_date(attachment.created_on), 0, 0, "R")
+              pdf.RDMCell(65, 5, attachment.author.name, 0, 0, "R")
               pdf.ln
             end
           end
@@ -276,24 +281,24 @@ module Redmine
           col_width = []
           unless query.inline_columns.empty?
             col_width = calc_col_width(issues, query, table_width, pdf)
-            table_width = col_width.inject(0, :+)
+            table_width = col_width.sum
           end
 
           # use full width if the query has block columns (description, last_notes or full width custom fieds)
           if table_width > 0 && query.block_columns.any?
             col_width = col_width.map {|w| w * (page_width - right_margin - left_margin) / table_width}
-            table_width = col_width.inject(0, :+)
+            table_width = col_width.sum
           end
 
           # title
-          pdf.SetFontStyle('B',11)
+          pdf.SetFontStyle('B', 11)
           pdf.RDMCell(190, 8, title)
           pdf.ln
 
           # totals
           totals = query.totals.map {|column, total| "#{column.caption}: #{total}"}
           if totals.present?
-            pdf.SetFontStyle('B',10)
+            pdf.SetFontStyle('B', 10)
             pdf.RDMCell(table_width, 6, totals.join("  "), 0, 1, 'R')
           end
 
@@ -305,12 +310,12 @@ module Redmine
           issue_list(issues) do |issue, level|
             if query.grouped? &&
                  (group = query.group_by_column.group_value(issue)) != previous_group
-              pdf.SetFontStyle('B',10)
+              pdf.SetFontStyle('B', 10)
               group_label = group.blank? ? +'None' : group.to_s.dup
               group_label << " (#{result_count_by_group[group]})"
               pdf.bookmark group_label, 0, -1
               pdf.RDMCell(table_width, row_height * 2, group_label, 'LR', 1, 'L')
-              pdf.SetFontStyle('',8)
+              pdf.SetFontStyle('', 8)
 
               totals = totals_by_group.map {|column, total| "#{column.caption}: #{total[group]}"}.join("  ")
               if totals.present?
@@ -337,26 +342,29 @@ module Redmine
             pdf.set_y(base_y + max_height)
 
             query.block_columns.each do |column|
-            if column.is_a?(QueryCustomFieldColumn)
-              cv = issue.visible_custom_field_values.detect {|v| v.custom_field_id == column.custom_field.id}
-              text = show_value(cv, false)
-            else
-              text = issue.send(column.name)
-            end
-            next if text.blank?
+              if column.is_a?(QueryCustomFieldColumn)
+                cv =
+                  issue.visible_custom_field_values.detect do |v|
+                    v.custom_field_id == column.custom_field.id
+                  end
+                text = show_value(cv, false)
+              else
+                text = issue.send(column.name)
+              end
+              next if text.blank?
 
-            pdf.set_x(10)
-            pdf.set_auto_page_break(true, bottom_margin)
-            pdf.SetFontStyle('B',9)
-            pdf.RDMCell(0, 5, column.caption, "LRT", 1)
-            pdf.SetFontStyle('',9)
-            pdf.RDMwriteHTMLCell(0, 5, '', '', text, [], "LRB")
-            pdf.set_auto_page_break(false)
+              pdf.set_x(10)
+              pdf.set_auto_page_break(true, bottom_margin)
+              pdf.SetFontStyle('B', 9)
+              pdf.RDMCell(0, 5, column.caption, "LRT", 1)
+              pdf.SetFontStyle('', 9)
+              pdf.RDMwriteHTMLCell(0, 5, '', '', text, [], "LRB")
+              pdf.set_auto_page_break(false)
             end
           end
 
           if issues.size == Setting.issues_export_limit.to_i
-            pdf.SetFontStyle('B',10)
+            pdf.SetFontStyle('B', 10)
             pdf.RDMCell(0, row_height, '...')
           end
           pdf.output
@@ -404,7 +412,7 @@ module Redmine
         def calc_col_width(issues, query, table_width, pdf)
           # calculate statistics
           #  by captions
-          pdf.SetFontStyle('B',8)
+          pdf.SetFontStyle('B', 8)
           margins = pdf.get_margins
           col_padding = margins['cell']
           col_width_min = query.inline_columns.map {|v| pdf.get_string_width(v.caption) + col_padding}
@@ -418,50 +426,50 @@ module Redmine
             if table_width > col_min * col_width_avg.length
               table_width -= col_min * col_width_avg.length
             else
-              ratio = table_width / col_width_avg.inject(0, :+)
+              ratio = table_width / col_width_avg.sum
               return col_width = col_width_avg.map {|w| w * ratio}
             end
           end
-          word_width_max = query.inline_columns.map {|c|
+          word_width_max = query.inline_columns.map do |c|
             n = 10
-            c.caption.split.each {|w|
+            c.caption.split.each do |w|
               x = pdf.get_string_width(w) + col_padding
               n = x if n < x
-            }
+            end
             n
-          }
+          end
 
           #  by properties of issues
-          pdf.SetFontStyle('',8)
+          pdf.SetFontStyle('', 8)
           k = 1
-          issue_list(issues) {|issue, level|
+          issue_list(issues) do |issue, level|
             k += 1
             values = fetch_row_values(issue, query, level)
-            values.each_with_index {|v,i|
+            values.each_with_index do |v, i|
               n = pdf.get_string_width(v) + col_padding * 2
               col_width_max[i] = n if col_width_max[i] < n
               col_width_min[i] = n if col_width_min[i] > n
               col_width_avg[i] += n
-              v.split.each {|w|
+              v.split.each do |w|
                 x = pdf.get_string_width(w) + col_padding
                 word_width_max[i] = x if word_width_max[i] < x
-              }
-            }
-          }
+              end
+            end
+          end
           col_width_avg.map! {|x| x / k}
 
           # calculate columns width
-          ratio = table_width / col_width_avg.inject(0, :+)
+          ratio = table_width / col_width_avg.sum
           col_width = col_width_avg.map {|w| w * ratio}
 
           # correct max word width if too many columns
-          ratio = table_width / word_width_max.inject(0, :+)
+          ratio = table_width / word_width_max.sum
           word_width_max.map! {|v| v * ratio} if ratio < 1
 
           # correct and lock width of some columns
           done = 1
           col_fix = []
-          col_width.each_with_index do |w,i|
+          col_width.each_with_index do |w, i|
             if w > col_width_max[i]
               col_width[i] = col_width_max[i]
               col_fix[i] = 1
@@ -479,10 +487,10 @@ module Redmine
           while done == 0
             # calculate free & locked columns width
             done = 1
-            ratio = table_width / col_width.inject(0, :+)
+            ratio = table_width / col_width.sum
 
             # correct columns width
-            col_width.each_with_index do |w,i|
+            col_width.each_with_index do |w, i|
               if col_fix[i] == 0
                 col_width[i] = w * ratio
 
@@ -500,14 +508,14 @@ module Redmine
             end
           end
 
-          ratio = table_width / col_width.inject(0, :+)
+          ratio = table_width / col_width.sum
           col_width.map! {|v| v * ratio + col_min}
           col_width
         end
 
         def render_table_header(pdf, query, col_width, row_height, table_width)
           # headers
-          pdf.SetFontStyle('B',8)
+          pdf.SetFontStyle('B', 8)
           pdf.set_fill_color(230, 230, 230)
 
           base_x     = pdf.get_x
@@ -519,7 +527,7 @@ module Redmine
           pdf.set_xy(base_x, base_y + max_height)
 
           # rows
-          pdf.SetFontStyle('',8)
+          pdf.SetFontStyle('', 8)
           pdf.set_fill_color(255, 255, 255)
         end
 

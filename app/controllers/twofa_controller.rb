@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,6 +47,8 @@ class TwofaController < ApplicationController
 
   def activate
     if @twofa.confirm_pairing!(params[:twofa_code].to_s)
+      # The session token was destroyed by the twofa pairing, generate a new one
+      session[:tk] = @user.generate_session_token
       flash[:notice] = l('twofa_activated', bc_path: my_twofa_backup_codes_init_path)
       redirect_to my_account_path
     else

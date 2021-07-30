@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -55,15 +55,20 @@ class ActivitiesController < ApplicationController
       end
     end
 
-    events = @activity.events(@date_from, @date_to)
+    events =
+      if params[:format] == 'atom'
+        @activity.events(nil, nil, :limit => Setting.feeds_limit.to_i)
+      else
+        @activity.events(@date_from, @date_to)
+      end
 
     if events.empty? || stale?(:etag => [@activity.scope, @date_to, @date_from, @with_subprojects, @author, events.first, events.size, User.current, current_language])
       respond_to do |format|
-        format.html {
+        format.html do
           @events_by_day = events.group_by {|event| User.current.time_to_date(event.event_datetime)}
           render :layout => false if request.xhr?
-        }
-        format.atom {
+        end
+        format.atom do
           title = l(:label_activity)
           if @author
             title = @author.name
@@ -71,7 +76,7 @@ class ActivitiesController < ApplicationController
             title = l("label_#{@activity.scope.first.singularize}_plural")
           end
           render_feed(events, :title => "#{@project || Setting.app_title}: #{title}")
-        }
+        end
       end
     end
 

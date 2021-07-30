@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ class MyController < ApplicationController
   self.main_menu = false
   before_action :require_login
   # let user change user's password when user has to
-  skip_before_action :check_password_change, :only => :password
+  skip_before_action :check_password_change, :check_twofa_activation, :only => :password
 
   accept_api_auth :account
 

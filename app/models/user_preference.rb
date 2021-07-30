@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -52,7 +52,7 @@ class UserPreference < ActiveRecord::Base
         self.time_zone = Setting.default_users_time_zone
       end
       unless attributes && attributes.key?(:no_self_notified)
-        self.no_self_notified = true
+        self.no_self_notified = Setting.default_users_no_self_notified
       end
     end
     self.others ||= {}
@@ -81,8 +81,8 @@ class UserPreference < ActiveRecord::Base
     end
   end
 
-  def comments_sorting; self[:comments_sorting] end
-  def comments_sorting=(order); self[:comments_sorting]=order end
+  def comments_sorting; self[:comments_sorting]; end
+  def comments_sorting=(order); self[:comments_sorting]=order; end
 
   def warn_on_leaving_unsaved; self[:warn_on_leaving_unsaved] || '1'; end
   def warn_on_leaving_unsaved=(value); self[:warn_on_leaving_unsaved]=value; end
@@ -93,10 +93,10 @@ class UserPreference < ActiveRecord::Base
   def notify_about_high_priority_issues; (self[:notify_about_high_priority_issues] == true || self[:notify_about_high_priority_issues] == '1'); end
   def notify_about_high_priority_issues=(value); self[:notify_about_high_priority_issues]=value; end
 
-  def activity_scope; Array(self[:activity_scope]) ; end
-  def activity_scope=(value); self[:activity_scope]=value ; end
+  def activity_scope; Array(self[:activity_scope]); end
+  def activity_scope=(value); self[:activity_scope]=value; end
 
-  def textarea_font; self[:textarea_font] end
+  def textarea_font; self[:textarea_font]; end
   def textarea_font=(value); self[:textarea_font]=value; end
 
   def recently_used_projects; (self[:recently_used_projects] || 3).to_i; end

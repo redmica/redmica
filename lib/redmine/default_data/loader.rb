@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,63 +51,70 @@ module Redmine
             manager.permissions = manager.setable_permissions.collect {|p| p.name}
             manager.save!
 
-            developer = Role.create!(
-                                     :name => l(:default_role_developer),
-                                     :position => 2,
-                                     :permissions => [:manage_versions,
-                                                      :manage_categories,
-                                                      :view_issues,
-                                                      :add_issues,
-                                                      :edit_issues,
-                                                      :view_private_notes,
-                                                      :set_notes_private,
-                                                      :manage_issue_relations,
-                                                      :manage_subtasks,
-                                                      :add_issue_notes,
-                                                      :save_queries,
-                                                      :view_gantt,
-                                                      :view_calendar,
-                                                      :log_time,
-                                                      :view_time_entries,
-                                                      :view_news,
-                                                      :comment_news,
-                                                      :view_documents,
-                                                      :view_wiki_pages,
-                                                      :view_wiki_edits,
-                                                      :edit_wiki_pages,
-                                                      :delete_wiki_pages,
-                                                      :view_messages,
-                                                      :add_messages,
-                                                      :edit_own_messages,
-                                                      :view_files,
-                                                      :manage_files,
-                                                      :browse_repository,
-                                                      :view_changesets,
-                                                      :commit_access,
-                                                      :manage_related_issues])
-            reporter = Role.create!(
-                                   :name => l(:default_role_reporter),
-                                   :position => 3,
-                                   :permissions => [:view_issues,
-                                                    :add_issues,
-                                                    :add_issue_notes,
-                                                    :save_queries,
-                                                    :view_gantt,
-                                                    :view_calendar,
-                                                    :log_time,
-                                                    :view_time_entries,
-                                                    :view_news,
-                                                    :comment_news,
-                                                    :view_documents,
-                                                    :view_wiki_pages,
-                                                    :view_wiki_edits,
-                                                    :view_messages,
-                                                    :add_messages,
-                                                    :edit_own_messages,
-                                                    :view_files,
-                                                    :browse_repository,
-                                                    :view_changesets])
-
+            developer =
+              Role.create!(
+                :name => l(:default_role_developer),
+                :position => 2,
+                :permissions => [
+                  :manage_versions,
+                  :manage_categories,
+                  :view_issues,
+                  :add_issues,
+                  :edit_issues,
+                  :view_private_notes,
+                  :set_notes_private,
+                  :manage_issue_relations,
+                  :manage_subtasks,
+                  :add_issue_notes,
+                  :save_queries,
+                  :view_gantt,
+                  :view_calendar,
+                  :log_time,
+                  :view_time_entries,
+                  :view_news,
+                  :comment_news,
+                  :view_documents,
+                  :view_wiki_pages,
+                  :view_wiki_edits,
+                  :edit_wiki_pages,
+                  :delete_wiki_pages,
+                  :view_messages,
+                  :add_messages,
+                  :edit_own_messages,
+                  :view_files,
+                  :manage_files,
+                  :browse_repository,
+                  :view_changesets,
+                  :commit_access,
+                  :manage_related_issues
+                ]
+              )
+            reporter =
+              Role.create!(
+                :name => l(:default_role_reporter),
+                :position => 3,
+                :permissions => [
+                  :view_issues,
+                  :add_issues,
+                  :add_issue_notes,
+                  :save_queries,
+                  :view_gantt,
+                  :view_calendar,
+                  :log_time,
+                  :view_time_entries,
+                  :view_news,
+                  :comment_news,
+                  :view_documents,
+                  :view_wiki_pages,
+                  :view_wiki_edits,
+                  :view_messages,
+                  :add_messages,
+                  :edit_own_messages,
+                  :view_files,
+                  :browse_repository,
+                  :view_changesets
+                ]
+              )
             Role.non_member.update_attribute :permissions, [:view_issues,
                                                             :add_issues,
                                                             :add_issue_notes,
@@ -148,9 +155,16 @@ module Redmine
             rejected  = IssueStatus.create!(:name => l(:default_issue_status_rejected), :is_closed => true, :position => 6)
 
             # Trackers
-            Tracker.create!(:name => l(:default_tracker_bug),     :default_status_id => new.id, :is_in_chlog => true,  :is_in_roadmap => false, :position => 1)
-            Tracker.create!(:name => l(:default_tracker_feature), :default_status_id => new.id, :is_in_chlog => true,  :is_in_roadmap => true,  :position => 2)
-            Tracker.create!(:name => l(:default_tracker_support), :default_status_id => new.id, :is_in_chlog => false, :is_in_roadmap => false, :position => 3)
+            bug = Tracker.create!(:name => l(:default_tracker_bug), :default_status_id => new.id, :is_in_chlog => true, :is_in_roadmap => false, :position => 1)
+            feature = Tracker.create!(:name => l(:default_tracker_feature), :default_status_id => new.id, :is_in_chlog => true, :is_in_roadmap => true, :position => 2)
+            support = Tracker.create!(:name => l(:default_tracker_support), :default_status_id => new.id, :is_in_chlog => false, :is_in_roadmap => false, :position => 3)
+
+            # Set trackers as defaults for new projects
+            Setting.default_projects_tracker_ids = [
+              bug.id.to_s,
+              feature.id.to_s,
+              support.id.to_s
+            ]
 
             if workflow
               # Workflow

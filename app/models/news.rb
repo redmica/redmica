@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,17 +32,17 @@ class News < ActiveRecord::Base
   acts_as_searchable :columns => ['title', 'summary', "#{table_name}.description"],
                      :preload => :project
   acts_as_event :url => Proc.new {|o| {:controller => 'news', :action => 'show', :id => o.id}}
-  acts_as_activity_provider :scope => proc { preload(:project, :author) },
+  acts_as_activity_provider :scope => proc {preload(:project, :author)},
                             :author_key => :author_id
   acts_as_watchable
 
   after_create :add_author_as_watcher
   after_create_commit :send_notification
 
-  scope :visible, lambda {|*args|
+  scope :visible, (lambda do |*args|
     joins(:project).
     where(Project.allowed_to_condition(args.shift || User.current, :view_news, *args))
-  }
+  end)
 
   safe_attributes 'title', 'summary', 'description'
 

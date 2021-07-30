@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -69,15 +69,22 @@ class UsersControllerTest < Redmine::ControllerTest
   def test_index_csv
     with_settings :default_language => 'en' do
       user = User.logged.status(1).first
-      user.update(passwd_changed_on: Time.current.last_month)
-      get :index, :params => { :format => 'csv' }
+      user.update(passwd_changed_on: Time.current.last_month, twofa_scheme: 'totp')
+      get :index, params: {format: 'csv'}
       assert_response :success
 
       assert_equal User.logged.status(1).count, response.body.chomp.split("\n").size - 1
-      assert_include 'active', response.body
-      assert_not_include 'locked', response.body
-      assert_include format_time(user.updated_on), response.body
-      assert_include format_time(user.passwd_changed_on), response.body
+      assert_include format_time(user.updated_on), response.body.split("\n").second
+      assert_include format_time(user.passwd_changed_on), response.body.split("\n").second
+
+      # status
+      assert_include 'active', response.body.split("\n").second
+      assert_not_include 'locked', response.body.split("\n").second
+
+      # twofa_scheme
+      assert_include 'Authenticator app', response.body.split("\n").second
+      assert_include 'disabled', response.body.split("\n").third
+
       assert_equal 'text/csv', @response.media_type
     end
   end
@@ -91,7 +98,7 @@ class UsersControllerTest < Redmine::ControllerTest
 
     User.find(@request.session[:user_id]).update(:language => nil)
     with_settings :default_language => 'fr' do
-      get :index, :params => { :name => user.lastname, :format => 'csv' }
+      get :index, :params => {:name => user.lastname, :format => 'csv'}
       assert_response :success
 
       assert_include 'float field;date field', response.body
@@ -102,7 +109,7 @@ class UsersControllerTest < Redmine::ControllerTest
 
   def test_index_csv_with_status_filter
     with_settings :default_language => 'en' do
-      get :index, :params => { :status => 3, :format => 'csv' }
+      get :index, :params => {:status => 3, :format => 'csv'}
       assert_response :success
 
       assert_equal User.logged.status(3).count, response.body.chomp.split("\n").size - 1
@@ -276,22 +283,25 @@ class UsersControllerTest < Redmine::ControllerTest
   end
 
   def test_create
-    Setting.bcc_recipients = '1'
-
-    assert_difference 'User.count' do
-      assert_difference 'ActionMailer::Base.deliveries.size' do
-        post :create, :params => {
-          :user => {
-            :firstname => 'John',
-            :lastname => 'Doe',
-            :login => 'jdoe',
-            :password => 'secret123',
-            :password_confirmation => 'secret123',
-            :mail => 'jdoe@gmail.com',
-            :mail_notification => 'none'
-          },
-          :send_information => '1'
-        }
+    with_settings :bcc_recipients => '1' do
+      assert_difference 'User.count' do
+        assert_difference 'ActionMailer::Base.deliveries.size' do
+          post(
+            :create,
+            :params => {
+              :user => {
+                :firstname => 'John',
+                :lastname => 'Doe',
+                :login => 'jdoe',
+                :password => 'secret123',
+                :password_confirmation => 'secret123',
+                :mail => 'jdoe@gmail.com',
+                :mail_notification => 'none'
+              },
+              :send_information => '1'
+            }
+          )
+        end
       end
     end
 
@@ -534,17 +544,21 @@ class UsersControllerTest < Redmine::ControllerTest
   end
 
   def test_update_with_activation_should_send_a_notification
-    u = User.new(:firstname => 'Foo', :lastname => 'Bar', :mail => 'foo.bar@somenet.foo', :language => 'fr')
+    u = User.new(:firstname => 'Foo', :lastname => 'Bar',
+                 :mail => 'foo.bar@somenet.foo', :language => 'fr')
     u.login = 'foo'
     u.status = User::STATUS_REGISTERED
     u.save!
     ActionMailer::Base.deliveries.clear
-    Setting.bcc_recipients = '1'
-
-    put :update, :params => {
-      :id => u.id,
-      :user => {:status => User::STATUS_ACTIVE}
-    }
+    with_settings :bcc_recipients => '1' do
+      put(
+        :update,
+        :params => {
+          :id => u.id,
+          :user => {:status => User::STATUS_ACTIVE}
+        }
+      )
+    end
     assert u.reload.active?
     mail = ActionMailer::Base.deliveries.last
     assert_not_nil mail
@@ -554,13 +568,19 @@ class UsersControllerTest < Redmine::ControllerTest
 
   def test_update_with_password_change_should_send_a_notification
     ActionMailer::Base.deliveries.clear
-    Setting.bcc_recipients = '1'
-
-    put :update, :params => {
-      :id => 2,
-      :user => {:password => 'newpass123', :password_confirmation => 'newpass123'},
-      :send_information => '1'
-    }
+    with_settings :bcc_recipients => '1' do
+      put(
+        :update,
+        :params => {
+          :id => 2,
+          :user => {
+            :password => 'newpass123',
+            :password_confirmation => 'newpass123'
+          },
+         :send_information => '1'
+        }
+      )
+    end
     u = User.find(2)
     assert u.check_password?('newpass123')
 
@@ -570,26 +590,48 @@ class UsersControllerTest < Redmine::ControllerTest
     assert_mail_body_match 'newpass123', mail
   end
 
+  def test_update_with_password_change_by_admin_should_send_a_security_notification
+    with_settings :bcc_recipients => '0' do
+      ActionMailer::Base.deliveries.clear
+      user = User.find_by(login: 'jsmith')
+
+      put :update, :params => {
+        :id => user.id,
+        :user => {:password => 'newpass123', :password_confirmation => 'newpass123'}
+      }
+
+      assert_equal 1, ActionMailer::Base.deliveries.size
+      mail = ActionMailer::Base.deliveries.last
+      assert_equal [user.mail], mail.to
+      assert_match 'Security notification', mail.subject
+      assert_mail_body_match 'Your password has been changed.', mail
+    end
+  end
+
   def test_update_with_generate_password_should_email_the_password
     ActionMailer::Base.deliveries.clear
-    Setting.bcc_recipients = '1'
-
-    put :update, :params => {
-      :id => 2,
-      :user => {
-        :generate_password => '1',
-        :password => '',
-        :password_confirmation => ''
-      },
-      :send_information => '1'
-    }
-
+    with_settings :bcc_recipients => '1' do
+      put(
+        :update,
+        :params => {
+          :id => 2,
+          :user => {
+            :generate_password => '1',
+            :password => '',
+            :password_confirmation => ''
+          },
+          :send_information => '1'
+        }
+      )
+    end
     mail = ActionMailer::Base.deliveries.last
     assert_not_nil mail
+    u = User.find(2)
+    assert_equal [u.mail], mail.bcc
     m = mail_body(mail).match(/Password: ([a-zA-Z0-9]+)/)
     assert m
     password = m[1]
-    assert User.find(2).check_password?(password)
+    assert u.check_password?(password)
   end
 
   def test_update_without_generate_password_should_not_change_password
@@ -746,7 +788,7 @@ class UsersControllerTest < Redmine::ControllerTest
     # if user is already locked, destroying should not send a second mail
     # (for active admins see furtherbelow)
     ActionMailer::Base.deliveries.clear
-    delete :destroy, :params => {:id => 1}
+    delete :destroy, :params => {:id => 1, :confirm => User.find(1).login}
     assert_nil ActionMailer::Base.deliveries.last
 
   end
@@ -795,19 +837,56 @@ class UsersControllerTest < Redmine::ControllerTest
     assert_response 404
   end
 
+  def test_update_with_blank_email_should_not_raise_exception
+    assert_no_difference 'User.count' do
+      with_settings :gravatar_enabled => '1' do
+        put :update, :params => {
+          :id => 2,
+          :user => {:mail => ''}
+        }
+      end
+    end
+    assert_response :success
+    assert_select_error /Email cannot be blank/
+  end
+
   def test_destroy
     assert_difference 'User.count', -1 do
-      delete :destroy, :params => {:id => 2}
+      delete :destroy, :params => {:id => 2, :confirm => User.find(2).login}
     end
     assert_redirected_to '/users'
     assert_nil User.find_by_id(2)
+  end
+
+  def test_destroy_with_lock_param_should_lock_instead
+    assert_no_difference 'User.count' do
+      delete :destroy, :params => {:id => 2, :lock => 'lock'}
+    end
+    assert_redirected_to '/users'
+    assert User.find_by_id(2).locked?
+  end
+
+  def test_destroy_should_require_confirmation
+    assert_no_difference 'User.count' do
+      delete :destroy, :params => {:id => 2}
+    end
+    assert_response :success
+    assert_select '.warning', :text => /Are you sure you want to delete this user/
+  end
+
+  def test_destroy_should_require_correct_confirmation
+    assert_no_difference 'User.count' do
+      delete :destroy, :params => {:id => 2, :confirm => 'wrong'}
+    end
+    assert_response :success
+    assert_select '.warning', :text => /Are you sure you want to delete this user/
   end
 
   def test_destroy_should_be_denied_for_non_admin_users
     @request.session[:user_id] = 3
 
     assert_no_difference 'User.count' do
-      get :destroy, :params => {:id => 2}
+      delete :destroy, :params => {:id => 2, :confirm => User.find(2).login}
     end
     assert_response 403
   end
@@ -815,14 +894,16 @@ class UsersControllerTest < Redmine::ControllerTest
   def test_destroy_should_be_denied_for_anonymous
     assert User.find(6).anonymous?
     assert_no_difference 'User.count' do
-      put :destroy, :params => {:id => 6}
+      delete :destroy, :params => {:id => 6, :confirm => User.find(6).login}
     end
     assert_response 404
   end
 
   def test_destroy_should_redirect_to_back_url_param
     assert_difference 'User.count', -1 do
-      delete :destroy, :params => {:id => 2, :back_url => '/users?name=foo'}
+      delete :destroy, :params => {:id => 2,
+                                   :confirm => User.find(2).login,
+                                   :back_url => '/users?name=foo'}
     end
     assert_redirected_to '/users?name=foo'
   end
@@ -832,7 +913,7 @@ class UsersControllerTest < Redmine::ControllerTest
     user.admin = true
     user.save!
     ActionMailer::Base.deliveries.clear
-    delete :destroy, :params => {:id => user.id}
+    delete :destroy, :params => {:id => user.id, :confirm => user.login}
 
     assert_not_nil (mail = ActionMailer::Base.deliveries.last)
     assert_mail_body_match(
@@ -850,6 +931,29 @@ class UsersControllerTest < Redmine::ControllerTest
           [mail.bcc, mail.cc].flatten.include?(admin.mail)
         end
       )
+    end
+  end
+
+  def test_destroy_without_unsubscribe_is_denied
+    user = User.find(2)
+    user.update(admin: true) # Create other admin so self can be deleted
+    @request.session[:user_id] = user.id
+    with_settings unsubscribe: 0 do
+      assert_no_difference 'User.count' do
+        delete :destroy, params: {id: user.id}
+      end
+      assert_response 422
+    end
+  end
+
+  def test_destroy_last_admin_is_denied
+    user = User.find(1)
+    @request.session[:user_id] = user.id
+    with_settings unsubscribe: 1 do
+      assert_no_difference 'User.count' do
+        delete :destroy, params: {id: user.id}
+      end
+      assert_response 422
     end
   end
 end

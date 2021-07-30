@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -119,7 +119,8 @@ module Redmine
       Rails.application.config.eager_load_paths += engine_cfg.eager_load_paths
       Rails.application.config.autoload_once_paths += engine_cfg.autoload_once_paths
       Rails.application.config.autoload_paths += engine_cfg.autoload_paths
-      ActiveSupport::Dependencies.autoload_paths += engine_cfg.eager_load_paths + engine_cfg.autoload_once_paths + engine_cfg.autoload_paths
+      ActiveSupport::Dependencies.autoload_paths +=
+        engine_cfg.eager_load_paths + engine_cfg.autoload_once_paths + engine_cfg.autoload_paths
 
       # Defines plugin setting if present
       if p.settings
@@ -130,7 +131,12 @@ module Redmine
       if p.configurable?
         partial = p.settings[:partial]
         if @used_partials[partial]
-          Rails.logger.warn "WARNING: settings partial '#{partial}' is declared in '#{p.id}' plugin but it is already used by plugin '#{@used_partials[partial]}'. Only one settings view will be used. You may want to contact those plugins authors to fix this."
+          Rails.logger.warn(
+            "WARNING: settings partial '#{partial}' is declared in '#{p.id}' plugin " \
+              "but it is already used by plugin '#{@used_partials[partial]}'. " \
+              "Only one settings view will be used. " \
+              "You may want to contact those plugins authors to fix this."
+          )
         end
         @used_partials[partial] = p.id
       end
@@ -226,26 +232,38 @@ module Redmine
     #   requires_redmine :version => '0.7.3'..'0.9.1'     # >= 0.7.3 and <= 0.9.1
     #   requires_redmine :version => '0.7'..'0.9'         # >= 0.7.x and <= 0.9.x
     def requires_redmine(arg)
-      arg = { :version_or_higher => arg } unless arg.is_a?(Hash)
+      arg = {:version_or_higher => arg} unless arg.is_a?(Hash)
       arg.assert_valid_keys(:version, :version_or_higher)
 
       current = Redmine::VERSION.to_a
       arg.each do |k, req|
         case k
         when :version_or_higher
-          raise ArgumentError.new(":version_or_higher accepts a version string only") unless req.is_a?(String)
+          unless req.is_a?(String)
+            raise ArgumentError.new(":version_or_higher accepts a version string only")
+          end
+
           unless compare_versions(req, current) <= 0
-            raise PluginRequirementError.new("#{id} plugin requires Redmine #{req} or higher but current is #{current.join('.')}")
+            raise PluginRequirementError.new(
+              "#{id} plugin requires Redmine #{req} or higher " \
+              "but current is #{current.join('.')}"
+            )
           end
         when :version
           req = [req] if req.is_a?(String)
           if req.is_a?(Array)
             unless req.detect {|ver| compare_versions(ver, current) == 0}
-              raise PluginRequirementError.new("#{id} plugin requires one the following Redmine versions: #{req.join(', ')} but current is #{current.join('.')}")
+              raise PluginRequirementError.new(
+                "#{id} plugin requires one the following Redmine versions: " \
+                "#{req.join(', ')} but current is #{current.join('.')}"
+              )
             end
           elsif req.is_a?(Range)
             unless compare_versions(req.first, current) <= 0 && compare_versions(req.last, current) >= 0
-              raise PluginRequirementError.new("#{id} plugin requires a Redmine version between #{req.first} and #{req.last} but current is #{current.join('.')}")
+              raise PluginRequirementError.new(
+                "#{id} plugin requires a Redmine version between #{req.first} " \
+                "and #{req.last} but current is #{current.join('.')}"
+              )
             end
           else
             raise ArgumentError.new(":version option accepts a version string, an array or a range of versions")
@@ -273,7 +291,7 @@ module Redmine
     #   requires_redmine_plugin :foo, :version => '0.7.3'              # 0.7.3 only
     #   requires_redmine_plugin :foo, :version => ['0.7.3', '0.8.0']   # 0.7.3 or 0.8.0
     def requires_redmine_plugin(plugin_name, arg)
-      arg = { :version_or_higher => arg } unless arg.is_a?(Hash)
+      arg = {:version_or_higher => arg} unless arg.is_a?(Hash)
       arg.assert_valid_keys(:version, :version_or_higher)
 
       begin
@@ -288,13 +306,22 @@ module Redmine
         versions = v.collect {|s| s.split('.').collect(&:to_i)}
         case k
         when :version_or_higher
-          raise ArgumentError.new("wrong number of versions (#{versions.size} for 1)") unless versions.size == 1
+          unless versions.size == 1
+            raise ArgumentError.new("wrong number of versions (#{versions.size} for 1)")
+          end
+
           unless (current <=> versions.first) >= 0
-            raise PluginRequirementError.new("#{id} plugin requires the #{plugin_name} plugin #{v} or higher but current is #{current.join('.')}")
+            raise PluginRequirementError.new(
+              "#{id} plugin requires the #{plugin_name} plugin #{v} or higher " \
+              "but current is #{current.join('.')}"
+            )
           end
         when :version
-          unless versions.include?(current.slice(0,3))
-            raise PluginRequirementError.new("#{id} plugin requires one the following versions of #{plugin_name}: #{v.join(', ')} but current is #{current.join('.')}")
+          unless versions.include?(current.slice(0, 3))
+            raise PluginRequirementError.new(
+              "#{id} plugin requires one the following versions of #{plugin_name}: " \
+              "#{v.join(', ')} but current is #{current.join('.')}"
+            )
           end
         end
       end
@@ -343,7 +370,11 @@ module Redmine
     #   permission :say_hello, { :example => :say_hello }, :require => :member
     def permission(name, actions, options = {})
       if @project_module
-        Redmine::AccessControl.map {|map| map.project_module(@project_module) {|map| map.permission(name, actions, options)}}
+        Redmine::AccessControl.map do |map|
+          map.project_module(@project_module) do |map|
+            map.permission(name, actions, options)
+          end
+        end
       else
         Redmine::AccessControl.map {|map| map.permission(name, actions, options)}
       end
@@ -416,7 +447,7 @@ module Redmine
       return unless File.directory?(source)
 
       source_files = Dir[source + "/**/*"]
-      source_dirs = source_files.select { |d| File.directory?(d) }
+      source_dirs = source_files.select {|d| File.directory?(d)}
       source_files -= source_dirs
 
       unless source_files.empty?
@@ -476,7 +507,7 @@ module Redmine
     # Returns the version numbers of all migrations for this plugin.
     def migrations
       migrations = Dir[migration_directory+"/*.rb"]
-      migrations.map { |p| File.basename(p).match(/0*(\d+)\_/)[1].to_i }.sort
+      migrations.map {|p| File.basename(p).match(/0*(\d+)\_/)[1].to_i}.sort
     end
 
     # Migrate this plugin to the given version
@@ -504,7 +535,7 @@ module Redmine
       def up(target_version = nil)
         selected_migrations =
           if block_given?
-            migrations.select { |m| yield m }
+            migrations.select {|m| yield m}
           else
             migrations
           end
@@ -514,7 +545,7 @@ module Redmine
       def down(target_version = nil)
         selected_migrations =
           if block_given?
-            migrations.select { |m| yield m }
+            migrations.select {|m| yield m}
           else
             migrations
           end
@@ -549,8 +580,8 @@ module Redmine
           @all_versions[plugin.id.to_s] ||= begin
             sm_table = ::ActiveRecord::SchemaMigration.table_name
             migration_versions  = ActiveRecord::Base.connection.select_values("SELECT version FROM #{sm_table}")
-            versions_by_plugins = migration_versions.group_by { |version| version.match(/-(.*)$/).try(:[], 1) }
-            @all_versions       = versions_by_plugins.transform_values! {|versions| versions.map!(&:to_i).sort! }
+            versions_by_plugins = migration_versions.group_by {|version| version.match(/-(.*)$/).try(:[], 1)}
+            @all_versions       = versions_by_plugins.transform_values! {|versions| versions.map!(&:to_i).sort!}
             @all_versions[plugin.id.to_s] || []
           end
         end

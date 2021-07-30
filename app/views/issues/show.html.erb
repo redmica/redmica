@@ -2,6 +2,9 @@
 
 <h2 class="inline-flex"><%= issue_heading(@issue) %></h2>
 <%= issue_status_type_badge(@issue.status) %>
+<% if @issue.is_private? %>
+  <span class="badge badge-private private"><%= l(:field_is_private) %></span>
+<% end %>
 
 <div class="<%= @issue.css_classes %> details">
   <% if @prev_issue_id || @next_issue_id %>
@@ -105,7 +108,10 @@ end %>
 <div class="contextual">
   <%= link_to_new_subtask(@issue) if User.current.allowed_to?(:manage_subtasks, @project) %>
 </div>
-<p><strong><%=l(:label_subtask_plural)%></strong></p>
+<p>
+  <strong><%=l(:label_subtask_plural)%></strong>
+  <%= render_descendants_stats(@issue) unless @issue.leaf? %>
+</p>
 <%= form_tag({}, :data => {:cm_url => issues_context_menu_path}) do %>
 <%= render_descendants_tree(@issue) unless @issue.leaf? %>
 <% end %>

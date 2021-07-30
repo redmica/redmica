@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,5 +21,24 @@ module IssueRelationsHelper
   def collection_for_relation_type_select
     values = IssueRelation::TYPES
     values.keys.sort_by{|k| values[k][:order]}.collect{|k| [l(values[k][:name]), k]}
+  end
+
+  def relation_error_messages(relations)
+    messages = {}
+    relations.each do |item|
+      item.errors.full_messages.each do |message|
+        messages[message] ||= []
+        messages[message] << item
+      end
+    end
+
+    messages.map do |message, items|
+      ids = items.map(&:issue_to_id).compact
+      if ids.empty?
+        message
+      else
+        "#{message}: ##{ids.join(', ')}"
+      end
+    end
   end
 end

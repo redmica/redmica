@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,20 +35,18 @@ class AccountControllerOpenidTest < Redmine::ControllerTest
   if Object.const_defined?(:OpenID)
 
     def test_login_with_openid_for_existing_user
-      Setting.self_registration = '3'
       existing_user = User.new(:firstname => 'Cool',
                                :lastname => 'User',
                                :mail => 'user@somedomain.com',
                                :identity_url => 'http://openid.example.com/good_user')
       existing_user.login = 'cool_user'
       assert existing_user.save!
-
-      post(
-        :login,
-        :params => {
-          :openid_url => existing_user.identity_url
-        }
-      )
+      with_settings(
+        :openid => '1',
+        :self_registration => '3'
+      ) do
+        post(:login, :params => {:openid_url => existing_user.identity_url})
+      end
       assert_redirected_to '/my/page'
     end
 
@@ -64,7 +62,6 @@ class AccountControllerOpenidTest < Redmine::ControllerTest
     end
 
     def test_login_with_openid_for_existing_non_active_user
-      Setting.self_registration = '2'
       existing_user = User.new(:firstname => 'Cool',
                                :lastname => 'User',
                                :mail => 'user@somedomain.com',
@@ -72,13 +69,12 @@ class AccountControllerOpenidTest < Redmine::ControllerTest
                                :status => User::STATUS_REGISTERED)
       existing_user.login = 'cool_user'
       assert existing_user.save!
-
-      post(
-        :login,
-        :params => {
-          :openid_url => existing_user.identity_url
-        }
-      )
+      with_settings(
+        :openid => '1',
+        :self_registration => '2'
+      ) do
+        post(:login, :params => {:openid_url => existing_user.identity_url})
+      end
       assert_redirected_to '/login'
     end
 

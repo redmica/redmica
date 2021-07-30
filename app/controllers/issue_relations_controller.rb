@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ class IssueRelationsController < ApplicationController
     @relations = @issue.relations
 
     respond_to do |format|
-      format.html { head 200 }
+      format.html {head 200}
       format.api
     end
   end
@@ -38,48 +38,56 @@ class IssueRelationsController < ApplicationController
     raise Unauthorized unless @relation.visible?
 
     respond_to do |format|
-      format.html { head 200 }
+      format.html {head 200}
       format.api
     end
   end
 
   def create
-    @relation = IssueRelation.new
-    @relation.issue_from = @issue
-    @relation.safe_attributes = params[:relation]
-    @relation.init_journals(User.current)
+    saved = false
+    params_relation = params[:relation]
+    unsaved_relations = []
 
-    begin
-      saved = @relation.save
-    rescue ActiveRecord::RecordNotUnique
-      saved = false
-      @relation.errors.add :base, :taken
+    relation_issues_to_id.each do |issue_to_id|
+      params_relation[:issue_to_id] = issue_to_id
+
+      @relation = IssueRelation.new
+      @relation.issue_from = @issue
+      @relation.safe_attributes = params_relation
+      @relation.init_journals(User.current)
+
+      unless saved = @relation.save
+        saved = false
+        unsaved_relations << @relation
+      end
     end
 
     respond_to do |format|
-      format.html { redirect_to issue_path(@issue) }
-      format.js {
-        @relations = @issue.reload.relations.select {|r| r.other_issue(@issue) && r.other_issue(@issue).visible? }
-      }
-      format.api {
+      format.html {redirect_to issue_path(@issue)}
+      format.js do
+        @relations = @issue.reload.relations.select {|r| r.other_issue(@issue) && r.other_issue(@issue).visible?}
+        @unsaved_relations = unsaved_relations
+      end
+      format.api do
         if saved
           render :action => 'show', :status => :created, :location => relation_url(@relation)
         else
           render_validation_errors(@relation)
         end
-      }
+      end
     end
   end
 
   def destroy
     raise Unauthorized unless @relation.deletable?
+
     @relation.init_journals(User.current)
     @relation.destroy
 
     respond_to do |format|
-      format.html { redirect_to issue_path(@relation.issue_from) }
+      format.html {redirect_to issue_path(@relation.issue_from)}
       format.js
-      format.api  { render_api_ok }
+      format.api  {render_api_ok}
     end
   end
 
@@ -96,5 +104,20 @@ class IssueRelationsController < ApplicationController
     @relation = IssueRelation.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def relation_issues_to_id
+    issue_to_id = params[:relation].require(:issue_to_id)
+    case issue_to_id
+    when String
+      issue_to_id = issue_to_id.split(',').reject(&:blank?)
+    when Integer
+      issue_to_id = [issue_to_id]
+    end
+    issue_to_id
+  rescue ActionController::ParameterMissing => e
+    # We return a empty array just to loop once and return a validation error
+    # ToDo: Find a better method to return an error if the param is missing.
+    ['']
   end
 end

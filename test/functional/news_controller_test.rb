@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -53,6 +53,18 @@ class NewsControllerTest < Redmine::ControllerTest
     assert_response 403
   end
 
+  def test_index_without_manage_news_permission_should_not_display_add_news_link
+    user = User.find(2)
+    @request.session[:user_id] = user.id
+    Role.all.each {|r| r.remove_permission! :manage_news}
+    get :index
+    assert_select '.add-news-link', count: 0
+
+    user.members.first.roles.first.add_permission! :manage_news
+    get :index
+    assert_select '.add-news-link', count: 1
+  end
+
   def test_show
     get(:show, :params => {:id => 1})
     assert_response :success
@@ -87,11 +99,30 @@ class NewsControllerTest < Redmine::ControllerTest
     assert_response 404
   end
 
-  def test_get_new
+  def test_get_new_with_project_id
     @request.session[:user_id] = 2
     get(:new, :params => {:project_id => 1})
     assert_response :success
+    assert_select 'select[name=project_id]', false
     assert_select 'input[name=?]', 'news[title]'
+  end
+
+  def test_get_new_without_project_id
+    @request.session[:user_id] = 2
+    get(:new)
+    assert_response :success
+    assert_select 'select[name=project_id]'
+    assert_select 'input[name=?]', 'news[title]'
+  end
+
+  def test_get_new_if_user_does_not_have_permission
+    @request.session[:user_id] = 2
+    User.find(2).roles.each{|u| u.remove_permission! :manage_news }
+
+    get(:new)
+    assert_response :forbidden
+    assert_select 'select[name=project_id]', false
+    assert_select 'input[name=?]', 'news[title]', count: 0
   end
 
   def test_post_create
@@ -114,6 +145,34 @@ class NewsControllerTest < Redmine::ControllerTest
     assert_redirected_to '/projects/ecookbook/news'
 
     news = News.find_by_title('NewsControllerTest')
+    assert_not_nil news
+    assert_equal 'This is the description', news.description
+    assert_equal User.find(2), news.author
+    assert_equal Project.find(1), news.project
+    assert_equal 2, ActionMailer::Base.deliveries.size
+  end
+
+  def test_post_create_with_cross_project_param
+    ActionMailer::Base.deliveries.clear
+    @request.session[:user_id] = 2
+
+    with_settings :notified_events => %w(news_added) do
+      post(
+        :create,
+        :params => {
+          :project_id => 1,
+          :cross_project => '1',
+          :news => {
+            :title => 'NewsControllerTest',
+            :description => 'This is the description',
+            :summary => ''
+          }
+        }
+      )
+    end
+    assert_redirected_to '/news'
+
+    news = News.find_by(title: 'NewsControllerTest')
     assert_not_nil news
     assert_equal 'This is the description', news.description
     assert_equal User.find(2), news.author

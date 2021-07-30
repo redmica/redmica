@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -157,6 +157,7 @@ module Redmine
           unless block_given?
             raise "Can not create a macro without a block!"
           end
+
           name = name.to_s.downcase.to_sym
           available_macros[name] = {:desc => @@desc || ''}.merge(options)
           @@desc = nil
@@ -207,6 +208,7 @@ module Redmine
           raise t(:error_childpages_macro_no_argument)
         end
         raise t(:error_page_not_found) if page.nil? || !User.current.allowed_to?(:view_wiki_pages, page.wiki.project)
+
         pages = page.self_and_descendants(options[:depth]).group_by(&:parent_id)
         render_page_hierarchy(pages, options[:parent] ? page.parent_id : page.id)
       end
@@ -217,10 +219,19 @@ module Redmine
       macro :include do |obj, args|
         page = Wiki.find_page(args.first.to_s, :project => @project)
         raise t(:error_page_not_found) if page.nil? || !User.current.allowed_to?(:view_wiki_pages, page.wiki.project)
+
         @included_wiki_pages ||= []
         raise t(:error_circular_inclusion) if @included_wiki_pages.include?(page.id)
+
         @included_wiki_pages << page.id
-        out = textilizable(page.content, :text, :attachments => page.attachments, :headings => false,  :inline_attachments => @@inline_attachments)
+        out =
+          textilizable(
+            page.content,
+            :text,
+            :attachments => page.attachments,
+            :headings => false,
+            :inline_attachments => @@inline_attachments
+          )
         @included_wiki_pages.pop
         out
       end
@@ -235,8 +246,21 @@ module Redmine
         js = "$('##{html_id}-show, ##{html_id}-hide').toggle(); $('##{html_id}').fadeToggle(150);"
         out = ''.html_safe
         out << link_to_function(show_label, js, :id => "#{html_id}-show", :class => 'icon icon-collapsed collapsible')
-        out << link_to_function(hide_label, js, :id => "#{html_id}-hide", :class => 'icon icon-expended collapsible', :style => 'display:none;')
-        out << content_tag('div', textilizable(text, :object => obj, :headings => false, :inline_attachments => @@inline_attachments), :id => html_id, :class => 'collapsed-text', :style => 'display:none;')
+        out <<
+          link_to_function(
+            hide_label, js,
+            :id => "#{html_id}-hide",
+            :class => 'icon icon-expended collapsible',
+            :style => 'display:none;'
+          )
+        out <<
+          content_tag(
+            'div',
+            textilizable(text, :object => obj, :headings => false,
+                         :inline_attachments => @@inline_attachments),
+            :id => html_id, :class => 'collapsed-text',
+            :style => 'display:none;'
+          )
         out
       end
 
@@ -248,15 +272,21 @@ module Redmine
         args, options = extract_macro_options(args, :size, :title)
         filename = args.first
         raise t(:error_filename_required) unless filename.present?
+
         size = options[:size]
         raise t(:error_invalid_size_parameter) unless size.nil? || /^\d+$/.match?(size)
+
         size = size.to_i
         size = 200 unless size > 0
-        if obj && obj.respond_to?(:attachments) && attachment = Attachment.latest_attach(obj.attachments, filename)
+        if obj && obj.respond_to?(:attachments) &&
+             attachment = Attachment.latest_attach(obj.attachments, filename)
           title = options[:title] || attachment.title
-          thumbnail_url = url_for(:controller => 'attachments', :action => 'thumbnail', :id => attachment, :size => size, :only_path => @only_path)
-          image_url = url_for(:controller => 'attachments', :action => 'show', :id => attachment, :only_path => @only_path)
-
+          thumbnail_url =
+            url_for(:controller => 'attachments', :action => 'thumbnail',
+                    :id => attachment, :size => size, :only_path => @only_path)
+          image_url =
+            url_for(:controller => 'attachments', :action => 'show',
+                    :id => attachment, :only_path => @only_path)
           img = image_tag(thumbnail_url, :alt => attachment.filename)
           link_to(img, image_url, :class => 'thumbnail', :title => title)
         else

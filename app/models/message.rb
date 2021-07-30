@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,23 +29,25 @@ class Message < ActiveRecord::Base
                      :preload => {:board => :project},
                      :project_key => "#{Board.table_name}.project_id"
 
-  acts_as_event :title => Proc.new {|o| "#{o.board.name}: #{o.subject}"},
-                :description => :content,
-                :group => :parent,
-                :type => Proc.new {|o| o.parent_id.nil? ? 'message' : 'reply'},
-                :url =>
-                  Proc.new {|o|
-                    {:controller => 'messages', :action => 'show',
-                     :board_id => o.board_id}.
-                       merge(
-                         if o.parent_id.nil?
-                           {:id => o.id}
-                         else
-                           {:id => o.parent_id, :r => o.id, :anchor => "message-#{o.id}"}
-                         end)
-                  }
-
-  acts_as_activity_provider :scope => proc { preload({:board => :project}, :author) },
+  acts_as_event(
+    :title => Proc.new {|o| "#{o.board.name}: #{o.subject}"},
+    :description => :content,
+    :group => :parent,
+    :type => Proc.new {|o| o.parent_id.nil? ? 'message' : 'reply'},
+    :url =>
+      Proc.new do |o|
+        {:controller => 'messages', :action => 'show',
+         :board_id => o.board_id}.
+           merge(
+             if o.parent_id.nil?
+               {:id => o.id}
+             else
+               {:id => o.parent_id, :r => o.id, :anchor => "message-#{o.id}"}
+             end
+           )
+      end
+  )
+  acts_as_activity_provider :scope => proc {preload({:board => :project}, :author)},
                             :author_key => :author_id
   acts_as_watchable
 
@@ -58,17 +60,19 @@ class Message < ActiveRecord::Base
   after_destroy :reset_counters!
   after_create_commit :send_notification
 
-  scope :visible, lambda {|*args|
+  scope :visible, (lambda do |*args|
     joins(:board => :project).
     where(Project.allowed_to_condition(args.shift || User.current, :view_messages, *args))
-  }
+  end)
 
   safe_attributes 'subject', 'content'
-  safe_attributes 'locked', 'sticky', 'board_id',
-                  :if => lambda {|message, user|
-                    user.allowed_to?(:edit_messages, message.project)
-                  }
-
+  safe_attributes(
+    'locked', 'sticky', 'board_id',
+    :if =>
+      lambda do |message, user|
+        user.allowed_to?(:edit_messages, message.project)
+      end
+  )
   def visible?(user=User.current)
     !user.nil? && user.allowed_to?(:view_messages, project)
   end

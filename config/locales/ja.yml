@@ -38,14 +38,14 @@ ja:
     distance_in_words:
       half_a_minute: "30秒前後"
       less_than_x_seconds:
-        one:   "1秒以内"
-        other: "%{count}秒以内"
+        one:   "1秒未満"
+        other: "%{count}秒未満"
       x_seconds:
         one:   "1秒"
         other: "%{count}秒"
       less_than_x_minutes:
-        one:   "1分以内"
-        other: "%{count}分以内"
+        one:   "1分未満"
+        other: "%{count}分未満"
       x_minutes:
         one:   "1分"
         other: "%{count}分"
@@ -289,6 +289,7 @@ ja:
   field_password: パスワード
   field_new_password: 新しいパスワード
   field_password_confirmation: パスワードの確認
+  field_twofa_scheme: 二要素認証方式
   field_version: バージョン
   field_type: タイプ
   field_host: ホスト
@@ -880,7 +881,6 @@ ja:
 
   text_select_mail_notifications: メール通知の送信対象とする操作を選択してください。
   text_regexp_info: 例) ^[A-Z0-9]+$
-  text_min_max_length_info: 0だと無制限になります
   text_project_destroy_confirmation: 本当にこのプロジェクトと関連データを削除しますか？
   text_subprojects_destroy_warning: "サブプロジェクト %{value} も削除されます。"
   text_workflow_edit: ワークフローを編集するロールとトラッカーを選んでください
@@ -1162,7 +1162,7 @@ ja:
   notice_import_finished: "%{count}件のデータをすべてインポートしました"
   notice_import_finished_with_errors: "全%{total}件中%{count}件のデータがインポートできませんでした"
   error_invalid_file_encoding: このファイルのエンコーディングは正しい%{encoding}ではありません
-  error_invalid_csv_file_or_settings: このファイルはCSVファイルではないか、以下の設定と一致していません
+  error_invalid_csv_file_or_settings: このファイルはCSVファイルではないか、以下の設定と一致していません (%{value})
   error_can_not_read_import_file: インポート元のファイルを読み込み中にエラーが発生しました
   permission_import_issues: チケットのインポート
   label_import_issues: チケットのインポート
@@ -1368,3 +1368,20 @@ ja:
   error_invalid_size_parameter: sizeパラメータが無効です
   error_attachment_not_found: 添付ファイル %{name} が見つかりません
   permission_delete_project: プロジェクトの削除
+  text_user_destroy_confirmation: 本当にこのユーザーとこのユーザーへのすべての参照を削除しますか? 削除後は元に戻せません。通常は削除よりロックのほうが適切です。削除する場合は確認のためログインID (%{login}) を入力してください。
+  text_project_destroy_enter_identifier: 確認のためプロジェクト識別子 (%{identifier}) を入力してください。
+  button_add_subtask: 子チケットを追加
+  notice_invalid_watcher: '無効なウォッチャー: このオブジェクトを表示できないユーザーですので通知は行われません。'
+  button_fetch_changesets: コミットを取得
+  permission_view_message_watchers: メッセージのウォッチャー一覧の閲覧
+  permission_add_message_watchers: メッセージのウォッチャーの追加
+  permission_delete_message_watchers: メッセージのウォッチャーの削除
+  label_message_watchers: ウォッチャー
+  button_copy_link: リンクをコピー
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: Wikiページのウォッチャー一覧の閲覧
+  permission_add_wiki_page_watchers: Wikiページのウォッチャーの追加
+  permission_delete_wiki_page_watchers: Wikiページのウォッチャーの削除
+  label_wiki_page_watchers: Watchers

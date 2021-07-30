@@ -140,7 +140,7 @@ pt:
         cant_link_an_issue_with_a_descendant: "Não é possível ligar uma tarefa a uma sub-tarefa que lhe é pertencente"
         earlier_than_minimum_start_date: "não pode ser antes de %{date} devido a tarefas precedentes"
         not_a_regexp: "não é uma expressão regular válida"
-        open_issue_with_closed_parent: "Uma tarefa aberta não pode ser relacionada com uma tarefa pai fechada"
+        open_issue_with_closed_parent: "Uma tarefa aberta não pode ser relacionada com uma tarefa mãe fechada"
         must_contain_uppercase: "must contain uppercase letters (A-Z)"
         must_contain_lowercase: "must contain lowercase letters (a-z)"
         must_contain_digits: "must contain digits (0-9)"
@@ -667,7 +667,6 @@ pt:
 
   text_select_mail_notifications: Selecionar as ações que originam uma notificação por e-mail.
   text_regexp_info: ex. ^[A-Z0-9]+$
-  text_min_max_length_info: 0 siginifica sem restrição
   text_project_destroy_confirmation: Tem a certeza que deseja apagar o projeto e todos os dados relacionados?
   text_subprojects_destroy_warning: "O(s) seu(s) sub-projeto(s): %{value} também será/serão apagado(s)."
   text_workflow_edit: Selecione uma função e um tipo de tarefa para editar o fluxo de trabalho
@@ -1127,7 +1126,7 @@ pt:
   error_password_expired: A sua palavra-chave expirou ou o administrador exige que a altere.
   field_time_entries_visibility: Visibilidade dos registo de tempo
   setting_password_max_age: Exigir palavra-chave após a alteração
-  label_parent_task_attributes: Atributos da tarefa-pai
+  label_parent_task_attributes: Atributos da tarefa-mãe
   label_parent_task_attributes_derived: Calculado a partir das sub-tarefas
   label_parent_task_attributes_independent: Independente das sub-tarefas
   label_time_entries_visibility_all: Todos os registos de tempo
@@ -1140,7 +1139,7 @@ pt:
   notice_import_finished: "%{count} registos foram importados"
   notice_import_finished_with_errors: "%{count} de %{total} registos não poderam ser importados"
   error_invalid_file_encoding: 'O ficheiro não possui a codificação correcta: {encoding}'
-  error_invalid_csv_file_or_settings: O ficheiro não é um ficheiro CSV ou não respeita as definições abaixo
+  error_invalid_csv_file_or_settings: O ficheiro não é um ficheiro CSV ou não respeita as definições abaixo (%{value})
   error_can_not_read_import_file: Ocorreu um erro ao ler o ficheiro a importar
   permission_import_issues: Importar tarefas
   label_import_issues: Importar tarefas
@@ -1387,3 +1386,26 @@ pt:
   error_invalid_size_parameter: Invalid size parameter
   error_attachment_not_found: Attachment %{name} not found
   permission_delete_project: Delete the project
+  field_twofa_scheme: Two-factor authentication scheme
+  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
+    all references to them? This cannot be undone. Often, locking a user instead of
+    deleting them is the better solution. To confirm, please enter their login (%{login})
+    below.
+  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
+    (%{identifier}) below.
+  button_add_subtask: Add subtask
+  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
+    because it does not have access to view this object.'
+  button_fetch_changesets: Fetch commits
+  permission_view_message_watchers: View message watchers list
+  permission_add_message_watchers: Add message watchers
+  permission_delete_message_watchers: Delete message watchers
+  label_message_watchers: Watchers
+  button_copy_link: Copy link
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

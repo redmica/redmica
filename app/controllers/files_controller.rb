@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ class FilesController < ApplicationController
     @containers += @project.versions.includes(:attachments).
                     references(:attachments).reorder(sort_clause).to_a.sort.reverse
     respond_to do |format|
-      format.html { render :layout => !request.xhr? }
+      format.html {render :layout => !request.xhr?}
       format.api
     end
   end
@@ -60,20 +60,20 @@ class FilesController < ApplicationController
         Mailer.deliver_attachments_added(attachments[:files])
       end
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:label_file_added)
           redirect_to project_files_path(@project)
-        }
-        format.api { render_api_ok }
+        end
+        format.api {render_api_ok}
       end
     else
       respond_to do |format|
-        format.html {
+        format.html do
           flash.now[:error] = l(:label_attachment) + " " + l('activerecord.errors.messages.invalid')
           new
           render :action => 'new'
-        }
-        format.api { render :status => :bad_request }
+        end
+        format.api {render :status => :bad_request}
       end
     end
   end

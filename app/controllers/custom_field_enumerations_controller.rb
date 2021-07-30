@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ class CustomFieldEnumerationsController < ApplicationController
     @value.attributes = enumeration_params
     @value.save
     respond_to do |format|
-      format.html { redirect_to custom_field_enumerations_path(@custom_field) }
+      format.html {redirect_to custom_field_enumerations_path(@custom_field)}
       format.js
     end
   end

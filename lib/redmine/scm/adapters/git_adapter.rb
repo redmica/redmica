@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,9 @@ module Redmine
       class GitAdapter < AbstractAdapter
         # Git executable name
         GIT_BIN = Redmine::Configuration['scm_git_command'] || "git"
+        # Repositories created after 2020 may have a default branch of
+        # "main" instead of "master"
+        GIT_DEFAULT_BRANCH_NAMES = %w[main master].freeze
 
         class GitBranch < Branch
           attr_accessor :is_default
@@ -110,14 +113,13 @@ module Redmine
         end
 
         def default_branch
-          bras = self.branches
-          return unless bras
+          return if branches.blank?
 
-          default_bras = bras.detect{|x| x.is_default == true}
-          return default_bras.to_s if default_bras
-
-          master_bras = bras.detect{|x| x.to_s == 'master'}
-          master_bras ? 'master' : bras.first.to_s
+          (
+            branches.detect(&:is_default) ||
+            branches.detect {|b| GIT_DEFAULT_BRANCH_NAMES.include?(b.to_s)} ||
+            branches.first
+          ).to_s
         end
 
         def entry(path=nil, identifier=nil)
@@ -190,23 +192,23 @@ module Redmine
           lines = []
           git_cmd(cmd_args) {|io| lines = io.readlines}
           begin
-              id = lines[0].split[1]
-              author = lines[1].match('Author:\s+(.*)$')[1]
-              time = Time.parse(lines[4].match('CommitDate:\s+(.*)$')[1])
-              Revision.
-                new(
-                  {
-                    :identifier => id,
-                    :scmid      => id,
-                    :author     => author,
-                    :time       => time,
-                    :message    => nil,
-                    :paths      => nil
-                  }
-                )
+            id = lines[0].split[1]
+            author = lines[1].match('Author:\s+(.*)$')[1]
+            time = Time.parse(lines[4].match('CommitDate:\s+(.*)$')[1])
+            Revision.
+              new(
+                {
+                  :identifier => id,
+                  :scmid      => id,
+                  :author     => author,
+                  :time       => time,
+                  :message    => nil,
+                  :paths      => nil
+                }
+              )
           rescue NoMethodError => e
-              logger.error("The revision '#{path}' has a wrong format")
-              return nil
+            logger.error("The revision '#{path}' has a wrong format")
+            return nil
           end
         rescue ScmCommandAborted
           nil
@@ -416,6 +418,18 @@ module Redmine
           cat
         rescue ScmCommandAborted
           nil
+        end
+
+        def valid_name?(name)
+          return false unless name.is_a?(String)
+
+          return false if name.start_with?('-', '/', 'refs/heads/', 'refs/remotes/')
+          return false if name == 'HEAD'
+
+          git_cmd ['show-ref', '--heads', '--tags', '--quiet', '--', name]
+          true
+        rescue ScmCommandAborted
+          false
         end
 
         class Revision < Redmine::Scm::Adapters::Revision

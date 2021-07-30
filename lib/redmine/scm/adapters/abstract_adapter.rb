@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -176,6 +176,14 @@ module Redmine
           (path[-1, 1] == "/") ? path[0..-2] : path
         end
 
+        def valid_name?(name)
+          return true if name.nil?
+          return true if name.is_a?(Integer) && name > 0
+          return true if name.is_a?(String) && name =~ /\A[0-9]*\z/
+
+          false
+        end
+
         private
 
         def retrieve_root_url
@@ -333,11 +341,11 @@ module Redmine
         end
 
         def is_file?
-           self.kind == 'file'
+          self.kind == 'file'
         end
 
         def is_dir?
-           self.kind == 'dir'
+          self.kind == 'dir'
         end
 
         def is_text?

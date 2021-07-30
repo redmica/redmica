@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,11 +71,14 @@ class SessionsTest < Redmine::IntegrationTest
 
     get '/my/password'
     assert_response 200
-    post '/my/password', :params => {
+    post(
+      '/my/password',
+      :params => {
         :password => 'jsmith',
         :new_password => 'secret123',
         :new_password_confirmation => 'secret123'
       }
+    )
     assert_response 302
     assert_not_equal token, session[:tk]
 

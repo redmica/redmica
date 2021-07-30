@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,25 +23,35 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
   fixtures :users, :email_addresses, :members, :member_roles, :roles, :projects
 
   test "GET /users.xml should return users" do
+    users = User.active.order('login')
+    users.last.update(twofa_scheme: 'totp')
     get '/users.xml', :headers => credentials('admin')
 
     assert_response :success
     assert_equal 'application/xml', response.media_type
     assert_select 'users' do
-      users = User.active.order('login')
       assert_select 'user', :count => users.size do |nodeset|
         nodeset.zip(users) do |user_element, user|
           assert_select user_element, 'id', :text => user.id.to_s
           assert_select user_element, 'updated_on', :text => user.updated_on.iso8601
+          assert_select user_element, 'twofa_scheme', :text => user.twofa_scheme.to_s
 
           # No one has changed password.
           assert_select user_element, 'passwd_changed_on', :text => ''
+
+          if user == users.last
+            assert_select user_element, 'twofa_scheme', :text => 'totp'
+          else
+            assert_select user_element, 'twofa_scheme', :text => ''
+          end
         end
       end
     end
   end
 
   test "GET /users.json should return users" do
+    users = User.active.order('login')
+    users.last.update(twofa_scheme: 'totp')
     get '/users.json', :headers => credentials('admin')
 
     assert_response :success
@@ -58,6 +68,12 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
 
       # No one has changed password.
       assert_nil user_json['passwd_changed_on']
+
+      if user == users.last
+        assert_equal 'totp', user_json['twofa_scheme']
+      else
+        assert_nil user_json['twofa_scheme']
+      end
     end
   end
 
@@ -80,6 +96,7 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
     assert_equal 2, json['user']['id']
     assert_equal Time.zone.parse('2006-07-19T20:42:15Z').iso8601, json['user']['updated_on']
     assert_nil json['user']['passwd_changed_on']
+    assert_nil json['user']['twofa_scheme']
   end
 
   test "GET /users/:id.xml with include=memberships should include memberships" do
@@ -141,7 +158,7 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
   test "GET /users/:id should return status for administrators" do
     get '/users/2.xml', :headers => credentials('admin')
     assert_response :success
-    assert_select 'user status', :text => User.find(1).status.to_s
+    assert_select 'user status', :text => User.find(2).status.to_s
   end
 
   test "GET /users/:id should return admin status for current user" do
@@ -154,6 +171,20 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
     get '/users/3.xml', :headers => credentials('jsmith')
     assert_response :success
     assert_select 'user admin', 0
+  end
+
+  test "GET /users/:id should not return twofa_scheme for standard user" do
+    User.find(2).update(twofa_scheme: 'totp')
+    get '/users/3.xml', :headers => credentials('jsmith')
+    assert_response :success
+    assert_select 'twofa_scheme', 0
+  end
+
+  test "GET /users/:id should return twofa_scheme for administrators" do
+    User.find(2).update(twofa_scheme: 'totp')
+    get '/users/2.xml', :headers => credentials('admin')
+    assert_response :success
+    assert_select 'twofa_scheme', :text => 'totp'
   end
 
   test "POST /users.xml with valid parameters should create the user" do

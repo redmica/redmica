@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ module Redmine
 
     def self.unpair_all!
       users = User.where.not(twofa_scheme: nil)
-      users.each { |u| self.for_user(u).destroy_pairing_without_verify! }
+      users.each {|u| self.for_user(u).destroy_pairing_without_verify!}
     end
 
     def self.schemes
@@ -48,7 +48,7 @@ module Redmine
     private_class_method :schemes
 
     def self.initialize_schemes
-      @@schemes ||= { }
+      @@schemes ||= {}
       scan_builtin_schemes if @@schemes.blank?
     end
     private_class_method :initialize_schemes

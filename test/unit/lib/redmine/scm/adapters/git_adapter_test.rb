@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -124,6 +124,25 @@ class GitAdapterTest < ActiveSupport::TestCase
 
     def test_default_branch
       assert_equal 'master-20120212', @adapter.default_branch
+
+      # When no branch is marked as the default, GitAdapter treats
+      # "main" or "master" branch as the default
+      b_foo, b_bar, b_main, b_master =
+        %w[foo bar main master].map do |name|
+          Redmine::Scm::Adapters::GitAdapter::GitBranch.new(name)
+        end
+      @adapter.stubs(:branches).returns([b_foo, b_main, b_bar])
+      assert_equal 'main', @adapter.default_branch
+      @adapter.stubs(:branches).returns([b_foo, b_master, b_bar])
+      assert_equal 'master', @adapter.default_branch
+
+      # The first found branch is treated as the default branch
+      # when neither "main" nor "master" is found
+      @adapter.stubs(:branches).returns([b_foo, b_bar])
+      assert_equal 'foo', @adapter.default_branch
+
+      @adapter.stubs(:branches).returns([])
+      assert_nil @adapter.default_branch
     end
 
     def test_tags
@@ -240,13 +259,13 @@ class GitAdapterTest < ActiveSupport::TestCase
       else
         revs1 = []
         @adapter.revisions(
-                         '',
-                         "latin-1-branch-#{@char_1}-01",
-                         "latin-1-branch-#{@char_1}-02",
-                         {:reverse => true}) do |rev|
+          '',
+          "latin-1-branch-#{@char_1}-01",
+          "latin-1-branch-#{@char_1}-02",
+          {:reverse => true}
+        ) do |rev|
           revs1 << rev
         end
-
         assert_equal 2, revs1.length
         assert_equal '64f1f3e89ad1cb57976ff0ad99a107012ba3481d', revs1[0].identifier
         assert_equal '1ca7f5ed374f3cb31a93ae5215c2e25cc6ec5127', revs1[1].identifier
@@ -258,10 +277,11 @@ class GitAdapterTest < ActiveSupport::TestCase
       assert_raise Redmine::Scm::Adapters::CommandFailed do
         revs1 = []
         @adapter.revisions(
-                         '',
-                         '1234abcd',
-                         "master",
-                         {:reverse => true}) do |rev|
+          '',
+          '1234abcd',
+          "master",
+          {:reverse => true}
+        ) do |rev|
           revs1 << rev
         end
       end
@@ -392,17 +412,20 @@ class GitAdapterTest < ActiveSupport::TestCase
 
     def test_getting_revisions_with_leading_and_trailing_spaces_in_filename
       assert_equal(
-         " filename with a leading space.txt ",
-         @adapter.revisions(" filename with a leading space.txt ",
-                            nil, "master")[0].paths[0][:path])
+        " filename with a leading space.txt ",
+        @adapter.revisions(" filename with a leading space.txt ",
+                           nil, "master")[0].paths[0][:path]
+      )
     end
 
     def test_getting_entries_with_leading_and_trailing_spaces_in_filename
       assert_equal(
-         " filename with a leading space.txt ",
-         @adapter.entries(
-                 '',
-                 '83ca5fd546063a3c7dc2e568ba3355661a9e2b2c')[3].name)
+        " filename with a leading space.txt ",
+        @adapter.entries(
+          '',
+          '83ca5fd546063a3c7dc2e568ba3355661a9e2b2c'
+        )[3].name
+      )
     end
 
     def test_annotate
@@ -618,17 +641,19 @@ class GitAdapterTest < ActiveSupport::TestCase
     end
 
     def test_path_encoding_default_utf8
-      adpt1 = Redmine::Scm::Adapters::GitAdapter.new(
-                                REPOSITORY_PATH
-                              )
+      adpt1 =
+        Redmine::Scm::Adapters::GitAdapter.new(
+          REPOSITORY_PATH
+        )
       assert_equal "UTF-8", adpt1.path_encoding
-      adpt2 = Redmine::Scm::Adapters::GitAdapter.new(
-                                REPOSITORY_PATH,
-                                nil,
-                                nil,
-                                nil,
-                                ""
-                              )
+      adpt2 =
+        Redmine::Scm::Adapters::GitAdapter.new(
+          REPOSITORY_PATH,
+          nil,
+          nil,
+          nil,
+          ""
+        )
       assert_equal "UTF-8", adpt2.path_encoding
     end
 

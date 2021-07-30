@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ class Member < ActiveRecord::Base
   belongs_to :user
   belongs_to :principal, :foreign_key => 'user_id'
   has_many :member_roles, :dependent => :destroy
-  has_many :roles, lambda { distinct }, :through => :member_roles
+  has_many :roles, lambda {distinct}, :through => :member_roles
   belongs_to :project
 
   validates_presence_of :principal, :project
@@ -30,18 +30,19 @@ class Member < ActiveRecord::Base
 
   before_destroy :set_issue_category_nil, :remove_from_project_default_assigned_to
 
-  scope :active, lambda { joins(:principal).where(:users => {:status => Principal::STATUS_ACTIVE})}
-
+  scope :active, (lambda do
+    joins(:principal).where(:users => {:status => Principal::STATUS_ACTIVE})
+  end)
   # Sort by first role and principal
-  scope :sorted, lambda {
+  scope :sorted, (lambda do
     includes(:member_roles, :roles, :principal).
       reorder("#{Role.table_name}.position").
       order(Principal.fields_for_order_statement)
-  }
-  scope :sorted_by_project, lambda {
+  end)
+  scope :sorted_by_project, (lambda do
     includes(:project).
       reorder("#{Project.table_name}.lft")
-  }
+  end)
 
   alias :base_reload :reload
   def reload(*args)
@@ -67,7 +68,9 @@ class Member < ActiveRecord::Base
 
     new_role_ids = ids - role_ids
     # Add new roles
-    new_role_ids.each {|id| member_roles << MemberRole.new(:role_id => id, :member => self) }
+    new_role_ids.each do |id|
+      member_roles << MemberRole.new(:role_id => id, :member => self)
+    end
     # Remove roles (Rails' #role_ids= will not trigger MemberRole#on_destroy)
     member_roles_to_destroy = member_roles.select {|mr| !ids.include?(mr.role_id)}
     if member_roles_to_destroy.any?

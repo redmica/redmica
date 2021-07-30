@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -222,13 +222,13 @@ module Redmine
             yield Revision.new(:revision => le['revision'],
                                :scmid    => le['node'],
                                :author   =>
-                                           CGI.unescape(
-                                             (begin
-                                                le['author']['__content__']
-                                              rescue
-                                                ''
-                                              end)
-                                           ),
+                                 CGI.unescape(
+                                   begin
+                                     le['author']['__content__']
+                                   rescue
+                                     ''
+                                   end
+                                 ),
                                :time     => Time.parse(le['date']['__content__']),
                                :message  => CGI.unescape(le['msg']['__content__']),
                                :paths    => paths,
@@ -296,6 +296,15 @@ module Redmine
           Annotate.new
         end
 
+        def valid_name?(name)
+          return false unless name.nil? || name.is_a?(String)
+
+          # Mercurials names don't need to be checked further as its CLI
+          # interface is restrictive enough to reject any invalid names on its
+          # own.
+          true
+        end
+
         class Revision < Redmine::Scm::Adapters::Revision
           # Returns the readable identifier
           def format_identifier
@@ -324,10 +333,11 @@ module Redmine
           full_args << '--config' << "extensions.redminehelper=#{HG_HELPER_EXT}"
           full_args << '--config' << 'diff.git=false'
           full_args += args
-          ret = shellout(
-                  self.class.sq_bin + ' ' + full_args.map {|e| shell_quote e.to_s}.join(' '),
-                  &block
-                )
+          ret =
+            shellout(
+              self.class.sq_bin + ' ' + full_args.map {|e| shell_quote e.to_s}.join(' '),
+              &block
+            )
           if $? && $?.exitstatus != 0
             raise HgCommandAborted, "hg exited with non-zero status: #{$?.exitstatus}"
           end

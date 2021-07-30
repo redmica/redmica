@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -84,9 +84,8 @@ module CustomFieldsHelper
     if custom_value.custom_field.full_text_formatting?
       css += ' wiki-edit'
       data = {
-        :auto_complete => true,
-        :issues_url => auto_complete_issues_path(:project_id => custom_value.customized.project, :q => '')
-      } if custom_value.customized&.try(:project)
+        :auto_complete => true
+      }
     end
     custom_value.custom_field.format.edit_tag(
       self,
@@ -112,7 +111,8 @@ module CustomFieldsHelper
     content_tag(
       "label", content +
       (required ? " <span class=\"required\">*</span>".html_safe : ""),
-      :for => for_tag_id)
+      :for => for_tag_id,
+      :class => custom_value.customized && custom_value.customized.errors[custom_value.custom_field.name].present? ? 'error' : nil)
   end
 
   # Return custom field tag with its label tag
@@ -133,8 +133,7 @@ module CustomFieldsHelper
     if custom_field.full_text_formatting?
       css += ' wiki-edit'
       data = {
-        :auto_complete => true,
-        :issues_url => auto_complete_issues_path(:q => '')
+        :auto_complete => true
       }
     end
     custom_field.format.bulk_edit_tag(
@@ -190,7 +189,7 @@ module CustomFieldsHelper
     api.array :custom_fields do
       custom_values.each do |custom_value|
         attrs = {:id => custom_value.custom_field_id, :name => custom_value.custom_field.name}
-        attrs.merge!(:multiple => true) if custom_value.custom_field.multiple?
+        attrs[:multiple] = true if custom_value.custom_field.multiple?
         api.custom_field attrs do
           if custom_value.value.is_a?(Array)
             api.array :value do

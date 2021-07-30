@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +29,8 @@ class TimeEntryTest < ActiveSupport::TestCase
            :journals, :journal_details,
            :issue_categories, :enumerations,
            :groups_users,
-           :enabled_modules
+           :enabled_modules,
+           :custom_fields, :custom_fields_projects, :custom_values
 
   def setup
     User.current = nil
@@ -68,25 +69,25 @@ class TimeEntryTest < ActiveSupport::TestCase
   end
 
   def test_hours_format
-    assertions = { "2"      => 2.0,
-                   "21.1"   => 21.1,
-                   "2,1"    => 2.1,
-                   "1,5h"   => 1.5,
-                   "7:12"   => 7.2,
-                   "10h"    => 10.0,
-                   "10 h"   => 10.0,
-                   "45m"    => 0.75,
-                   "45 m"   => 0.75,
-                   "3h15"   => 3.25,
-                   "3h 15"  => 3.25,
-                   "3 h 15"   => 3.25,
-                   "3 h 15m"  => 3.25,
-                   "3 h 15 m" => 3.25,
-                   "3 hours"  => 3.0,
-                   "12min"    => 0.2,
-                   "12 Min"    => 0.2,
-                  }
-
+    assertions = {
+      "2"      => 2.0,
+      "21.1"   => 21.1,
+      "2,1"    => 2.1,
+      "1,5h"   => 1.5,
+      "7:12"   => 7.2,
+      "10h"    => 10.0,
+      "10 h"   => 10.0,
+      "45m"    => 0.75,
+      "45 m"   => 0.75,
+      "3h15"   => 3.25,
+      "3h 15"  => 3.25,
+      "3 h 15"   => 3.25,
+      "3 h 15m"  => 3.25,
+      "3 h 15 m" => 3.25,
+      "3 hours"  => 3.0,
+      "12min"    => 0.2,
+      "12 Min"    => 0.2,
+    }
     assertions.each do |k, v|
       t = TimeEntry.new(:hours => k)
       assert_equal v, t.hours, "Converting #{k} failed:"

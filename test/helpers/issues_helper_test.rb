@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -145,10 +145,18 @@ class IssuesHelperTest < Redmine::HelperTest
   end
 
   test 'show_detail should show old and new values with a project attribute' do
+    User.current = User.find(2)
     detail = JournalDetail.new(:property => 'attr', :prop_key => 'project_id',
                                :old_value => 1, :value => 2)
     assert_match 'eCookbook', show_detail(detail, true)
     assert_match 'OnlineStore', show_detail(detail, true)
+  end
+
+  test 'show_detail with a project attribute should show project ID if project is not visible' do
+    detail = JournalDetail.new(:property => 'attr', :prop_key => 'project_id',
+                               :old_value => 1, :value => 2)
+    assert_match 'eCookbook', show_detail(detail, true)
+    assert_match '2', show_detail(detail, true)
   end
 
   test 'show_detail should show old and new values with a issue status attribute' do
@@ -359,5 +367,12 @@ class IssuesHelperTest < Redmine::HelperTest
       issue.save!
       assert_equal '06/06/2019', issue_due_date_details(issue)
     end
+  end
+
+  def test_url_for_new_subtask
+    issue = Issue.find(1)
+    params = {:issue => {:parent_issue_id => issue.id, :tracker_id => issue.tracker.id}}
+    assert_equal new_project_issue_path(issue.project, params),
+                 url_for_new_subtask(issue)
   end
 end

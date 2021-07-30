@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,9 +34,11 @@ module TimelogHelper
 
     collection = []
     if time_entry && time_entry.activity && !time_entry.activity.active?
-      collection << [ "--- #{l(:actionview_instancetag_blank_option)} ---", '' ]
+      collection << ["--- #{l(:actionview_instancetag_blank_option)} ---", '']
     else
-      collection << [ "--- #{l(:actionview_instancetag_blank_option)} ---", '' ] unless activities.detect(&:is_default)
+      unless activities.detect(&:is_default)
+        collection << ["--- #{l(:actionview_instancetag_blank_option)} ---", '']
+      end
     end
     activities.each {|a| collection << [a.name, a.id]}
     collection
@@ -44,7 +46,9 @@ module TimelogHelper
 
   def user_collection_for_select_options(time_entry)
     collection = time_entry.assignable_users
-    collection << time_entry.user if time_entry.user && !collection.include?(time_entry.user)
+    if time_entry.user && !collection.include?(time_entry.user)
+      collection << time_entry.user
+    end
     principals_options_for_select(collection, time_entry.user_id.to_s)
   end
 
@@ -88,15 +92,19 @@ module TimelogHelper
   def report_to_csv(report)
     Redmine::Export::CSV.generate(:encoding => params[:encoding]) do |csv|
       # Column headers
-      headers = report.criteria.collect {|criteria| l_or_humanize(report.available_criteria[criteria][:label])}
+      headers =
+        report.criteria.collect do |criteria|
+          l_or_humanize(report.available_criteria[criteria][:label])
+        end
       headers += report.periods
       headers << l(:label_total_time)
       csv << headers
       # Content
-      report_criteria_to_csv(csv, report.available_criteria, report.columns, report.criteria, report.periods, report.hours)
+      report_criteria_to_csv(csv, report.available_criteria, report.columns,
+                             report.criteria, report.periods, report.hours)
       # Total row
       str_total = l(:label_total_time)
-      row = [ str_total ] + [''] * (report.criteria.size - 1)
+      row = [str_total] + [''] * (report.criteria.size - 1)
       total = 0
       report.periods.each do |period|
         sum = sum_hours(select_hours(report.hours, report.columns, period.to_s))
@@ -112,6 +120,7 @@ module TimelogHelper
     hours.collect {|h| h[criteria[level]].to_s}.uniq.each do |value|
       hours_for_value = select_hours(hours, criteria[level], value)
       next if hours_for_value.empty?
+
       row = [''] * level
       row << format_criteria_value(available_criteria[criteria[level]], value, false).to_s
       row += [''] * (criteria.length - level - 1)

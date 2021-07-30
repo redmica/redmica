@@ -1,5 +1,5 @@
 /* Redmine - project management software
-   Copyright (C) 2006-2020  Jean-Philippe Lang */
+   Copyright (C) 2006-2021  Jean-Philippe Lang */
 
 function addFile(inputEl, file, eagerUpload) {
   var attachmentsFields = $(inputEl).closest('.attachments_form').find('.attachments_fields');
@@ -29,8 +29,6 @@ function addFile(inputEl, file, eagerUpload) {
 
     addAttachment.toggle(attachmentsFields.children().length < maxFiles);
     return attachmentId;
-  } else {
-    alert($('input.file_selector').data('max-number-of-files-message'));
   }
   return null;
 }
@@ -161,6 +159,7 @@ function uploadAndAttachFiles(files, inputEl) {
   var maxFileSizeExceeded = $(inputEl).data('max-file-size-message');
 
   var sizeExceeded = false;
+  var filesLength = $(inputEl).closest('.attachments_form').find('.attachments_fields').children().length + files.length
   $.each(files, function() {
     if (this.size && maxFileSize != null && this.size > parseInt(maxFileSize)) {sizeExceeded=true;}
   });
@@ -168,6 +167,10 @@ function uploadAndAttachFiles(files, inputEl) {
     window.alert(maxFileSizeExceeded);
   } else {
     $.each(files, function() {addFile(inputEl, this, true);});
+  }
+
+  if (filesLength > ($(inputEl).attr('multiple') == 'multiple' ? 10 : 1)) {
+    window.alert($(inputEl).data('max-number-of-files-message'));
   }
   return sizeExceeded;
 }
@@ -179,7 +182,11 @@ function handleFileDropEvent(e) {
 
   if ($.inArray('Files', e.dataTransfer.types) > -1) {
     handleFileDropEvent.target = e.target;
-    uploadAndAttachFiles(e.dataTransfer.files, $('input:file.filedrop').first());
+    if ($(this).hasClass('custom-field-filedroplistner')){
+      uploadAndAttachFiles(e.dataTransfer.files, $(this).find('input:file.custom-field-filedrop').first());
+    } else {
+      uploadAndAttachFiles(e.dataTransfer.files, $(this).find('input:file.filedrop').first());
+    }
   }
 }
 handleFileDropEvent.target = '';
@@ -207,6 +214,14 @@ function setupFileDrop() {
           drop: handleFileDropEvent,
           paste: copyImageFromClipboard
       }).addClass('filedroplistner');
+    });
+
+    $('form div.box input:file.custom-field-filedrop').closest('p').not('.custom-field-filedroplistner').each(function() {
+      $(this).on({
+          dragover: dragOverHandler,
+          dragleave: dragOutHandler,
+          drop: handleFileDropEvent
+      }).addClass('custom-field-filedroplistner');
     });
   }
 }

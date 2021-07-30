@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -132,27 +132,27 @@ class User < Principal
   after_save :update_notified_project_ids, :destroy_tokens, :deliver_security_notification
   after_destroy :deliver_security_notification
 
-  scope :admin, lambda {|*args|
+  scope :admin, (lambda do |*args|
     admin = args.size > 0 ? !!args.first : true
     where(:admin => admin)
-  }
-  scope :in_group, lambda {|group|
+  end)
+  scope :in_group, (lambda do |group|
     group_id = group.is_a?(Group) ? group.id : group.to_i
     where("#{User.table_name}.id IN (SELECT gu.user_id FROM #{table_name_prefix}groups_users#{table_name_suffix} gu WHERE gu.group_id = ?)", group_id)
-  }
-  scope :not_in_group, lambda {|group|
+  end)
+  scope :not_in_group, (lambda do |group|
     group_id = group.is_a?(Group) ? group.id : group.to_i
     where("#{User.table_name}.id NOT IN (SELECT gu.user_id FROM #{table_name_prefix}groups_users#{table_name_suffix} gu WHERE gu.group_id = ?)", group_id)
-  }
+  end)
   scope :sorted, lambda {order(*User.fields_for_order_statement)}
-  scope :having_mail, lambda {|arg|
+  scope :having_mail, (lambda do |arg|
     addresses = Array.wrap(arg).map {|a| a.to_s.downcase}
     if addresses.any?
       joins(:email_addresses).where("LOWER(#{EmailAddress.table_name}.address) IN (?)", addresses).distinct
     else
       none
     end
-  }
+  end)
 
   def set_mail_notification
     self.mail_notification = Setting.default_notification_option if self.mail_notification.blank?
@@ -221,7 +221,17 @@ class User < Principal
   end
 
   # Returns the user that matches provided login and password, or nil
+  # AuthSource errors are caught, logged and nil is returned.
   def self.try_to_login(login, password, active_only=true)
+    try_to_login!(login, password, active_only)
+  rescue AuthSourceException => e
+    logger.error "An error occured when authenticating #{login}: #{e.message}"
+    nil
+  end
+
+  # Returns the user that matches provided login and password, or nil
+  # AuthSource errors are passed through.
+  def self.try_to_login!(login, password, active_only=true)
     login = login.to_s.strip
     password = password.to_s
 
@@ -906,7 +916,7 @@ class User < Principal
   # This helps to keep the account secure in case the associated email account
   # was compromised.
   def destroy_tokens
-    if saved_change_to_hashed_password? || (saved_change_to_status? && !active?)
+    if saved_change_to_hashed_password? || (saved_change_to_status? && !active?) || (saved_change_to_twofa_scheme? && twofa_scheme.present?)
       tokens = ['recovery', 'autologin', 'session']
       Token.where(:user_id => id, :action => tokens).delete_all
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -135,22 +135,22 @@ class Version < ActiveRecord::Base
   validates_inclusion_of :sharing, :in => VERSION_SHARINGS
 
   scope :named, lambda {|arg| where("LOWER(#{table_name}.name) = LOWER(?)", arg.to_s.strip)}
-  scope :like, lambda {|arg|
+  scope :like, (lambda do |arg|
     if arg.present?
       pattern = "%#{arg.to_s.strip}%"
       where([Redmine::Database.like("#{Version.table_name}.name", '?'), pattern])
     end
-  }
+  end)
   scope :open, lambda {where(:status => 'open')}
-  scope :status, lambda {|status|
+  scope :status, (lambda do |status|
     if status.present?
       where(:status => status.to_s)
     end
-  }
-  scope :visible, lambda {|*args|
+  end)
+  scope :visible, (lambda do |*args|
     joins(:project).
     where(Project.allowed_to_condition(args.first || User.current, :view_issues))
-  }
+  end)
 
   safe_attributes 'name',
                   'description',
@@ -167,10 +167,9 @@ class Version < ActiveRecord::Base
     if attrs.respond_to?(:to_unsafe_hash)
       attrs = attrs.to_unsafe_hash
     end
-
     return unless attrs.is_a?(Hash)
-    attrs = attrs.deep_dup
 
+    attrs = attrs.deep_dup
     # Reject custom fields values not visible by the user
     if attrs['custom_field_values'].present?
       editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}

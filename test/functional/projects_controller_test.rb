@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -750,6 +750,25 @@ class ProjectsControllerTest < Redmine::ControllerTest
     assert_select 'table.issue-report td.total a', :text => %r{\A[1-9]\d*\z}
   end
 
+  def test_show_should_not_display_subprojects_trackers_when_subprojects_issues_is_not_displayed
+    project = Project.find('ecookbook')
+    tracker = project.trackers.find_by(name: 'Support request')
+    project.trackers.delete(tracker)
+    @request.session[:user_id] = 2
+
+    with_settings :display_subprojects_issues => '1' do
+      get(:show, :params => {:id => 'ecookbook'})
+      assert_response :success
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 1
+    end
+
+    with_settings :display_subprojects_issues => '0' do
+      get(:show, :params => {:id => 'ecookbook'})
+      assert_response :success
+      assert_select 'table.issue-report td.name', :text => 'Support request', :count => 0
+    end
+  end
+
   def test_show_should_spent_and_estimated_time
     @request.session[:user_id] = 1
     get(:show, :params => {:id => 'ecookbook'})
@@ -896,6 +915,28 @@ class ProjectsControllerTest < Redmine::ControllerTest
     assert_select 'select#project_custom_field_values_3', :count => 0
   end
 
+  def test_settings_issue_tracking
+    @request.session[:user_id] = 1
+    project = Project.find(1)
+    project.default_version_id = 3
+    project.save!
+
+    get(
+      :settings,
+      :params => {
+        :id => 'ecookbook',
+        :tab => 'issues',
+      }
+    )
+    assert_response :success
+
+    assert_select 'form[id=?]', 'project_issue_tracking', 1
+    assert_select 'input[name=?]', 'project[tracker_ids][]'
+    assert_select 'input[name=?]', 'project[issue_custom_field_ids][]'
+    assert_select 'select[name=?]', 'project[default_version_id]', 1
+    assert_select 'select[name=?]', 'project[default_assigned_to_id]', 1
+  end
+
   def test_update
     @request.session[:user_id] = 2 # manager
     post(
@@ -1028,6 +1069,16 @@ class ProjectsControllerTest < Redmine::ControllerTest
     assert_select '.warning', :text => /Are you sure you want to delete this project/
   end
 
+  def test_destroy_leaf_project_with_wrong_confirmation_should_show_confirmation
+    @request.session[:user_id] = 1 # admin
+
+    assert_no_difference 'Project.count' do
+      delete(:destroy, :params => {:id => 2, :confirm => 'wrong'})
+      assert_response :success
+    end
+    assert_select '.warning', :text => /Are you sure you want to delete this project/
+  end
+
   def test_destroy_without_confirmation_should_show_confirmation_with_subprojects
     set_tmp_attachments_directory
     @request.session[:user_id] = 1 # admin
@@ -1051,7 +1102,7 @@ class ProjectsControllerTest < Redmine::ControllerTest
         :destroy,
         :params => {
           :id => 1,
-          :confirm => 1
+          :confirm => 'ecookbook'
         }
       )
       assert_redirected_to '/admin/projects'
@@ -1068,7 +1119,7 @@ class ProjectsControllerTest < Redmine::ControllerTest
         :destroy,
         :params => {
           :id => 2,
-          :confirm => 1
+          :confirm => 'onlinestore'
         }
       )
       assert_redirected_to '/projects'
@@ -1085,7 +1136,7 @@ class ProjectsControllerTest < Redmine::ControllerTest
         :destroy,
         :params => {
           :id => 1,
-          :confirm => 1
+          :confirm => 'ecookbook'
         }
       )
       assert_response 403

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ class RepositoryCvsTest < ActiveSupport::TestCase
   include Redmine::I18n
 
   REPOSITORY_PATH = repository_path('cvs')
-  REPOSITORY_PATH.gsub!(/\//, "\\") if Redmine::Platform.mswin?
+  REPOSITORY_PATH.tr!('/', "\\") if Redmine::Platform.mswin?
   # CVS module
   MODULE_NAME    = 'test'
   CHANGESETS_NUM = 7

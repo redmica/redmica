@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class TrackerTest < ActiveSupport::TestCase
-  fixtures :trackers, :workflows, :issue_statuses, :roles, :issues, :projects, :projects_trackers, :enabled_modules
+  fixtures :trackers, :workflows, :issue_statuses, :roles, :issues, :custom_fields, :projects, :projects_trackers, :enabled_modules
 
   def setup
     User.current = nil
@@ -44,6 +44,34 @@ class TrackerTest < ActiveSupport::TestCase
     User.add_to_project user, project, role
 
     assert_equal [2], project.rolled_up_trackers(false).visible(user).map(&:id)
+  end
+
+  def test_copy_from
+    tracker = Tracker.find(1)
+    copy = Tracker.new.copy_from(tracker)
+
+    assert_nil copy.id
+    assert_nil copy.position
+    assert_equal '', copy.name
+    assert_equal tracker.default_status_id, copy.default_status_id
+    assert_equal tracker.is_in_roadmap, copy.is_in_roadmap
+    assert_equal tracker.core_fields, copy.core_fields
+    assert_equal tracker.description, copy.description
+
+    copy.name = 'Copy'
+    assert copy.save
+  end
+
+  def test_copy_from_should_copy_custom_fields
+    tracker = Tracker.generate!(:custom_field_ids => [1, 2, 6])
+    copy = Tracker.new.copy_from(tracker)
+    assert_equal [1, 2, 6], copy.custom_field_ids.sort
+  end
+
+  def test_copy_from_should_copy_projects
+    tracker = Tracker.generate!(:project_ids => [1, 2, 3, 4, 5, 6])
+    copy = Tracker.new.copy_from(tracker)
+    assert_equal [1, 2, 3, 4, 5, 6], copy.project_ids.sort
   end
 
   def test_copy_workflows

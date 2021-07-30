@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +21,8 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ActivitiesHelperTest < Redmine::HelperTest
   include ActivitiesHelper
+
+  fixtures :projects, :members, :users
 
   class MockEvent
     attr_reader :event_datetime, :event_group, :name
@@ -107,6 +109,26 @@ class ActivitiesHelperTest < Redmine::HelperTest
         ['e0', false]
       ],
       sort_activity_events(events).map {|event, grouped| [event.name, grouped]}
-   )
+    )
+  end
+
+  def test_activity_authors_options_for_select_if_current_user_is_admin
+    User.current = User.find(1)
+    project = Project.find(1)
+
+    options = [["<< #{l(:label_me)} >>", 1], ['Dave Lopper', 3], ['John Smith', 2], ['Redmine Admin', 1], ['User Misc', 8]]
+    assert_equal(
+      options_for_select(options, nil),
+      activity_authors_options_for_select(project, nil))
+  end
+
+  def test_activity_authors_options_for_select_if_current_user_is_anonymous
+    User.current = nil
+    project = Project.find(1)
+
+    options = [['Dave Lopper', 3], ['John Smith', 2]]
+    assert_equal(
+      options_for_select(options, nil),
+      activity_authors_options_for_select(project, nil))
   end
 end

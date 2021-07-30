@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -68,6 +68,10 @@ class RoutingRepositoriesTest < Redmine::RoutingTest
       should_route "GET /projects/foo/repository/foo/revisions/2457/diff/#{path}" => "repositories#diff",
         :id => 'foo', :repository_id => 'foo', :rev => '2457', :path => path
     end
+  end
+
+  def test_repositories_fetch_changesets_with_repository_id
+    should_route 'POST /projects/foo/repository/bar/fetch_changesets' => 'repositories#fetch_changesets', :id => 'foo', :repository_id => 'bar'
   end
 
   def test_repositories_non_revisions_path_with_repository_id

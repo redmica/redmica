@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,27 +43,29 @@ module Redmine
         verified_at = totp.verify(code.to_s, drift_behind: allowed_drift, after: last_verified_at)
         if verified_at
           @user.update!(twofa_totp_last_used_at: verified_at)
-          return true
+          true
         else
-          return false
+          false
         end
       end
 
       def provisioning_uri
-        totp.provisioning_uri(@user.mail)
+        totp.provisioning_uri(@user.login)
       end
 
       def init_pairing_view_variables
-        super.merge({
-          provisioning_uri: provisioning_uri,
-          totp_key: @user.twofa_totp_key
-        })
+        super.merge(
+          {
+            provisioning_uri: provisioning_uri,
+            totp_key: @user.twofa_totp_key
+          }
+        )
       end
 
       private
 
       def totp
-        @totp ||= ROTP::TOTP.new(@user.twofa_totp_key, issuer: Setting.app_title)
+        @totp ||= ROTP::TOTP.new(@user.twofa_totp_key, issuer: Setting.host_name)
       end
     end
   end

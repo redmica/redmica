@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,9 +43,7 @@ class VersionsCustomFieldsVisibilityTest < Redmine::ControllerTest
     version.save!
 
     @request.session[:user_id] = 2
-    get :show, :params => {
-        :id => 2
-    }
+    get(:show, :params => {:id => 2})
     assert_response :success
 
     assert_select '#roadmap' do
@@ -65,9 +63,7 @@ class VersionsCustomFieldsVisibilityTest < Redmine::ControllerTest
     version.save!
 
     @request.session[:user_id] = 2
-    get :edit, :params => {
-        :id => 2
-    }
+    get(:edit, :params => {:id => 2})
     assert_response :success
 
     assert_select 'form.edit_version' do

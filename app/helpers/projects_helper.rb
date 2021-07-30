@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -134,7 +134,7 @@ module ProjectsHelper
 
   def render_api_includes(project, api)
     api.array :trackers do
-      project.trackers.each do |tracker|
+      project.rolled_up_trackers(false).visible.each do |tracker|
         api.tracker(:id => tracker.id, :name => tracker.name)
       end
     end if include_in_api_response?('trackers')
@@ -166,6 +166,7 @@ module ProjectsHelper
 
   def bookmark_link(project, user = User.current)
     return '' unless user && user.logged?
+
     @jump_box ||= Redmine::ProjectJumpBox.new user
     bookmarked = @jump_box.bookmark?(project)
     css = +"icon bookmark "

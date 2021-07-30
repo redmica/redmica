@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,17 +20,15 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class MessagesControllerTest < Redmine::ControllerTest
-  fixtures :projects, :users, :email_addresses, :user_preferences, :members, :member_roles, :roles, :boards, :messages, :enabled_modules
+  fixtures :projects, :users, :email_addresses, :user_preferences, :members, :member_roles, :roles, :boards, :messages, :enabled_modules,
+           :watchers
 
   def setup
     User.current = nil
   end
 
   def test_show
-    get :show, :params => {
-        :board_id => 1,
-        :id => 1
-      }
+    get(:show, :params => {:board_id => 1, :id => 1})
     assert_response :success
 
     assert_select 'h2', :text => 'First post'
@@ -38,10 +36,7 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_show_should_contain_reply_field_tags_for_quoting
     @request.session[:user_id] = 2
-    get :show, :params => {
-        :board_id => 1,
-        :id => 1
-      }
+    get(:show, :params => {:board_id => 1, :id => 1})
     assert_response :success
 
     # tags required by MessagesController#quote
@@ -62,11 +57,14 @@ class MessagesControllerTest < Redmine::ControllerTest
     end
     reply_ids = message.children.map(&:id).sort
 
-    get :show, :params => {
+    get(
+      :show,
+      :params => {
         :board_id => 1,
         :id => 1,
         :r => reply_ids.last
       }
+    )
     assert_response :success
 
     assert_select 'a[href=?]', "/boards/1/topics/1?r=#{reply_ids.last}#message-#{reply_ids.last}"
@@ -75,36 +73,50 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_show_with_reply_permission
     @request.session[:user_id] = 2
-    get :show, :params => {
-        :board_id => 1,
-        :id => 1
-      }
+    get(:show, :params => {:board_id => 1, :id => 1})
     assert_response :success
 
     assert_select 'div#reply textarea#message_content'
   end
 
   def test_show_message_not_found
-    get :show, :params => {
-        :board_id => 1,
-        :id => 99999
-      }
+    get(:show, :params => {:board_id => 1, :id => 99999})
     assert_response 404
   end
 
   def test_show_message_from_invalid_board_should_respond_with_404
-    get :show, :params => {
-        :board_id => 999,
-        :id => 1
-      }
+    get(:show, :params => {:board_id => 999, :id => 1})
     assert_response 404
+  end
+
+  def test_show_should_display_watchers
+    @request.session[:user_id] = 2
+    message = Message.find(1)
+    message.add_watcher User.find(2)
+    message.add_watcher Group.find(10)
+    [['1', true], ['0', false]].each do |(gravatar_enabled, is_display_gravatar)|
+      with_settings :gravatar_enabled => gravatar_enabled do
+        get(:show, :params => {:board_id => 1, :id => 1})
+      end
+
+      assert_select 'div#watchers ul' do
+        assert_select 'li.user-2' do
+          assert_select 'img.gravatar[title=?]', 'John Smith', is_display_gravatar
+          assert_select 'a[href="/users/2"]'
+          assert_select 'a[class*=delete]'
+        end
+        assert_select "li.user-10" do
+          assert_select 'img.gravatar[title=?]', 'A Team', is_display_gravatar
+          assert_select 'a[href="/users/10"]', false
+          assert_select 'a[class*=delete]'
+        end
+      end
+    end
   end
 
   def test_get_new
     @request.session[:user_id] = 2
-    get :new, :params => {
-        :board_id => 1
-      }
+    get(:new, :params => {:board_id => 1})
     assert_response :success
 
     assert_select 'input[name=?]', 'message[subject]'
@@ -112,9 +124,7 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_get_new_with_invalid_board
     @request.session[:user_id] = 2
-    get :new, :params => {
-        :board_id => 99
-      }
+    get(:new, :params => {:board_id => 99})
     assert_response 404
   end
 
@@ -123,13 +133,16 @@ class MessagesControllerTest < Redmine::ControllerTest
     ActionMailer::Base.deliveries.clear
 
     with_settings :notified_events => %w(message_posted) do
-      post :new, :params => {
+      post(
+        :new,
+        :params => {
           :board_id => 1,
           :message => {
             :subject => 'Test created message',
             :content => 'Message body'
           }
         }
+      )
     end
     assert_equal I18n.t(:notice_successful_create), flash[:notice]
     message = Message.find_by_subject('Test created message')
@@ -146,18 +159,16 @@ class MessagesControllerTest < Redmine::ControllerTest
       assert_mail_body_match 'Message body', mail
     end
 
+    bcc_email_addresses = mails.map(&:bcc).flatten
     # author
-    assert_equal ['jsmith@somenet.foo'], mails[0].bcc
+    assert_includes bcc_email_addresses, 'jsmith@somenet.foo'
     # project member
-    assert_equal ['dlopper@somenet.foo'], mails[1].bcc
+    assert_includes bcc_email_addresses, 'dlopper@somenet.foo'
   end
 
   def test_get_edit
     @request.session[:user_id] = 2
-    get :edit, :params => {
-        :board_id => 1,
-        :id => 1
-      }
+    get(:edit, :params => {:board_id => 1, :id => 1})
     assert_response :success
 
     assert_select 'input[name=?][value=?]', 'message[subject]', 'First post'
@@ -165,7 +176,9 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_post_edit
     @request.session[:user_id] = 2
-    post :edit, :params => {
+    post(
+      :edit,
+      :params => {
         :board_id => 1,
         :id => 1,
         :message => {
@@ -173,6 +186,7 @@ class MessagesControllerTest < Redmine::ControllerTest
           :content => 'New body'
         }
       }
+    )
     assert_redirected_to '/boards/1/topics/1'
     assert_equal I18n.t(:notice_successful_update), flash[:notice]
     message = Message.find(1)
@@ -182,7 +196,9 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_post_edit_sticky_and_locked
     @request.session[:user_id] = 2
-    post :edit, :params => {
+    post(
+      :edit,
+      :params => {
         :board_id => 1,
         :id => 1,
         :message => {
@@ -192,6 +208,7 @@ class MessagesControllerTest < Redmine::ControllerTest
           :sticky => '1'
         }
       }
+    )
     assert_redirected_to '/boards/1/topics/1'
     assert_equal I18n.t(:notice_successful_update), flash[:notice]
     message = Message.find(1)
@@ -201,7 +218,9 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_post_edit_should_allow_to_change_board
     @request.session[:user_id] = 2
-    post :edit, :params => {
+    post(
+      :edit,
+      :params => {
         :board_id => 1,
         :id => 1,
         :message => {
@@ -210,6 +229,7 @@ class MessagesControllerTest < Redmine::ControllerTest
           :board_id => 2
         }
       }
+    )
     assert_redirected_to '/boards/2/topics/1'
     message = Message.find(1)
     assert_equal Board.find(2), message.board
@@ -217,7 +237,9 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_reply
     @request.session[:user_id] = 2
-    post :reply, :params => {
+    post(
+      :reply,
+      :params => {
         :board_id => 1,
         :id => 1,
         :reply => {
@@ -225,6 +247,7 @@ class MessagesControllerTest < Redmine::ControllerTest
           :subject => 'Test reply'
         }
       }
+    )
     reply = Message.order('id DESC').first
     assert_redirected_to "/boards/1/topics/1?r=#{reply.id}"
     assert_equal I18n.t(:notice_successful_update), flash[:notice]
@@ -235,10 +258,7 @@ class MessagesControllerTest < Redmine::ControllerTest
     set_tmp_attachments_directory
     @request.session[:user_id] = 2
     assert_difference 'Message.count', -3 do
-      post :destroy, :params => {
-          :board_id => 1,
-          :id => 1
-        }
+      post(:destroy, :params => {:board_id => 1, :id => 1})
     end
     assert_redirected_to '/projects/ecookbook/boards/1'
     assert_equal I18n.t(:notice_successful_delete), flash[:notice]
@@ -248,10 +268,7 @@ class MessagesControllerTest < Redmine::ControllerTest
   def test_destroy_reply
     @request.session[:user_id] = 2
     assert_difference 'Message.count', -1 do
-      post :destroy, :params => {
-          :board_id => 1,
-          :id => 2
-        }
+      post(:destroy, :params => {:board_id => 1, :id => 2})
     end
     assert_redirected_to '/boards/1/topics/1?r=2'
     assert_equal I18n.t(:notice_successful_delete), flash[:notice]
@@ -260,11 +277,14 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_quote_if_message_is_root
     @request.session[:user_id] = 2
-    get :quote, :params => {
+    get(
+      :quote,
+      :params => {
         :board_id => 1,
         :id => 1
       },
       :xhr => true
+    )
     assert_response :success
     assert_equal 'text/javascript', response.media_type
 
@@ -275,11 +295,14 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_quote_if_message_is_not_root
     @request.session[:user_id] = 2
-    get :quote, :params => {
+    get(
+      :quote,
+      :params => {
         :board_id => 1,
         :id => 3
       },
       :xhr => true
+    )
     assert_response :success
     assert_equal 'text/javascript', response.media_type
 
@@ -290,20 +313,25 @@ class MessagesControllerTest < Redmine::ControllerTest
 
   def test_preview_new
     @request.session[:user_id] = 2
-    post :preview, :params => {
+    post(
+      :preview,
+      :params => {
         :board_id => 1,
         :message => {
           :subject => ""
         },
         :text => "Previewed text"
       }
+    )
     assert_response :success
     assert_include 'Previewed text', response.body
   end
 
   def test_preview_edit
     @request.session[:user_id] = 2
-    post :preview, :params => {
+    post(
+      :preview,
+      :params => {
         :id => 4,
         :board_id => 1,
         :message => {
@@ -311,6 +339,7 @@ class MessagesControllerTest < Redmine::ControllerTest
         },
         :text => "Previewed text"
       }
+    )
     assert_response :success
     assert_include 'Previewed text', response.body
   end

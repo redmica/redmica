@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +30,8 @@ class Attachment < ActiveRecord::Base
   validates_length_of :filename, :maximum => 255
   validates_length_of :disk_filename, :maximum => 255
   validates_length_of :description, :maximum => 255
-  validate :validate_max_file_size, :validate_file_extension
+  validate :validate_max_file_size
+  validate :validate_file_extension, :if => :filename_changed?
 
   acts_as_event(
     :title => :filename,
@@ -47,8 +48,15 @@ class Attachment < ActiveRecord::Base
     :scope =>
       proc do
         select("#{Attachment.table_name}.*").
-          joins("LEFT JOIN #{Version.table_name} ON #{Attachment.table_name}.container_type='Version' AND #{Version.table_name}.id = #{Attachment.table_name}.container_id " +
-                "LEFT JOIN #{Project.table_name} ON #{Version.table_name}.project_id = #{Project.table_name}.id OR ( #{Attachment.table_name}.container_type='Project' AND #{Attachment.table_name}.container_id = #{Project.table_name}.id )")
+          joins(
+            "LEFT JOIN #{Version.table_name} " \
+              "ON #{Attachment.table_name}.container_type='Version' " \
+              "AND #{Version.table_name}.id = #{Attachment.table_name}.container_id " \
+              "LEFT JOIN #{Project.table_name} " \
+              "ON #{Version.table_name}.project_id = #{Project.table_name}.id " \
+              "OR ( #{Attachment.table_name}.container_type='Project' " \
+              "AND #{Attachment.table_name}.container_id = #{Project.table_name}.id )"
+          )
       end
   )
   acts_as_activity_provider(
@@ -58,8 +66,13 @@ class Attachment < ActiveRecord::Base
     :scope =>
       proc do
         select("#{Attachment.table_name}.*").
-          joins("LEFT JOIN #{Document.table_name} ON #{Attachment.table_name}.container_type='Document' AND #{Document.table_name}.id = #{Attachment.table_name}.container_id " +
-          "LEFT JOIN #{Project.table_name} ON #{Document.table_name}.project_id = #{Project.table_name}.id")
+          joins(
+            "LEFT JOIN #{Document.table_name} " \
+            "ON #{Attachment.table_name}.container_type='Document' " \
+            "AND #{Document.table_name}.id = #{Attachment.table_name}.container_id " \
+            "LEFT JOIN #{Project.table_name} " \
+            "ON #{Document.table_name}.project_id = #{Project.table_name}.id"
+          )
       end
   )
 
@@ -91,11 +104,9 @@ class Attachment < ActiveRecord::Base
   end
 
   def validate_file_extension
-    if @temp_file
-      extension = File.extname(filename)
-      unless self.class.valid_extension?(extension)
-        errors.add(:base, l(:error_attachment_extension_not_allowed, :extension => extension))
-      end
+    extension = File.extname(filename)
+    unless self.class.valid_extension?(extension)
+      errors.add(:base, l(:error_attachment_extension_not_allowed, :extension => extension))
     end
   end
 
@@ -127,14 +138,10 @@ class Attachment < ActiveRecord::Base
   def files_to_final_location
     if @temp_file
       self.disk_directory = target_directory
-      self.disk_filename = Attachment.disk_filename(filename, disk_directory)
-      logger.info("Saving attachment '#{self.diskfile}' (#{@temp_file.size} bytes)") if logger
-      path = File.dirname(diskfile)
-      unless File.directory?(path)
-        FileUtils.mkdir_p(path)
-      end
       sha = Digest::SHA256.new
-      File.open(diskfile, "wb") do |f|
+      Attachment.create_diskfile(filename, disk_directory) do |f|
+        self.disk_filename = File.basename f.path
+        logger.info("Saving attachment '#{self.diskfile}' (#{@temp_file.size} bytes)") if logger
         if @temp_file.respond_to?(:read)
           buffer = ""
           while (buffer = @temp_file.read(8192))
@@ -240,8 +247,13 @@ class Attachment < ActiveRecord::Base
       begin
         Redmine::Thumbnail.generate(self.diskfile, target, size, is_pdf?)
       rescue => e
-        logger.error "An error occured while generating thumbnail for #{disk_filename} to #{target}\nException was: #{e.message}" if logger
-        return nil
+        if logger
+          logger.error(
+            "An error occured while generating thumbnail for #{disk_filename} " \
+              "to #{target}\nException was: #{e.message}"
+          )
+        end
+        nil
       end
     end
   end
@@ -351,8 +363,10 @@ class Attachment < ActiveRecord::Base
   end
 
   def self.latest_attach(attachments, filename)
-    attachments.sort_by(&:created_on).reverse.detect do |att|
-      filename.casecmp(att.filename) == 0
+    return unless filename.valid_encoding?
+
+    attachments.sort_by{|attachment| [attachment.created_on, attachment.id]}.reverse.detect do |att|
+      filename.casecmp?(att.filename)
     end
   end
 
@@ -451,6 +465,7 @@ class Attachment < ActiveRecord::Base
     if allowed.present? && !extension_in?(extension, allowed)
       return false
     end
+
     true
   end
 
@@ -478,16 +493,15 @@ class Attachment < ActiveRecord::Base
   private
 
   def reuse_existing_file_if_possible
-    original_diskfile = nil
+    original_diskfile = diskfile
+    original_filename = disk_filename
     reused = with_lock do
       if existing = Attachment
                       .where(digest: self.digest, filesize: self.filesize)
-                      .where('id <> ? and disk_filename <> ?',
-                             self.id, self.disk_filename)
+                      .where.not(disk_filename: original_filename)
                       .order(:id)
                       .last
         existing.with_lock do
-          original_diskfile = self.diskfile
           existing_diskfile = existing.diskfile
           if File.readable?(original_diskfile) &&
             File.readable?(existing_diskfile) &&
@@ -498,7 +512,7 @@ class Attachment < ActiveRecord::Base
         end
       end
     end
-    if reused
+    if reused && Attachment.where(disk_filename: original_filename).none?
       File.delete(original_diskfile)
     end
   rescue ActiveRecord::StatementInvalid, ActiveRecord::RecordNotFound
@@ -539,9 +553,8 @@ class Attachment < ActiveRecord::Base
 
   # Singleton class method is public
   class << self
-    # Returns an ASCII or hashed filename that do not
-    # exists yet in the given subdirectory
-    def disk_filename(filename, directory=nil)
+    # Claims a unique ASCII or hashed filename, yields the open file handle
+    def create_diskfile(filename, directory=nil, &block)
       timestamp = DateTime.now.strftime("%y%m%d%H%M%S")
       ascii = ''
       if %r{^[a-zA-Z0-9_\.\-]*$}.match?(filename) && filename.length <= 50
@@ -551,11 +564,21 @@ class Attachment < ActiveRecord::Base
         # keep the extension if any
         ascii << $1 if filename =~ %r{(\.[a-zA-Z0-9]+)$}
       end
-      while File.exist?(File.join(storage_path, directory.to_s,
-                                  "#{timestamp}_#{ascii}"))
+
+      path = File.join storage_path, directory.to_s
+      FileUtils.mkdir_p(path) unless File.directory?(path)
+      begin
+        name = "#{timestamp}_#{ascii}"
+        File.open(
+          File.join(path, name),
+          flags: File::CREAT | File::EXCL | File::BINARY | File::WRONLY,
+          binmode: true,
+          &block
+        )
+      rescue Errno::EEXIST
         timestamp.succ!
+        retry
       end
-      "#{timestamp}_#{ascii}"
     end
   end
 end

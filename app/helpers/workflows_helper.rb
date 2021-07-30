@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ module WorkflowsHelper
     end
     all_tag_options = {:value => 'all', :selected => (selected == 'all')}
     if multiple
-      all_tag_options.merge!(:style => "display:none;")
+      all_tag_options[:style] = "display:none;"
     end
     option_tags << content_tag('option', l(:label_all), all_tag_options)
     option_tags << options_from_collection_for_select(objects, "id", "name", selected)

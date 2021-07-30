@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,10 +35,10 @@ class Enumeration < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => [:type, :project_id]
   validates_length_of :name, :maximum => 30
 
-  scope :shared, lambda { where(:project_id => nil) }
-  scope :sorted, lambda { order(:position) }
-  scope :active, lambda { where(:active => true) }
-  scope :system, lambda { where(:project_id => nil) }
+  scope :shared, lambda {where(:project_id => nil)}
+  scope :sorted, lambda {order(:position)}
+  scope :active, lambda {where(:active => true)}
+  scope :system, lambda {where(:project_id => nil)}
   scope :named, lambda {|arg| where("LOWER(#{table_name}.name) = LOWER(?)", arg.to_s.strip)}
 
   def self.default

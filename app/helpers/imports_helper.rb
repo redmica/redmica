@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ module ImportsHelper
   # Returns the options for the date_format setting
   def date_format_options
     Import::DATE_FORMATS.map do |f|
-      format = f.gsub('%', '').gsub(/[dmY]/) do
+      format = f.delete('%').gsub(/[dmY]/) do
         {'d' => 'DD', 'm' => 'MM', 'Y' => 'YYYY'}[$&]
       end
       [format, f]

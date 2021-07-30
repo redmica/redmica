@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -86,7 +86,6 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
     assert_equal [24, -8], diff[6].offsets
     assert_equal [37, -1], diff[8].offsets
     assert_equal [0, -38], diff[10].offsets
-
   end
 
   def test_partials_with_html_entities
@@ -319,8 +318,10 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
 
   def test_offset_range_japanese_1
     with_settings :repositories_encodings => '' do
-      diff = Redmine::UnifiedDiff.new(
-               read_diff_fixture('issue-13644-1.diff'), :type => 'sbs')
+      diff =
+        Redmine::UnifiedDiff.new(
+          read_diff_fixture('issue-13644-1.diff'), :type => 'sbs'
+        )
       assert_equal 1, diff.size
       assert_equal 3, diff.first.size
       assert_equal '日本<span></span>', diff.first[1].html_line_left
@@ -330,8 +331,10 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
 
   def test_offset_range_japanese_2
     with_settings :repositories_encodings => '' do
-      diff = Redmine::UnifiedDiff.new(
-               read_diff_fixture('issue-13644-2.diff'), :type => 'sbs')
+      diff =
+        Redmine::UnifiedDiff.new(
+          read_diff_fixture('issue-13644-2.diff'), :type => 'sbs'
+        )
       assert_equal 1, diff.size
       assert_equal 3, diff.first.size
       assert_equal '<span></span>日本', diff.first[1].html_line_left
@@ -342,8 +345,10 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
   def test_offset_range_japanese_3
     # UTF-8 The 1st byte differs.
     with_settings :repositories_encodings => '' do
-      diff = Redmine::UnifiedDiff.new(
-               read_diff_fixture('issue-13644-3.diff'), :type => 'sbs')
+      diff =
+        Redmine::UnifiedDiff.new(
+          read_diff_fixture('issue-13644-3.diff'), :type => 'sbs'
+        )
       assert_equal 1, diff.size
       assert_equal 3, diff.first.size
       assert_equal '日本<span>記</span>', diff.first[1].html_line_left
@@ -354,8 +359,10 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
   def test_offset_range_japanese_4
     # UTF-8 The 2nd byte differs.
     with_settings :repositories_encodings => '' do
-      diff = Redmine::UnifiedDiff.new(
-               read_diff_fixture('issue-13644-4.diff'), :type => 'sbs')
+      diff =
+        Redmine::UnifiedDiff.new(
+          read_diff_fixture('issue-13644-4.diff'), :type => 'sbs'
+        )
       assert_equal 1, diff.size
       assert_equal 3, diff.first.size
       assert_equal '日本<span>記</span>', diff.first[1].html_line_left
@@ -366,8 +373,10 @@ class Redmine::UnifiedDiffTest < ActiveSupport::TestCase
   def test_offset_range_japanese_5
     # UTF-8 The 2nd byte differs.
     with_settings :repositories_encodings => '' do
-      diff = Redmine::UnifiedDiff.new(
-               read_diff_fixture('issue-13644-5.diff'), :type => 'sbs')
+      diff =
+        Redmine::UnifiedDiff.new(
+          read_diff_fixture('issue-13644-5.diff'), :type => 'sbs'
+        )
       assert_equal 1, diff.size
       assert_equal 3, diff.first.size
       assert_equal '日本<span>記</span>ok', diff.first[1].html_line_left

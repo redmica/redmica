@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ require File.expand_path('../../../../../../test_helper', __FILE__)
 
 class BazaarAdapterTest < ActiveSupport::TestCase
   REPOSITORY_PATH = Rails.root.join('tmp/test/bazaar_repository').to_s
-  REPOSITORY_PATH.gsub!(/\/+/, '/')
+  REPOSITORY_PATH.squeeze!('/')
 
   if File.directory?(REPOSITORY_PATH)
     def setup

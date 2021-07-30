@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ class TimeEntryImport < Import
     users = []
     if project
       users = project.members.active.preload(:user)
-      users = users.map(&:user).select{ |u| u.allowed_to?(:log_time, project) }
+      users = users.map(&:user).select{|u| u.allowed_to?(:log_time, project)}
     end
     users << User.current if User.current.logged? && !users.include?(User.current)
     users

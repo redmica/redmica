@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,6 +42,24 @@ class AutoCompletesController < ApplicationController
     render :json => format_issues_json(issues)
   end
 
+  def wiki_pages
+    q = params[:q].to_s.strip
+    wiki = Wiki.find_by(project: @project)
+    if wiki.nil? || !User.current.allowed_to?(:view_wiki_pages, @project)
+      render json: []
+      return
+    end
+
+    scope = wiki.pages.reorder(id: :desc)
+    wiki_pages =
+      if q.present?
+        scope.where("LOWER(#{WikiPage.table_name}.title) LIKE LOWER(?)", "%#{q}%").limit(10).to_a
+      else
+        scope.limit(10).to_a
+      end
+    render json: format_wiki_pages_json(wiki_pages)
+  end
+
   private
 
   def find_project
@@ -53,12 +71,22 @@ class AutoCompletesController < ApplicationController
   end
 
   def format_issues_json(issues)
-    issues.map {|issue|
+    issues.map do |issue|
       {
         'id' => issue.id,
         'label' => "#{issue.tracker} ##{issue.id}: #{issue.subject.to_s.truncate(255)}",
         'value' => issue.id
       }
-    }
+    end
+  end
+
+  def format_wiki_pages_json(wiki_pages)
+    wiki_pages.map do |wiki_page|
+      {
+        'id' => wiki_page.id,
+        'label' => wiki_page.title.to_s.truncate(255),
+        'value' => wiki_page.title
+      }
+    end
   end
 end

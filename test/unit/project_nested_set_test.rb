@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ class ProjectNestedSetTest < ActiveSupport::TestCase
   end
 
   def test_rebuild_tree_should_build_valid_tree_even_with_valid_lft_rgt_values
-    Project.where({:id => @a.id }).update_all("name = 'YY'")
+    Project.where({:id => @a.id}).update_all("name = 'YY'")
     # lft and rgt values are still valid (Project.rebuild! would not update anything)
     # but projects are not ordered properly (YY is in the first place)
 
@@ -169,12 +169,12 @@ class ProjectNestedSetTest < ActiveSupport::TestCase
         assert project.rgt < project.parent.rgt, "rgt=#{project.rgt} was not < parent.rgt=#{project.parent.rgt} for project #{project.name}"
       end
       # no overlapping lft/rgt values
-      overlapping = projects.detect {|other|
+      overlapping = projects.detect do |other|
         other != project && (
           (other.lft > project.lft && other.lft < project.rgt && other.rgt > project.rgt) ||
           (other.rgt > project.lft && other.rgt < project.rgt && other.lft < project.lft)
         )
-      }
+      end
       assert_nil overlapping, (overlapping && "Project #{overlapping.name} (#{overlapping.lft}/#{overlapping.rgt}) overlapped #{project.name} (#{project.lft}/#{project.rgt})")
     end
 

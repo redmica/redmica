@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,23 +39,23 @@ class ProjectQuery < Query
 
   def initialize(attributes=nil, *args)
     super attributes
-    self.filters ||= { 'status' => {:operator => "=", :values => ['1']} }
+    self.filters ||= {'status' => {:operator => "=", :values => ['1']}}
   end
 
   def initialize_available_filters
     add_available_filter(
       "status",
-      :type => :list, :values => lambda { project_statuses_values }
+      :type => :list, :values => lambda {project_statuses_values}
     )
     add_available_filter(
       "id",
-      :type => :list, :values => lambda { project_values }, :label => :field_project
+      :type => :list, :values => lambda {project_values}, :label => :field_project
     )
     add_available_filter "name", :type => :text
     add_available_filter "description", :type => :text
     add_available_filter(
       "parent_id",
-      :type => :list_subprojects, :values => lambda { project_values }, :label => :field_parent
+      :type => :list_subprojects, :values => lambda {project_values}, :label => :field_parent
     )
     add_available_filter(
       "is_public",
@@ -68,9 +68,10 @@ class ProjectQuery < Query
 
   def available_columns
     return @available_columns if @available_columns
+
     @available_columns = self.class.available_columns.dup
     @available_columns += project_custom_fields.visible.
-                            map {|cf| QueryCustomFieldColumn.new(cf) }
+                            map {|cf| QueryCustomFieldColumn.new(cf)}
     @available_columns
   end
 

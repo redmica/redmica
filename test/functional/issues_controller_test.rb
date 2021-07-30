@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -89,44 +89,89 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_index_with_project
-    Setting.display_subprojects_issues = 0
-    get(:index, :params => {:project_id => 1})
-    assert_response :success
+    with_settings :display_subprojects_issues => '0' do
+      get(:index, :params => {:project_id => 1})
+      assert_response :success
 
-    # query form
-    assert_select 'form#query_form' do
-      assert_select 'div#query_form_with_buttons.hide-when-print' do
-        assert_select 'div#query_form_content' do
-          assert_select 'fieldset#filters.collapsible'
-          assert_select 'fieldset#options'
+      # query form
+      assert_select 'form#query_form' do
+        assert_select 'div#query_form_with_buttons.hide-when-print' do
+          assert_select 'div#query_form_content' do
+            assert_select 'fieldset#filters.collapsible'
+            assert_select 'fieldset#options'
+          end
+          assert_select 'p.buttons'
         end
-        assert_select 'p.buttons'
       end
+      assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
+      assert_select 'a[href="/issues/5"]', 0
     end
-
-    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
-    assert_select 'a[href="/issues/5"]', 0
   end
 
   def test_index_with_project_and_subprojects
-    Setting.display_subprojects_issues = 1
-    get(:index, :params => {:project_id => 1})
-    assert_response :success
+    with_settings :display_subprojects_issues => '1' do
+      get(:index, :params => {:project_id => 1})
+      assert_response :success
 
-    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
-    assert_select 'a[href="/issues/5"]', :text => /Subproject issue/
-    assert_select 'a[href="/issues/6"]', 0
+      assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
+      assert_select 'a[href="/issues/5"]', :text => /Subproject issue/
+      assert_select 'a[href="/issues/6"]', 0
+    end
+  end
+
+  def test_index_should_list_issues_of_closed_subprojects
+    @request.session[:user_id] = 1
+    project = Project.find(1)
+
+    with_settings :display_subprojects_issues => '1' do
+      # One of subprojects is closed
+      Project.find_by(:identifier => 'subproject1').close
+      get(:index, :params => {:project_id => project.id})
+      assert_response :success
+      assert_equal 10, issues_in_list.count
+
+      # All subprojects are closed
+      project.descendants.each(&:close)
+      get(:index, :params => {:project_id => project.id})
+      assert_response :success
+      assert_equal 10, issues_in_list.count
+    end
+  end
+
+  def test_index_with_subproject_filter_should_not_exclude_closed_subprojects_issues
+    subproject1 = Project.find(3)
+    subproject2 = Project.find(4)
+    subproject1.close
+
+    with_settings :display_subprojects_issues => '1' do
+      get(
+        :index,
+        :params => {
+          :project_id => 1,
+          :set_filter => 1,
+          :f => ['subproject_id'],
+          :op => {'subproject_id' => '!'},
+          :v => {'subproject_id' => [subproject2.id.to_s]},
+          :c => ['project']
+        }
+      )
+    end
+    assert_response :success
+    column_values = columns_values_in_list('project')
+    assert_includes column_values, subproject1.name
+    assert_equal 9, column_values.size
   end
 
   def test_index_with_project_and_subprojects_should_show_private_subprojects_with_permission
     @request.session[:user_id] = 2
-    Setting.display_subprojects_issues = 1
-    get(:index, :params => {:project_id => 1})
-    assert_response :success
+    with_settings :display_subprojects_issues => '1' do
+      get(:index, :params => {:project_id => 1})
+      assert_response :success
 
-    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
-    assert_select 'a[href="/issues/5"]', :text => /Subproject issue/
-    assert_select 'a[href="/issues/6"]', :text => /Issue of a private subproject/
+      assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
+      assert_select 'a[href="/issues/5"]', :text => /Subproject issue/
+      assert_select 'a[href="/issues/6"]', :text => /Issue of a private subproject/
+    end
   end
 
   def test_index_with_project_and_default_filter
@@ -1138,22 +1183,20 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_index_atom
-    with_settings :protocol => 'https', :host_name => 'example.net' do
-      get(
-        :index,
-        :params => {
-          :project_id => 'ecookbook',
-          :format => 'atom'
-        }
-      )
-    end
+    get(
+      :index,
+      :params => {
+        :project_id => 'ecookbook',
+        :format => 'atom'
+      }
+    )
     assert_response :success
     assert_equal 'application/atom+xml', response.media_type
 
     assert_select 'feed' do
-      assert_select 'link[rel=self][href=?]', 'https://example.net/projects/ecookbook/issues.atom'
-      assert_select 'link[rel=alternate][href=?]', 'https://example.net/projects/ecookbook/issues'
-      assert_select 'entry link[href=?]', 'https://example.net/issues/1'
+      assert_select 'link[rel=self][href=?]', 'http://test.host/projects/ecookbook/issues.atom'
+      assert_select 'link[rel=alternate][href=?]', 'http://test.host/projects/ecookbook/issues'
+      assert_select 'entry link[href=?]', 'http://test.host/issues/1'
     end
   end
 
@@ -2029,6 +2072,14 @@ class IssuesControllerTest < Redmine::ControllerTest
     get(:show, :params => {:id => 1})
     assert_response :success
     assert_select 'div.issue div.description', :text => /Unable to print recipes/
+    assert_select '#content>.contextual:first-child' do
+      assert_select 'a', {:count => 1, :text => 'Edit'}
+      assert_select 'a', {:count => 0, :text => 'Log time'}
+      assert_select 'a', {:count => 0, :text => 'Watch'}
+      assert_select 'a', {:count => 0, :text => 'Copy'}
+      assert_select 'div.drdn-items a', {:count => 1, :text => 'Copy link'}
+      assert_select 'div.drdn-items a', {:count => 0, :text => 'Delete'}
+    end
     # anonymous role is allowed to add a note
     assert_select 'form#issue-form' do
       assert_select 'fieldset' do
@@ -2043,6 +2094,14 @@ class IssuesControllerTest < Redmine::ControllerTest
     @request.session[:user_id] = 2
     get(:show, :params => {:id => 1})
     assert_select 'a', :text => /Quote/
+    assert_select '#content>.contextual:first-child' do
+      assert_select 'a', {:count => 1, :text => 'Edit'}
+      assert_select 'a', {:count => 1, :text => 'Log time'}
+      assert_select 'a', {:count => 1, :text => 'Watch'}
+      assert_select 'a', {:count => 1, :text => 'Copy'}
+      assert_select 'div.drdn-items a', {:count => 1, :text => 'Copy link'}
+      assert_select 'div.drdn-items a', {:count => 1, :text => 'Delete'}
+    end
     assert_select 'form#issue-form' do
       assert_select 'fieldset' do
         assert_select 'legend', :text => 'Change properties'
@@ -2295,6 +2354,54 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_select 'div#issue_tree' do
       assert_select 'td.subject', :text => /Child Issue/
     end
+  end
+
+  def test_show_should_show_subtasks_stats
+    @request.session[:user_id] = 1
+    child1 = Issue.generate!(parent_issue_id: 1, subject: 'Open child issue')
+    Issue.generate!(parent_issue_id: 1, subject: 'Closed child issue', status_id: 5)
+    Issue.generate!(parent_issue_id: child1.id, subject: 'Open child of child')
+    # Issue not visible for anonymous
+    Issue.generate!(parent_issue_id: 1, subject: 'Private child', project_id: 5)
+
+    get(:show, params: {:id => 1})
+    assert_response :success
+
+    assert_select 'div#issue_tree span.issues-stat' do
+      assert_select 'span.badge', text: '4'
+      assert_select 'span.open a', text: '3 open'
+      assert_equal CGI.unescape(css_select('span.open a').first.attr('href')),
+                   "/issues?parent_id=~1&set_filter=true&status_id=o"
+
+      assert_select 'span.closed a', text: '1 closed'
+      assert_equal CGI.unescape(css_select('span.closed a').first.attr('href')),
+                   "/issues?parent_id=~1&set_filter=true&status_id=c"
+    end
+  end
+
+  def test_show_subtasks_stats_should_not_link_if_issue_has_zero_open_or_closed_subtasks
+    child1 = Issue.generate!(parent_issue_id: 1, subject: 'Open child issue')
+
+    get(:show, params: {:id => 1})
+    assert_response :success
+
+    assert_select 'div#issue_tree span.issues-stat' do
+      assert_select 'span.open a', text: '1 open'
+      assert_equal CGI.unescape(css_select('span.open a').first.attr('href')),
+                   "/issues?parent_id=~1&set_filter=true&status_id=o"
+      assert_select 'span.closed', text: '0 closed'
+      assert_select 'span.closed a', 0
+    end
+  end
+
+  def test_show_should_not_show_subtasks_stats_if_subtasks_are_not_visible
+    # Issue not visible for anonymous
+    Issue.generate!(parent_issue_id: 1, subject: 'Private child', project_id: 5)
+
+    get(:show, params: {:id => 1})
+    assert_response :success
+
+    assert_select 'div#issue_tree span.issues-stat', 0
   end
 
   def test_show_should_list_parents
@@ -2562,6 +2669,21 @@ class IssuesControllerTest < Redmine::ControllerTest
         assert_select 'img.gravatar[title=?]', 'A Team'
         assert_select 'a[href="/users/10"]', false
         assert_select 'a[class*=delete]'
+      end
+    end
+  end
+
+  def test_show_should_mark_invalid_watchers
+    @request.session[:user_id] = 2
+    issue = Issue.find(4)
+    issue.add_watcher User.find(4)
+
+    get :show, :params => {:id => issue.id}
+
+    assert_response :success
+    assert_select 'div#watchers ul' do
+      assert_select 'li.user-4' do
+        assert_select 'span.icon-warning[title=?]', l(:notice_invalid_watcher), text: l(:notice_invalid_watcher)
       end
     end
   end
@@ -3018,6 +3140,14 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_select 'span.badge.badge-status-closed', text: 'closed'
   end
 
+  def test_show_should_display_private_badge_for_private_issue
+    @request.session[:user_id] = 1
+    get :show, params: {id: 14}
+
+    assert_response :success
+    assert_select 'span.badge.badge-private', text: 'Private'
+  end
+
   def test_get_new
     @request.session[:user_id] = 2
     get(
@@ -3050,9 +3180,21 @@ class IssuesControllerTest < Redmine::ControllerTest
     end
 
     # Be sure we don't display inactive IssuePriorities
-    assert ! IssuePriority.find(15).active?
+    assert_not IssuePriority.find(15).active?
     assert_select 'select[name=?]', 'issue[priority_id]' do
       assert_select 'option[value="15"]', 0
+    end
+  end
+
+  def test_get_new_global_should_show_all_projects
+    @request.session[:user_id] = 1
+    get :new
+
+    assert_response :success
+
+    assert_select 'select[name=?]', 'issue[project_id]' do
+      assert_select 'option[value=?]', '1'
+      assert_select 'option[value=?]', '2'
     end
   end
 
@@ -3061,16 +3203,16 @@ class IssuesControllerTest < Redmine::ControllerTest
     get(
       :new,
       :params => {
-        :project_id => 1,
+        :project_id => 3,
         :tracker_id => 1
       }
     )
     assert_response :success
     assert_select 'select[name="issue[project_id]"]' do
       assert_select 'option', 3
-      assert_select 'option[selected=selected]', :text => 'eCookbook'
+      assert_select 'option[value=?]', '1', :text => 'eCookbook'
       assert_select 'option[value=?]', '5', :text => '  » Private child of eCookbook'
-      assert_select 'option[value=?]', '3', :text => '  » eCookbook Subproject 1'
+      assert_select 'option[selected=selected][value=?]', '3', :text => '  » eCookbook Subproject 1'
 
       # user_id 2 is not allowed to add issues on project_id 4 (it's not a member)
       assert_select 'option[value=?]', '4', 0
@@ -3088,6 +3230,30 @@ class IssuesControllerTest < Redmine::ControllerTest
     )
     assert_response :success
     assert_select 'select[name="issue[project_id]"]', 0
+  end
+
+  def test_get_new_should_not_show_invalid_projects_when_issue_is_a_subtask
+    @request.session[:user_id] = 2
+    issue = Issue.find(1)
+    issue.parent_id = 3
+    issue.save
+
+    with_settings :cross_project_subtasks => 'tree' do
+      get(
+        :new,
+        :params => {
+          :project_id => 1,
+          :parent_issue_id => 1
+        }
+      )
+    end
+    assert_response :success
+    assert_select 'select[name="issue[project_id]"]' do
+      assert_select 'option', 3
+
+      # Onlinestore project should not be included
+      assert_select 'option[value=?]', '2', 0
+    end
   end
 
   def test_get_new_with_minimal_permissions
@@ -3940,8 +4106,10 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_post_create_with_multi_user_custom_field
-    field = IssueCustomField.create!(:name => 'Multi user', :field_format => 'user', :multiple => true,
-      :tracker_ids => [1], :is_for_all => true)
+    field =
+      IssueCustomField.create!(:name => 'Multi user', :field_format => 'user',
+                               :multiple => true,
+                               :tracker_ids => [1], :is_for_all => true)
     @request.session[:user_id] = 2
     assert_difference 'Issue.count' do
       post(
@@ -3984,15 +4152,21 @@ class IssuesControllerTest < Redmine::ControllerTest
       )
     end
     assert_response :success
+
+    assert_select 'label[for=?][class=?]', "issue_custom_field_values_#{field.id}", 'error'
     assert_select_error /Database cannot be blank/
   end
 
   def test_create_should_validate_required_fields
-    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'string', :is_for_all => true, :tracker_ids => [1, 2])
-    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'string', :is_for_all => true, :tracker_ids => [1, 2])
+    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'string',
+                                   :is_for_all => true, :tracker_ids => [1, 2])
+    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'string',
+                                   :is_for_all => true, :tracker_ids => [1, 2])
     WorkflowPermission.delete_all
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => 'due_date', :rule => 'required')
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => cf2.id.to_s, :rule => 'required')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => 'due_date', :rule => 'required')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => cf2.id.to_s, :rule => 'required')
     @request.session[:user_id] = 2
     assert_no_difference 'Issue.count' do
       post(
@@ -4013,16 +4187,26 @@ class IssuesControllerTest < Redmine::ControllerTest
       )
       assert_response :success
     end
+
+    assert_select 'label[for=?][class=?]', 'issue_due_date', 'error'
+    assert_select 'label[for=?][class=?]', "issue_custom_field_values_#{cf2.id}", 'error'
+
     assert_select_error /Due date cannot be blank/i
     assert_select_error /Bar cannot be blank/i
   end
 
   def test_create_should_validate_required_list_fields
-    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'list', :is_for_all => true, :tracker_ids => [1, 2], :multiple => false, :possible_values => ['a', 'b'])
-    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'list', :is_for_all => true, :tracker_ids => [1, 2], :multiple => true, :possible_values => ['a', 'b'])
+    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'list',
+                                   :is_for_all => true, :tracker_ids => [1, 2],
+                                   :multiple => false, :possible_values => ['a', 'b'])
+    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'list',
+                                   :is_for_all => true, :tracker_ids => [1, 2],
+                                   :multiple => true, :possible_values => ['a', 'b'])
     WorkflowPermission.delete_all
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => cf1.id.to_s, :rule => 'required')
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => cf2.id.to_s, :rule => 'required')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => cf1.id.to_s, :rule => 'required')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => cf2.id.to_s, :rule => 'required')
     @request.session[:user_id] = 2
     assert_no_difference 'Issue.count' do
       post(
@@ -4048,11 +4232,15 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_create_should_ignore_readonly_fields
-    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'string', :is_for_all => true, :tracker_ids => [1, 2])
-    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'string', :is_for_all => true, :tracker_ids => [1, 2])
+    cf1 = IssueCustomField.create!(:name => 'Foo', :field_format => 'string',
+                                   :is_for_all => true, :tracker_ids => [1, 2])
+    cf2 = IssueCustomField.create!(:name => 'Bar', :field_format => 'string',
+                                   :is_for_all => true, :tracker_ids => [1, 2])
     WorkflowPermission.delete_all
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => 'due_date', :rule => 'readonly')
-    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1, :field_name => cf2.id.to_s, :rule => 'readonly')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => 'due_date', :rule => 'readonly')
+    WorkflowPermission.create!(:old_status_id => 1, :tracker_id => 2, :role_id => 1,
+                               :field_name => cf2.id.to_s, :rule => 'readonly')
     @request.session[:user_id] = 2
     assert_difference 'Issue.count' do
       post(
@@ -4537,7 +4725,9 @@ class IssuesControllerTest < Redmine::ControllerTest
 
   def test_post_create_with_failure_should_keep_saved_attachments
     set_tmp_attachments_directory
-    attachment = Attachment.create!(:file => uploaded_test_file("testfile.txt", "text/plain"), :author_id => 2)
+    attachment =
+      Attachment.create!(:file => uploaded_test_file("testfile.txt", "text/plain"),
+                         :author_id => 2)
     @request.session[:user_id] = 2
 
     assert_no_difference 'Issue.count' do
@@ -4567,7 +4757,9 @@ class IssuesControllerTest < Redmine::ControllerTest
 
   def test_post_create_should_attach_saved_attachments
     set_tmp_attachments_directory
-    attachment = Attachment.create!(:file => uploaded_test_file("testfile.txt", "text/plain"), :author_id => 2)
+    attachment =
+      Attachment.create!(:file => uploaded_test_file("testfile.txt", "text/plain"),
+                         :author_id => 2)
     @request.session[:user_id] = 2
 
     assert_difference 'Issue.count' do
@@ -4868,8 +5060,10 @@ class IssuesControllerTest < Redmine::ControllerTest
       }
     )
     assert_select 'input[type=checkbox][name=?][checked=checked]', 'issue[watcher_user_ids][]', 2
-    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]', 'issue[watcher_user_ids][]', user.id.to_s
-    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]', 'issue[watcher_user_ids][]', '10'
+    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]',
+                  'issue[watcher_user_ids][]', user.id.to_s
+    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]',
+                  'issue[watcher_user_ids][]', '10'
     assert_select 'input[type=hidden][name=?][value=?]', 'issue[watcher_user_ids][]', '', 1
   end
 
@@ -4893,8 +5087,10 @@ class IssuesControllerTest < Redmine::ControllerTest
       }
     )
     assert_select 'input[type=checkbox][name=?][checked=checked]', 'issue[watcher_user_ids][]', 1
-    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]', 'issue[watcher_user_ids][]', user.id.to_s
-    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]', 'issue[watcher_user_ids][]', user2.id.to_s, 0
+    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]',
+                  'issue[watcher_user_ids][]', user.id.to_s
+    assert_select 'input[type=checkbox][name=?][checked=checked][value=?]',
+                  'issue[watcher_user_ids][]', user2.id.to_s, 0
     assert_select 'input[type=hidden][name=?][value=?]', 'issue[watcher_user_ids][]', '', 1
   end
 
@@ -5331,7 +5527,7 @@ class IssuesControllerTest < Redmine::ControllerTest
 
     assert_select 'select[name=?]', 'issue[project_id]'
     # Be sure we don't display inactive IssuePriorities
-    assert ! IssuePriority.find(15).active?
+    assert_not IssuePriority.find(15).active?
     assert_select 'select[name=?]', 'issue[priority_id]' do
       assert_select 'option[value="15"]', 0
     end
@@ -5339,7 +5535,8 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_edit_should_hide_project_if_user_is_not_allowed_to_change_project
-    WorkflowPermission.create!(:role_id => 1, :tracker_id => 1, :old_status_id => 1, :field_name => 'project_id', :rule => 'readonly')
+    WorkflowPermission.create!(:role_id => 1, :tracker_id => 1, :old_status_id => 1,
+                               :field_name => 'project_id', :rule => 'readonly')
 
     @request.session[:user_id] = 2
     get(:edit, :params => {:id => 1})
@@ -5348,7 +5545,8 @@ class IssuesControllerTest < Redmine::ControllerTest
   end
 
   def test_edit_should_not_hide_project_when_user_changes_the_project_even_if_project_is_readonly_on_target_project
-    WorkflowPermission.create!(:role_id => 1, :tracker_id => 1, :old_status_id => 1, :field_name => 'project_id', :rule => 'readonly')
+    WorkflowPermission.create!(:role_id => 1, :tracker_id => 1, :old_status_id => 1,
+                               :field_name => 'project_id', :rule => 'readonly')
     issue = Issue.generate!(:project_id => 2)
 
     @request.session[:user_id] = 2
@@ -5460,6 +5658,41 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_response :success
     reason = l(:notice_issue_not_closable_by_blocking_issue)
     assert_select 'span.icon-warning[title=?]', reason, :text => reason
+  end
+
+  def test_get_edit_should_display_visible_spent_time_custom_field
+    @request.session[:user_id] = 2
+
+    get(
+      :edit,
+      :params => {
+        :id => 13,
+      }
+    )
+
+    assert_response :success
+
+    assert_select '#issue-form select.cf_10', 1
+  end
+
+  def test_get_edit_should_not_display_spent_time_custom_field_not_visible
+    cf = TimeEntryCustomField.find(10)
+    cf.visible = false
+    cf.role_ids = [1]
+    cf.save!
+
+    @request.session[:user_id] = 2
+
+    get(
+      :edit,
+      :params => {
+        :id => 13,
+      }
+    )
+
+    assert_response :success
+
+    assert_select '#issue-form select.cf_10', 0
   end
 
   def test_update_form_for_existing_issue
@@ -6268,6 +6501,29 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_select 'input[name=?][value=?]', 'time_entry[comments]', 'this is my comment'
   end
 
+  def test_put_with_spent_time_when_assigned_to_of_private_issue_is_update_at_the_same_time
+    @request.session[:user_id] = 3
+    Role.find(2).update! :issues_visibility => 'own'
+    private_issue = Issue.find(3)
+
+    assert_difference('TimeEntry.count', 1) do
+      put(
+        :update,
+        params: {
+          id: private_issue.id,
+          issue: { assigned_to_id: nil },
+          time_entry: {
+            comments: "add spent time", activity_id: TimeEntryActivity.first.id, hours: 1
+          }
+        }
+      )
+    end
+    assert_select '#errorExplanation', {text: /Log time is invalid/, count: 0}
+    assert_select '#errorExplanation', {text: /Issue is invalid/, count: 0}
+    assert_redirected_to action: 'show', id: private_issue.id
+    assert_not private_issue.reload.visible?
+  end
+
   def test_put_update_should_allow_fixed_version_to_be_set_to_a_subproject
     issue = Issue.find(2)
     @request.session[:user_id] = 2
@@ -6423,7 +6679,7 @@ class IssuesControllerTest < Redmine::ControllerTest
       assert_select 'select[name=?]', 'issue[custom_field_values][1]'
 
       # Be sure we don't display inactive IssuePriorities
-      assert ! IssuePriority.find(15).active?
+      assert_not IssuePriority.find(15).active?
       assert_select 'select[name=?]', 'issue[priority_id]' do
         assert_select 'option[value="15"]', 0
       end
@@ -6785,7 +7041,7 @@ class IssuesControllerTest < Redmine::ControllerTest
     user = User.find(3)
     action = {:controller => "issues", :action => "bulk_update"}
     assert user.allowed_to?(action, Issue.find(1).project)
-    assert ! user.allowed_to?(action, Issue.find(6).project)
+    assert_not user.allowed_to?(action, Issue.find(6).project)
     post(
       :bulk_update,
       :params => {

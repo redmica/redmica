@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,17 +20,15 @@
 require 'redmine/sort_criteria'
 
 class QueryColumn
-  attr_accessor :name, :groupable, :totalable, :default_order
-  attr_writer   :sortable
+  attr_accessor :name, :totalable, :default_order
+  attr_writer   :sortable, :groupable
+
   include Redmine::I18n
 
   def initialize(name, options={})
     self.name = name
     self.sortable = options[:sortable]
     self.groupable = options[:groupable] || false
-    if groupable == true
-      self.groupable = name.to_s
-    end
     self.totalable = options[:totalable] || false
     self.default_order = options[:default_order]
     @inline = options.key?(:inline) ? options[:inline] : true
@@ -49,9 +47,13 @@ class QueryColumn
     end
   end
 
+  def groupable?
+    @groupable
+  end
+
   # Returns true if the column is sortable, otherwise false
   def sortable?
-    !@sortable.nil?
+    @sortable.present?
   end
 
   def sortable
@@ -82,13 +84,19 @@ class QueryColumn
   def css_classes
     name
   end
+
+  def group_by_statement
+    name.to_s
+  end
 end
 
 class TimestampQueryColumn < QueryColumn
-  def groupable
-    if @groupable
-      Redmine::Database.timestamp_to_date(sortable, User.current.time_zone)
-    end
+  def groupable?
+    group_by_statement.present?
+  end
+
+  def group_by_statement
+    Redmine::Database.timestamp_to_date(sortable, User.current.time_zone)
   end
 
   def group_value(object)
@@ -121,10 +129,17 @@ class QueryCustomFieldColumn < QueryColumn
   def initialize(custom_field, options={})
     self.name = "cf_#{custom_field.id}".to_sym
     self.sortable = custom_field.order_statement || false
-    self.groupable = custom_field.group_statement || false
     self.totalable = options.key?(:totalable) ? !!options[:totalable] : custom_field.totalable?
     @inline = custom_field.full_width_layout? ? false : true
     @cf = custom_field
+  end
+
+  def groupable?
+    group_by_statement.present?
+  end
+
+  def group_by_statement
+    @cf.group_statement
   end
 
   def caption
@@ -164,7 +179,7 @@ class QueryAssociationCustomFieldColumn < QueryCustomFieldColumn
   def initialize(association, custom_field, options={})
     super(custom_field, options)
     self.name = "#{association}.cf_#{custom_field.id}".to_sym
-    # TODO: support sorting/grouping by association custom field
+    # TODO: support sorting by association custom field
     self.sortable = false
     self.groupable = false
     @association = association
@@ -178,6 +193,11 @@ class QueryAssociationCustomFieldColumn < QueryCustomFieldColumn
 
   def css_classes
     @css_classes ||= "#{@association}_cf_#{@cf.id} #{@cf.field_format}"
+  end
+
+  # TODO: support grouping by association custom field
+  def groupable?
+    false
   end
 end
 
@@ -217,6 +237,9 @@ end
 
 class Query < ActiveRecord::Base
   class StatementInvalid < ::ActiveRecord::StatementInvalid
+  end
+
+  class QueryError < StandardError
   end
 
   include Redmine::SubclassFactory
@@ -313,9 +336,9 @@ class Query < ActiveRecord::Base
   class_attribute :view_permission
 
   # Scope of queries that are global or on the given project
-  scope :global_or_on_project, lambda {|project|
+  scope :global_or_on_project, (lambda do |project|
     where(:project_id => (project.nil? ? nil : [nil, project.id]))
-  }
+  end)
 
   scope :sorted, lambda {order(:name, :id)}
 
@@ -511,7 +534,7 @@ class Query < ActiveRecord::Base
       if has_filter?(field) || !filter.remote
         options[:values] = filter.values
         if options[:values] && values_for(field)
-          missing = Array(values_for(field)).select(&:present?) - options[:values].map(&:last)
+          missing = Array(values_for(field)).select(&:present?) - options[:values].map{|v| v[1]}
           if missing.any? && respond_to?(method = "find_#{field}_filter_values")
             options[:values] += send(method, missing)
           end
@@ -615,7 +638,7 @@ class Query < ActiveRecord::Base
 
   def watcher_values
     watcher_values = [["<< #{l(:label_me)} >>", "me"]]
-    if User.current.allowed_to?(:view_issue_watchers, self.project)
+    if User.current.allowed_to?(:view_issue_watchers, self.project, global: true)
       watcher_values +=
         principals.sort_by(&:status).
           collect{|s| [s.name, s.id.to_s, l("status_#{User::LABEL_BY_STATUS[s.status]}")]}
@@ -741,7 +764,7 @@ class Query < ActiveRecord::Base
 
   # Returns an array of columns that can be used to group the results
   def groupable_columns
-    available_columns.select {|c| c.groupable}
+    available_columns.select(&:groupable?)
   end
 
   # Returns a Hash of columns and the key for sorting
@@ -889,19 +912,19 @@ class Query < ActiveRecord::Base
   end
 
   def group_by_column
-    groupable_columns.detect {|c| c.groupable && c.name.to_s == group_by}
+    groupable_columns.detect {|c| c.groupable? && c.name.to_s == group_by}
   end
 
   def group_by_statement
-    group_by_column.try(:groupable)
+    group_by_column.try(:group_by_statement)
   end
 
   def project_statement
     project_clauses = []
-    active_subprojects_ids = []
+    subprojects_ids = []
 
-    active_subprojects_ids = project.descendants.active.map(&:id) if project
-    if active_subprojects_ids.any?
+    subprojects_ids = project.descendants.where.not(status: Project::STATUS_ARCHIVED).ids if project
+    if subprojects_ids.any?
       if has_filter?("subproject_id")
         case operator_for("subproject_id")
         when '='
@@ -910,7 +933,7 @@ class Query < ActiveRecord::Base
           project_clauses << "#{Project.table_name}.id IN (%s)" % ids.join(',')
         when '!'
           # exclude the selected subprojects
-          ids = [project.id] + active_subprojects_ids - values_for("subproject_id").map(&:to_i)
+          ids = [project.id] + subprojects_ids - values_for("subproject_id").map(&:to_i)
           project_clauses << "#{Project.table_name}.id IN (%s)" % ids.join(',')
         when '!*'
           # main project only
@@ -1123,15 +1146,17 @@ class Query < ActiveRecord::Base
       assoc = $1
       customized_key = "#{assoc}_id"
       customized_class = queried_class.reflect_on_association(assoc.to_sym).klass.base_class rescue nil
-      raise "Unknown #{queried_class.name} association #{assoc}" unless customized_class
+      raise QueryError, "Unknown #{queried_class.name} association #{assoc}" unless customized_class
     end
     where = sql_for_field(field, operator, value, db_table, db_field, true)
     if /[<>]/.match?(operator)
       where = "(#{where}) AND #{db_table}.#{db_field} <> ''"
     end
-    "#{queried_table_name}.#{customized_key} #{not_in} IN (" +
-      "SELECT #{customized_class.table_name}.id FROM #{customized_class.table_name}" +
-      " LEFT OUTER JOIN #{db_table} ON #{db_table}.customized_type='#{customized_class}' AND #{db_table}.customized_id=#{customized_class.table_name}.id AND #{db_table}.custom_field_id=#{custom_field_id}" +
+    "#{queried_table_name}.#{customized_key} #{not_in} IN (" \
+      "SELECT #{customized_class.table_name}.id FROM #{customized_class.table_name}" \
+      " LEFT OUTER JOIN #{db_table} ON #{db_table}.customized_type='#{customized_class}'" \
+      " AND #{db_table}.customized_id=#{customized_class.table_name}.id" \
+      " AND #{db_table}.custom_field_id=#{custom_field_id}" \
       " WHERE (#{where}) AND (#{filter[:field].visibility_by_project_condition}))"
   end
 
@@ -1183,12 +1208,16 @@ class Query < ActiveRecord::Base
       if value.any?
         case type_for(field)
         when :date, :date_past
-          sql = date_clause(db_table, db_field, parse_date(value.first), parse_date(value.first), is_custom_filter)
+          sql = date_clause(db_table, db_field, parse_date(value.first),
+                            parse_date(value.first), is_custom_filter)
         when :integer
           int_values = value.first.to_s.scan(/[+-]?\d+/).map(&:to_i).join(",")
           if int_values.present?
             if is_custom_filter
-              sql = "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) IN (#{int_values}))"
+              sql =
+                "(#{db_table}.#{db_field} <> '' AND " \
+                  "CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' " \
+                    "ELSE #{db_table}.#{db_field} END AS decimal(30,3)) IN (#{int_values}))"
             else
               sql = "#{db_table}.#{db_field} IN (#{int_values})"
             end
@@ -1197,7 +1226,11 @@ class Query < ActiveRecord::Base
           end
         when :float
           if is_custom_filter
-            sql = "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) BETWEEN #{value.first.to_f - 1e-5} AND #{value.first.to_f + 1e-5})"
+            sql =
+              "(#{db_table}.#{db_field} <> '' AND " \
+                "CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' " \
+                  "ELSE #{db_table}.#{db_field} END AS decimal(30,3)) " \
+                  "BETWEEN #{value.first.to_f - 1e-5} AND #{value.first.to_f + 1e-5})"
           else
             sql = "#{db_table}.#{db_field} BETWEEN #{value.first.to_f - 1e-5} AND #{value.first.to_f + 1e-5}"
           end
@@ -1210,7 +1243,11 @@ class Query < ActiveRecord::Base
       end
     when "!"
       if value.any?
-        sql = queried_class.send(:sanitize_sql_for_conditions, ["(#{db_table}.#{db_field} IS NULL OR #{db_table}.#{db_field} NOT IN (?))", value])
+        sql =
+          queried_class.send(
+            :sanitize_sql_for_conditions,
+            ["(#{db_table}.#{db_field} IS NULL OR #{db_table}.#{db_field} NOT IN (?))", value]
+          )
       else
         # NOT IN an empty set
         sql = "1=1"
@@ -1226,7 +1263,10 @@ class Query < ActiveRecord::Base
         sql = date_clause(db_table, db_field, parse_date(value.first), nil, is_custom_filter)
       else
         if is_custom_filter
-          sql = "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) >= #{value.first.to_f})"
+          sql =
+            "(#{db_table}.#{db_field} <> '' AND " \
+              "CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' " \
+              "ELSE #{db_table}.#{db_field} END AS decimal(30,3)) >= #{value.first.to_f})"
         else
           sql = "#{db_table}.#{db_field} >= #{value.first.to_f}"
         end
@@ -1236,7 +1276,10 @@ class Query < ActiveRecord::Base
         sql = date_clause(db_table, db_field, nil, parse_date(value.first), is_custom_filter)
       else
         if is_custom_filter
-          sql = "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) <= #{value.first.to_f})"
+          sql =
+            "(#{db_table}.#{db_field} <> '' AND " \
+              "CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' " \
+              "ELSE #{db_table}.#{db_field} END AS decimal(30,3)) <= #{value.first.to_f})"
         else
           sql = "#{db_table}.#{db_field} <= #{value.first.to_f}"
         end
@@ -1246,15 +1289,28 @@ class Query < ActiveRecord::Base
         sql = date_clause(db_table, db_field, parse_date(value[0]), parse_date(value[1]), is_custom_filter)
       else
         if is_custom_filter
-          sql = "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) BETWEEN #{value[0].to_f} AND #{value[1].to_f})"
+          sql =
+            "(#{db_table}.#{db_field} <> '' AND CAST(CASE #{db_table}.#{db_field} " \
+              "WHEN '' THEN '0' ELSE #{db_table}.#{db_field} END AS decimal(30,3)) " \
+              "BETWEEN #{value[0].to_f} AND #{value[1].to_f})"
         else
           sql = "#{db_table}.#{db_field} BETWEEN #{value[0].to_f} AND #{value[1].to_f}"
         end
       end
     when "o"
-      sql = "#{queried_table_name}.status_id IN (SELECT id FROM #{IssueStatus.table_name} WHERE is_closed=#{self.class.connection.quoted_false})" if field == "status_id"
+      if field == "status_id"
+        sql =
+          "#{queried_table_name}.status_id IN " \
+            "(SELECT id FROM #{IssueStatus.table_name} " \
+            "WHERE is_closed=#{self.class.connection.quoted_false})"
+      end
     when "c"
-      sql = "#{queried_table_name}.status_id IN (SELECT id FROM #{IssueStatus.table_name} WHERE is_closed=#{self.class.connection.quoted_true})" if field == "status_id"
+      if field == "status_id"
+        sql =
+          "#{queried_table_name}.status_id IN " \
+            "(SELECT id FROM #{IssueStatus.table_name} " \
+            "WHERE is_closed=#{self.class.connection.quoted_true})"
+      end
     when "><t-"
       # between today - n days and today
       sql = relative_date_clause(db_table, db_field, - value.first.to_i, 0, is_custom_filter)
@@ -1292,42 +1348,72 @@ class Query < ActiveRecord::Base
       # = this week
       first_day_of_week = l(:general_first_day_of_week).to_i
       day_of_week = User.current.today.cwday
-      days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
+      days_ago =
+        if day_of_week >= first_day_of_week
+          day_of_week - first_day_of_week
+        else
+          day_of_week + 7 - first_day_of_week
+        end
       sql = relative_date_clause(db_table, db_field, - days_ago, - days_ago + 6, is_custom_filter)
     when "lw"
       # = last week
       first_day_of_week = l(:general_first_day_of_week).to_i
       day_of_week = User.current.today.cwday
-      days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
+      days_ago =
+        if day_of_week >= first_day_of_week
+          day_of_week - first_day_of_week
+        else
+          day_of_week + 7 - first_day_of_week
+        end
       sql = relative_date_clause(db_table, db_field, - days_ago - 7, - days_ago - 1, is_custom_filter)
     when "l2w"
       # = last 2 weeks
       first_day_of_week = l(:general_first_day_of_week).to_i
       day_of_week = User.current.today.cwday
-      days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
+      days_ago =
+        if day_of_week >= first_day_of_week
+          day_of_week - first_day_of_week
+        else
+          day_of_week + 7 - first_day_of_week
+        end
       sql = relative_date_clause(db_table, db_field, - days_ago - 14, - days_ago - 1, is_custom_filter)
     when "nw"
       # = next week
       first_day_of_week = l(:general_first_day_of_week).to_i
       day_of_week = User.current.today.cwday
-      from = -(day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week) + 7
+      from =
+        -(
+            if day_of_week >= first_day_of_week
+              day_of_week - first_day_of_week
+            else
+              day_of_week + 7 - first_day_of_week
+            end
+          ) + 7
       sql = relative_date_clause(db_table, db_field, from, from + 6, is_custom_filter)
     when "m"
       # = this month
       date = User.current.today
-      sql = date_clause(db_table, db_field, date.beginning_of_month, date.end_of_month, is_custom_filter)
+      sql = date_clause(db_table, db_field,
+                        date.beginning_of_month, date.end_of_month,
+                        is_custom_filter)
     when "lm"
       # = last month
       date = User.current.today.prev_month
-      sql = date_clause(db_table, db_field, date.beginning_of_month, date.end_of_month, is_custom_filter)
+      sql = date_clause(db_table, db_field,
+                        date.beginning_of_month, date.end_of_month,
+                        is_custom_filter)
     when "nm"
       # = next month
       date = User.current.today.next_month
-      sql = date_clause(db_table, db_field, date.beginning_of_month, date.end_of_month, is_custom_filter)
+      sql = date_clause(db_table, db_field,
+                        date.beginning_of_month, date.end_of_month,
+                        is_custom_filter)
     when "y"
       # = this year
       date = User.current.today
-      sql = date_clause(db_table, db_field, date.beginning_of_year, date.end_of_year, is_custom_filter)
+      sql = date_clause(db_table, db_field,
+                        date.beginning_of_year, date.end_of_year,
+                        is_custom_filter)
     when "~"
       sql = sql_contains("#{db_table}.#{db_field}", value.first)
     when "!~"
@@ -1337,7 +1423,7 @@ class Query < ActiveRecord::Base
     when "$"
       sql = sql_contains("#{db_table}.#{db_field}", value.first, :ends_with => true)
     else
-      raise "Unknown query operator #{operator}"
+      raise QueryError, "Unknown query operator #{operator}"
     end
 
     return sql
@@ -1415,13 +1501,17 @@ class Query < ActiveRecord::Base
             "cf_#{field.id}.due_date",
             :type => :date,
             :field => field,
-            :name => l(:label_attribute_of_object, :name => l(:field_effective_date), :object_name => field.name))
+            :name => l(:label_attribute_of_object, :name => l(:field_effective_date),
+                       :object_name => field.name)
+          )
           add_available_filter(
             "cf_#{field.id}.status",
             :type => :list,
             :field => field,
-            :name => l(:label_attribute_of_object, :name => l(:field_status), :object_name => field.name),
-            :values => Version::VERSION_STATUSES.map{|s| [l("version_status_#{s}"), s]})
+            :name => l(:label_attribute_of_object, :name => l(:field_status),
+                       :object_name => field.name),
+            :values => Version::VERSION_STATUSES.map{|s| [l("version_status_#{s}"), s]}
+          )
         end
       end
     end
@@ -1488,7 +1578,10 @@ class Query < ActiveRecord::Base
 
   # Returns a SQL clause for a date or datetime field using relative dates.
   def relative_date_clause(table, field, days_from, days_to, is_custom_filter)
-    date_clause(table, field, (days_from ? User.current.today + days_from : nil), (days_to ? User.current.today + days_to : nil), is_custom_filter)
+    date_clause(
+      table, field, (days_from ? User.current.today + days_from : nil),
+      (days_to ? User.current.today + days_to : nil), is_custom_filter
+    )
   end
 
   # Returns a Date or Time from the given filter value

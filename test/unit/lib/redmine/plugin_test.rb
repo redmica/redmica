@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -192,9 +192,9 @@ class Redmine::PluginTest < ActiveSupport::TestCase
   end
 
   def test_settings_warns_about_possible_partial_collision
-    @klass.register(:foo_plugin) { settings :partial => 'foo/settings' }
+    @klass.register(:foo_plugin) {settings :partial => 'foo/settings'}
     Rails.logger.expects(:warn)
-    @klass.register(:other_plugin) { settings :partial => 'foo/settings' }
+    @klass.register(:other_plugin) {settings :partial => 'foo/settings'}
   end
 
   def test_migrate_redmine_plugin

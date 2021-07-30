@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class SysController < ActionController::Base
+  include ActiveSupport::SecurityUtils
+
   before_action :check_enabled
 
   def projects
@@ -57,6 +59,7 @@ class SysController < ActionController::Base
         project = scope.find_by_identifier(params[:id])
       end
       raise ActiveRecord::RecordNotFound unless project
+
       projects << project
     else
       projects = scope.to_a
@@ -75,7 +78,7 @@ class SysController < ActionController::Base
 
   def check_enabled
     User.current = nil
-    unless Setting.sys_api_enabled? && params[:key].to_s == Setting.sys_api_key
+    unless Setting.sys_api_enabled? && secure_compare(params[:key].to_s, Setting.sys_api_key.to_s)
       render :plain => 'Access denied. Repository management WS is disabled or key is invalid.', :status => 403
       return false
     end

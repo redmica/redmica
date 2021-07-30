@@ -298,7 +298,7 @@
   warning_attachments_not_saved: "%{count} 個附加檔案無法被儲存。"
   error_password_expired: "您的密碼已經過期或是管理員要求您變更密碼."
   error_invalid_file_encoding: "這個檔案不是一個有效的 %{encoding} 編碼檔案"
-  error_invalid_csv_file_or_settings: "這個檔案不是一個 CSV 檔案，或是未符合下面所列之設定值"
+  error_invalid_csv_file_or_settings: "這個檔案不是一個 CSV 檔案，或是未符合下面所列之設定值 (%{value})"
   error_can_not_read_import_file: "讀取匯入檔案時發生錯誤"
   error_attachment_extension_not_allowed: "附件之附檔名不允許使用 %{extension}"
   error_ldap_bind_credentials: "無效的 LDAP 帳號/密碼"
@@ -422,7 +422,7 @@
   field_comments_sorting: 回應排序
   field_parent_title: 父頁面
   field_editable: 可編輯
-  field_watcher: 觀察者
+  field_watcher: 監看員
   field_identity_url: OpenID 網址
   field_content: 內容
   field_group_by: 結果分組方式
@@ -580,9 +580,9 @@
   permission_save_queries: 儲存查詢
   permission_view_gantt: 檢視甘特圖
   permission_view_calendar: 檢視日曆
-  permission_view_issue_watchers: 檢視監看者清單
-  permission_add_issue_watchers: 新增監看者
-  permission_delete_issue_watchers: 刪除監看者
+  permission_view_issue_watchers: 檢視監看員清單
+  permission_add_issue_watchers: 新增監看員
+  permission_delete_issue_watchers: 刪除監看員
   permission_log_time: 紀錄耗用工時
   permission_view_time_entries: 檢視耗用工時
   permission_edit_time_entries: 編輯工時紀錄
@@ -959,9 +959,9 @@
   label_user_mail_option_all: "提醒與我的專案有關的全部事件"
   label_user_mail_option_selected: "只提醒我所選擇專案中的事件..."
   label_user_mail_option_none: "取消提醒"
-  label_user_mail_option_only_my_events: "只提醒我觀察中或參與中的事物"
-  label_user_mail_option_only_assigned: "只提醒我觀察中或分派給我的事物"
-  label_user_mail_option_only_owner: "只提醒我觀察中或擁有者為我的事物"
+  label_user_mail_option_only_my_events: "只提醒我監看中或參與中的事物"
+  label_user_mail_option_only_assigned: "只提醒我監看中或分派給我的事物"
+  label_user_mail_option_only_owner: "只提醒我監看中或擁有者為我的事物"
   label_user_mail_no_self_notified: "不提醒我自己所做的變更"
   label_registration_activation_by_email: 透過電子郵件啟用帳戶
   label_registration_manual_activation: 手動啟用帳戶
@@ -981,7 +981,7 @@
   label_reverse_chronological_order: 以時間由近至遠排序
   label_incoming_emails: 傳入的電子郵件
   label_generate_key: 產生金鑰
-  label_issue_watchers: 監看者
+  label_issue_watchers: 監看員
   label_example: 範例
   label_display: 顯示
   label_sort: 排序
@@ -1027,7 +1027,7 @@
   label_copy_subtasks: 複製子任務
   label_item_position: "%{position} / %{count}"
   label_completed_versions: 已完成版本
-  label_search_for_watchers: 搜尋可供加入的監看者
+  label_search_for_watchers: 搜尋可供加入的監看員
   label_session_expiration: 工作階段逾期
   label_status_transitions: 狀態轉換
   label_fields_permissions: 欄位權限
@@ -1136,8 +1136,8 @@
   button_sort: 排序
   button_log_time: 記錄時間
   button_rollback: 還原至此版本
-  button_watch: 觀察
-  button_unwatch: 取消觀察
+  button_watch: 監看
+  button_unwatch: 取消監看
   button_reply: 回應
   button_archive: 封存
   button_unarchive: 取消封存
@@ -1176,7 +1176,6 @@
 
   text_select_mail_notifications: 選擇欲寄送提醒通知郵件之動作
   text_regexp_info: eg. ^[A-Z0-9]+$
-  text_min_max_length_info: 0 代表「不限制」
   text_project_destroy_confirmation: 您確定要刪除這個專案和其他相關資料？
   text_subprojects_destroy_warning: "下列子專案： %{value} 將一併被刪除。"
   text_workflow_edit: 選擇角色與追蹤標籤以設定其工作流程
@@ -1204,7 +1203,7 @@
   text_issue_category_destroy_question: "有 (%{count}) 個議題被分派到此分類. 請選擇您想要的動作？"
   text_issue_category_destroy_assignments: 移除這些議題的分類
   text_issue_category_reassign_to: 重新分派這些議題至其它分類
-  text_user_mail_option: "對於那些未被選擇的專案，將只會接收到您正在觀察中，或是參與中的議題通知。（「參與中的議題」包含您建立的或是分派給您的議題）"
+  text_user_mail_option: "對於那些未被選擇的專案，將只會接收到您正在監看中，或是參與中的議題通知。（「參與中的議題」包含您建立的或是分派給您的議題）"
   text_no_configuration_data: "角色、追蹤標籤、議題狀態與流程尚未被設定完成。\n強烈建議您先載入預設的組態。將預設組態載入之後，您可再變更其中之值。"
   text_load_default_configuration: 載入預設組態
   text_status_changed_by_changeset: "已套用至變更集 %{value}."
@@ -1430,3 +1429,20 @@
   error_invalid_size_parameter: 無效的尺寸大小參數
   error_attachment_not_found: 找不到附件檔案 %{name}
   permission_delete_project: 刪除專案
+  field_twofa_scheme: 雙因素驗證配置
+  text_user_destroy_confirmation: 您是否確定要刪除這個用戶並且移除該用戶所有的參照? 這是無法被復原的動作. 通常鎖定一個用戶是比較好的方案, 而非將用戶刪除. 若要確認, 請在下面輸入用戶的帳戶名稱 (%{login}).
+  text_project_destroy_enter_identifier: 若要確認, 請在下面輸入專案的代碼 (%{identifier}).
+  button_add_subtask: 新增子任務
+  notice_invalid_watcher: '無效的監看員: 監看用戶將無法收到任何通知, 因為該用戶沒有檢視此物件的存取權限.'
+  button_fetch_changesets: 擷取認可
+  permission_view_message_watchers: 檢視訊息監看員清單
+  permission_add_message_watchers: 新增訊息監看員
+  permission_delete_message_watchers: 刪除訊息監看員
+  label_message_watchers: 監看員
+  button_copy_link: 複製連結
+  error_invalid_authenticity_token: 無效的表單確實性授權權杖.
+  error_query_statement_invalid: 執行查詢時發生錯誤並已留下紀錄. 請向 Redmine 系統管理員報告此錯誤.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

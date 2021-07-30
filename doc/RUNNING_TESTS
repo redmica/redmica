@@ -66,11 +66,21 @@ REDMINE_TEST_DAV_SERVER environment variable to specify another host.
 Running Capybara tests
 ======================
 
-You need to have ChromeDriver installed and available in your PATH:
-https://sites.google.com/a/chromium.org/chromedriver/
+You need to have Chrome installed and available in your PATH.
+Chromedriver is managed by the `webdrivers` gem (https://rubygems.org/gems/webdrivers)
 
 Capybara tests can be run with:
 `rails test:system`
+
+The following environment variables can be used to configure your system tests setup:
+`CAPYBARA_SERVER_HOST`: configure server to run on a custom IP which can be, for example, your remote Selenium IP or 0.0.0.0 to listen an all connections
+`CAPYBARA_SERVER_PORT`: configure server port
+`SELENIUM_REMOTE_URL`: remote Selenium URL
+`CAPYBARA_APP_HOST`: by default, the tests expect to have the application running on your localhost. Using this variable, you can set a custom URL
+`GOOGLE_CHROME_OPTS_ARGS`: configure Google Chrome Options arguments as a comma-delimited string. For example, it can be used to run the tests in headless mode:
+    `export GOOGLE_CHROME_OPTS_ARGS="headless,disable-gpu,no-sandbox,disable-dev-shm-usage"`
+
+One use case of these variables is to run the system tests on a remote Selenium/ChromeDriver (eg: Docker).
 
 Running RuboCop, a static code analyzer
 =======================================

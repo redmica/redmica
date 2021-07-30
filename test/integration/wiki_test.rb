@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,12 +42,16 @@ class WikiIntegrationTest < Redmine::IntegrationTest
     assert_response :success
 
     # this update should not end up with a loss of content
-    put '/projects/ecookbook/wiki/Wiki', params: {
-      content: {
-        text: "# Wiki\r\n\r\ncontent", comments: ""
-      },
-      wiki_page: { parent_id: "" }
-    }
+    put(
+      '/projects/ecookbook/wiki/Wiki',
+      :params => {
+        :content => {
+          :text => "# Wiki\r\n\r\ncontent",
+          :comments => ""
+        },
+      :wiki_page => {:parent_id => ""}
+      }
+    )
     assert_redirected_to "/projects/ecookbook/wiki/Wiki"
     follow_redirect!
     assert_select 'div', /content/
@@ -55,17 +59,26 @@ class WikiIntegrationTest < Redmine::IntegrationTest
 
     # Let's assume somebody else, or the same user in another tab, renames the
     # page while it is being edited.
-    post '/projects/ecookbook/wiki/Wiki/rename', params: { wiki_page: { title: "NewTitle" } }
+    post(
+      '/projects/ecookbook/wiki/Wiki/rename',
+      :params => {
+        :wiki_page => {:title => "NewTitle"}
+      }
+    )
     assert_redirected_to "/projects/ecookbook/wiki/NewTitle"
 
     # this update should not end up with a loss of content
-    put '/projects/ecookbook/wiki/Wiki', params: {
-      content: {
-        version: content.version, text: "# Wiki\r\n\r\nnew content", comments: ""
-      },
-      wiki_page: { parent_id: "" }
-    }
-
+    put(
+      '/projects/ecookbook/wiki/Wiki',
+      :params => {
+        :content => {
+          :version => content.version,
+          :text => "# Wiki\r\n\r\nnew content",
+          :comments => ""
+        },
+      :wiki_page => {:parent_id => ""}
+      }
+    )
     assert_redirected_to "/projects/ecookbook/wiki/NewTitle"
     follow_redirect!
     assert_select 'div', /new content/

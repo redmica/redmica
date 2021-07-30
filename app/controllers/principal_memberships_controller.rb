@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ class PrincipalMembershipsController < ApplicationController
   def create
     @members = Member.create_principal_memberships(@principal, params[:membership])
     respond_to do |format|
-      format.html { redirect_to_principal @principal }
+      format.html {redirect_to_principal @principal}
       format.js
     end
   end
@@ -52,7 +52,7 @@ class PrincipalMembershipsController < ApplicationController
     @membership.attributes = params.require(:membership).permit(:role_ids => [])
     @membership.save
     respond_to do |format|
-      format.html { redirect_to_principal @principal }
+      format.html {redirect_to_principal @principal}
       format.js
     end
   end
@@ -62,7 +62,7 @@ class PrincipalMembershipsController < ApplicationController
       @membership.destroy
     end
     respond_to do |format|
-      format.html { redirect_to_principal @principal }
+      format.html {redirect_to_principal @principal}
       format.js
     end
   end

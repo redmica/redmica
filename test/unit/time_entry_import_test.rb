@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_issue_id
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_nil first.issue_id
     assert_nil second.issue_id
@@ -57,7 +57,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_date
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal Date.new(2020, 1, 1), first.spent_on
     assert_equal Date.new(2020, 1, 2), second.spent_on
@@ -67,7 +67,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_hours
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 1, first.hours
     assert_equal 2, second.hours
@@ -77,7 +77,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_comments
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 'Some Design',      first.comments
     assert_equal 'Some Development', second.comments
@@ -87,11 +87,11 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_activity_to_column_value
     import = generate_import_with_mapping
-    import.mapping.merge!('activity' => '5')
+    import.mapping['activity'] = '5'
     import.save!
 
     # N.B. last row is not imported due to the usage of a disabled activity
-    first, second, third = new_records(TimeEntry, 3) { import.run }
+    first, second, third = new_records(TimeEntry, 3) {import.run}
 
     assert_equal 9,  first.activity_id
     assert_equal 10, second.activity_id
@@ -104,7 +104,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
 
   def test_maps_activity_to_fixed_value
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 10, first.activity_id
     assert_equal 10, second.activity_id
@@ -116,9 +116,9 @@ class TimeEntryImportTest < ActiveSupport::TestCase
     overtime_cf = CustomField.find(10)
 
     import = generate_import_with_mapping
-    import.mapping.merge!('cf_10' => '6')
+    import.mapping['cf_10'] = '6'
     import.save!
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal '1', first.custom_field_value(overtime_cf)
     assert_equal '1', second.custom_field_value(overtime_cf)
@@ -130,7 +130,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
     Role.find_by_name('Manager').add_permission! :log_time_for_other_users
 
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 2, first.user_id
     assert_equal 2, second.user_id
@@ -142,9 +142,9 @@ class TimeEntryImportTest < ActiveSupport::TestCase
     Role.find_by_name('Manager').add_permission! :log_time_for_other_users
 
     import = generate_import_with_mapping
-    import.mapping.merge!('user' => 'value:3')
+    import.mapping['user'] = 'value:3'
     import.save!
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 3, first.user_id
     assert_equal 3, second.user_id
@@ -156,7 +156,7 @@ class TimeEntryImportTest < ActiveSupport::TestCase
     # User 2 doesn't have log_time_for_other_users permission
     User.current = User.find(2)
     import = generate_import_with_mapping
-    first, second, third, fourth = new_records(TimeEntry, 4) { import.run }
+    first, second, third, fourth = new_records(TimeEntry, 4) {import.run}
 
     assert_equal 2, first.user_id
     assert_equal 2, second.user_id

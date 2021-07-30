@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,8 +46,11 @@ Rails.application.routes.draw do
   post 'boards/:board_id/topics/:id/edit', :to => 'messages#edit'
   post 'boards/:board_id/topics/:id/destroy', :to => 'messages#destroy'
 
-  # Misc issue routes. TODO: move into resources
+  # Auto complate routes
   match '/issues/auto_complete', :to => 'auto_completes#issues', :via => :get, :as => 'auto_complete_issues'
+  match '/wiki_pages/auto_complete', :to => 'auto_completes#wiki_pages', :via => :get, :as => 'auto_complete_wiki_pages'
+
+  # Misc issue routes. TODO: move into resources
   match '/issues/context_menu', :to => 'context_menus#issues', :as => 'issues_context_menu', :via => [:get, :post]
   match '/issues/changes', :to => 'journals#index', :as => 'issue_changes', :via => :get
   match '/issues/:id/quoted', :to => 'journals#new', :id => /\d+/, :via => :post, :as => 'quoted_issue'
@@ -67,9 +70,12 @@ Rails.application.routes.draw do
   get 'projects/:id/issues/report', :to => 'reports#issue_report', :as => 'project_issues_report'
   get 'projects/:id/issues/report/:detail', :to => 'reports#issue_report_details', :as => 'project_issues_report_details'
 
-  get   '/issues/imports/new', :to => 'imports#new', :defaults => { :type => 'IssueImport' }, :as => 'new_issues_import'
-  get   '/time_entries/imports/new', :to => 'imports#new', :defaults => { :type => 'TimeEntryImport' }, :as => 'new_time_entries_import'
-  get   '/users/imports/new', :to => 'imports#new', :defaults => { :type => 'UserImport' }, :as => 'new_users_import'
+  get   '/issues/imports/new', :to => 'imports#new',
+        :defaults => {:type => 'IssueImport'}, :as => 'new_issues_import'
+  get   '/time_entries/imports/new', :to => 'imports#new',
+        :defaults => {:type => 'TimeEntryImport'}, :as => 'new_time_entries_import'
+  get   '/users/imports/new', :to => 'imports#new',
+        :defaults => {:type => 'UserImport'}, :as => 'new_users_import'
   post  '/imports', :to => 'imports#create', :as => 'imports'
   get   '/imports/:id', :to => 'imports#show', :as => 'import'
   match '/imports/:id/settings', :to => 'imports#settings', :via => [:get, :post], :as => 'import_settings'
@@ -77,7 +83,7 @@ Rails.application.routes.draw do
   match '/imports/:id/run', :to => 'imports#run', :via => [:get, :post], :as => 'import_run'
 
   match 'my/account', :controller => 'my', :action => 'account', :via => [:get, :put]
-  match 'my/account/destroy', :controller => 'my', :action => 'destroy', :via => [:get, :post]
+  match 'my/account/destroy', :controller => 'my', :action => 'destroy', :via => [:get, :post], :as => :delete_my_account
   match 'my/page', :controller => 'my', :action => 'page', :via => :get
   post 'my/page', :to => 'my#update_page'
   match 'my', :controller => 'my', :action => 'index', :via => :get # Redirects to my/page
@@ -223,7 +229,7 @@ Rails.application.routes.draw do
   resources :queries, :except => [:show]
   get '/queries/filter', :to => 'queries#filter', :as => 'queries_filter'
 
-  resources :news, :only => [:index, :show, :edit, :update, :destroy]
+  resources :news, :only => [:index, :show, :edit, :update, :destroy, :create, :new]
   match '/news/:id/comments', :to => 'comments#create', :via => :post
   match '/news/:id/comments/:comment_id', :to => 'comments#destroy', :via => :delete
 
@@ -262,6 +268,7 @@ Rails.application.routes.draw do
   # repositories routes
   get 'projects/:id/repository/:repository_id/statistics', :to => 'repositories#stats'
   get 'projects/:id/repository/:repository_id/graph', :to => 'repositories#graph'
+  post 'projects/:id/repository/:repository_id/fetch_changesets', :to => 'repositories#fetch_changesets'
 
   get 'projects/:id/repository/:repository_id/revisions/:rev', :to => 'repositories#revision'
   get 'projects/:id/repository/:repository_id/revision', :to => 'repositories#revision'
@@ -342,8 +349,7 @@ Rails.application.routes.draw do
   resources :enumerations, :except => :show
   match 'enumerations/:type', :to => 'enumerations#index', :via => :get
 
-  get 'projects/:id/search', :controller => 'search', :action => 'index'
-  get 'search', :controller => 'search', :action => 'index'
+  get '(projects/:id)/search', :controller => 'search', :action => 'index', :as => 'search'
 
 
   get  'mail_handler', :to => 'mail_handler#new'
@@ -365,10 +371,17 @@ Rails.application.routes.draw do
     end
   end
 
-  match 'workflows', :controller => 'workflows', :action => 'index', :via => :get
-  match 'workflows/edit', :controller => 'workflows', :action => 'edit', :via => [:get, :post]
-  match 'workflows/permissions', :controller => 'workflows', :action => 'permissions', :via => [:get, :post]
-  match 'workflows/copy', :controller => 'workflows', :action => 'copy', :via => [:get, :post]
+  resources :workflows, only: [:index] do
+    collection do
+      get 'edit'
+      patch 'update'
+      get 'permissions'
+      patch 'update_permissions'
+      get 'copy'
+      post 'duplicate'
+    end
+  end
+
   match 'settings', :controller => 'settings', :action => 'index', :via => :get
   match 'settings/edit', :controller => 'settings', :action => 'edit', :via => [:get, :post]
   match 'settings/plugin/:id', :controller => 'settings', :action => 'plugin', :via => [:get, :post], :as => 'plugin_settings'

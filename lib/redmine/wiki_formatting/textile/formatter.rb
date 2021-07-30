@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,6 +57,7 @@ module Redmine
           if hash.present? && hash != Digest::MD5.hexdigest(t[1])
             raise Redmine::WikiFormatting::StaleSectionError
           end
+
           t[1] = update unless t[1].blank?
           t.reject(&:blank?).join "\n\n"
         end

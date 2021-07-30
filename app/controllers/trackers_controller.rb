@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ class TrackersController < ApplicationController
   def index
     @trackers = Tracker.sorted.to_a
     respond_to do |format|
-      format.html { render :layout => false if request.xhr? }
+      format.html {render :layout => false if request.xhr?}
       format.api
     end
   end
@@ -36,6 +36,9 @@ class TrackersController < ApplicationController
   def new
     @tracker ||= Tracker.new(:default_status => IssueStatus.sorted.first)
     @tracker.safe_attributes = params[:tracker]
+    if params[:copy].present? && @copy_from = Tracker.find_by_id(params[:copy])
+      @tracker.copy_from(@copy_from)
+    end
     @trackers = Tracker.sorted.to_a
     @projects = Project.all
   end
@@ -66,19 +69,19 @@ class TrackersController < ApplicationController
     @tracker.safe_attributes = params[:tracker]
     if @tracker.save
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_to trackers_path(:page => params[:page])
-        }
-        format.js { head 200 }
+        end
+        format.js {head 200}
       end
     else
       respond_to do |format|
-        format.html {
+        format.html do
           edit
           render :action => 'edit'
-        }
-        format.js { head 422 }
+        end
+        format.js {head 422}
       end
     end
   end

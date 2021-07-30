@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,14 +36,14 @@ class MembersController < ApplicationController
     @members =  scope.order(:id).limit(@limit).offset(@offset).to_a
 
     respond_to do |format|
-      format.html { head 406 }
+      format.html {head 406}
       format.api
     end
   end
 
   def show
     respond_to do |format|
-      format.html { head 406 }
+      format.html {head 406}
       format.api
     end
   end
@@ -66,19 +66,19 @@ class MembersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to_settings_in_projects }
-      format.js {
+      format.html {redirect_to_settings_in_projects}
+      format.js do
         @members = members
         @member = Member.new
-      }
-      format.api {
+      end
+      format.api do
         @member = members.first
         if @member.valid?
           render :action => 'show', :status => :created, :location => membership_url(@member)
         else
           render_validation_errors(@member)
         end
-      }
+      end
     end
   end
 
@@ -92,15 +92,15 @@ class MembersController < ApplicationController
     end
     saved = @member.save
     respond_to do |format|
-      format.html { redirect_to_settings_in_projects }
+      format.html {redirect_to_settings_in_projects}
       format.js
-      format.api {
+      format.api do
         if saved
           render_api_ok
         else
           render_validation_errors(@member)
         end
-      }
+      end
     end
   end
 
@@ -109,15 +109,15 @@ class MembersController < ApplicationController
       @member.destroy
     end
     respond_to do |format|
-      format.html { redirect_to_settings_in_projects }
+      format.html {redirect_to_settings_in_projects}
       format.js
-      format.api {
+      format.api do
         if @member.destroyed?
           render_api_ok
         else
           head :unprocessable_entity
         end
-      }
+      end
     end
   end
 

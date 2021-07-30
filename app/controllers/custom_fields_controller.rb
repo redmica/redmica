@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,14 +28,14 @@ class CustomFieldsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {
-        @custom_fields_by_type = CustomField.all.group_by {|f| f.class.name }
+      format.html do
+        @custom_fields_by_type = CustomField.all.group_by {|f| f.class.name}
         @custom_fields_projects_count =
           IssueCustomField.where(is_for_all: false).joins(:projects).group(:custom_field_id).count
-      }
-      format.api {
+      end
+      format.api do
         @custom_fields = CustomField.all
-      }
+      end
     end
   end
 
@@ -66,16 +66,16 @@ class CustomFieldsController < ApplicationController
     if @custom_field.save
       call_hook(:controller_custom_fields_edit_after_save, :params => params, :custom_field => @custom_field)
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_back_or_default edit_custom_field_path(@custom_field)
-        }
-        format.js { head 200 }
+        end
+        format.js {head 200}
       end
     else
       respond_to do |format|
-        format.html { render :action => 'edit' }
-        format.js { head 422 }
+        format.html {render :action => 'edit'}
+        format.js {head 422}
       end
     end
   end
@@ -98,6 +98,9 @@ class CustomFieldsController < ApplicationController
     if @custom_field.nil?
       render :action => 'select_type'
     else
+      if params[:copy].present? && (@copy_from = CustomField.find_by(id: params[:copy]))
+        @custom_field.copy_from(@copy_from)
+      end
       @custom_field.safe_attributes = params[:custom_field]
     end
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -188,22 +188,25 @@ class SearchTest < ActiveSupport::TestCase
   end
 
   def test_fetcher_should_handle_accents_in_phrases
-    f = Redmine::Search::Fetcher.new('No special chars "in a phrase"', User.anonymous, %w(issues), Project.all)
+    f = Redmine::Search::Fetcher.new('No special chars "in a phrase"',
+                                     User.anonymous, %w(issues), Project.all)
     assert_equal ['No', 'special', 'chars', 'in a phrase'], f.tokens
 
-    f = Redmine::Search::Fetcher.new('Special chars "in a phrase Öö"', User.anonymous, %w(issues), Project.all)
+    f = Redmine::Search::Fetcher.new('Special chars "in a phrase Öö"',
+                                     User.anonymous, %w(issues), Project.all)
     assert_equal ['Special', 'chars', 'in a phrase Öö'], f.tokens
   end
 
   def test_fetcher_should_exclude_single_character_tokens_except_for_chinese_characters
-    f = Redmine::Search::Fetcher.new('ca f é 漢 あ 한', User.anonymous, %w(issues), Project.all)
+    f = Redmine::Search::Fetcher.new('ca f é 漢 あ 한',
+                                     User.anonymous, %w(issues), Project.all)
     assert_equal ['ca', '漢'], f.tokens
   end
 
   private
 
   def remove_permission(role, permission)
-    role.permissions = role.permissions - [ permission ]
+    role.permissions = role.permissions - [permission]
     role.save
   end
 end

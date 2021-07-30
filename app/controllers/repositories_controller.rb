@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ class RepositoriesController < ApplicationController
   before_action :find_changeset, :only => [:revision, :add_related_issue, :remove_related_issue]
   before_action :authorize
   accept_rss_auth :revisions
+  accept_api_auth :add_related_issue, :remove_related_issue
 
   rescue_from Redmine::Scm::Adapters::CommandFailed, :with => :show_error_command_failed
 
@@ -99,6 +100,11 @@ class RepositoriesController < ApplicationController
   end
 
   alias_method :browse, :show
+
+  def fetch_changesets
+    @repository.fetch_changesets if @project.active? && @path.empty? && !Setting.autofetch_changesets?
+    show
+  end
 
   def changes
     @entry = @repository.entry(@path, @rev)
@@ -228,8 +234,14 @@ class RepositoriesController < ApplicationController
       @issue = nil
     end
 
-    if @issue
-      @changeset.issues << @issue
+    respond_to do |format|
+      if @issue
+        @changeset.issues << @issue
+        format.api { render_api_ok }
+      else
+        format.api { render_api_errors "#{l(:label_issue)} #{l('activerecord.errors.messages.invalid')}" }
+      end
+      format.js
     end
   end
 
@@ -239,6 +251,10 @@ class RepositoriesController < ApplicationController
     @issue = Issue.visible.find_by_id(params[:issue_id])
     if @issue
       @changeset.issues.delete(@issue)
+    end
+    respond_to do |format|
+      format.api { render_api_ok }
+      format.js
     end
   end
 
@@ -314,7 +330,7 @@ class RepositoriesController < ApplicationController
     render_404
   end
 
-  REV_PARAM_RE = %r{\A[a-f0-9]*\Z}i
+  REV_PARAM_RE = %r{\A[a-f0-9]*\z}i
 
   def find_project_repository
     @project = Project.find(params[:id])
@@ -325,14 +341,12 @@ class RepositoriesController < ApplicationController
     end
     (render_404; return false) unless @repository
     @path = params[:path].is_a?(Array) ? params[:path].join('/') : params[:path].to_s
-    @rev = params[:rev].blank? ? @repository.default_branch : params[:rev].to_s.strip
-    @rev_to = params[:rev_to]
 
-    unless REV_PARAM_RE.match?(@rev.to_s) && REV_PARAM_RE.match?(@rev_to.to_s)
-      if @repository.branches.blank?
-        raise InvalidRevisionParam
-      end
-    end
+    @rev = params[:rev].to_s.strip.presence || @repository.default_branch
+    raise InvalidRevisionParam unless valid_name?(@rev)
+
+    @rev_to = params[:rev_to].to_s.strip.presence
+    raise InvalidRevisionParam unless valid_name?(@rev_to)
   rescue ActiveRecord::RecordNotFound
     render_404
   rescue InvalidRevisionParam
@@ -416,5 +430,12 @@ class RepositoriesController < ApplicationController
     else
       'attachment'
     end
+  end
+
+  def valid_name?(rev)
+    return true if rev.nil?
+    return true if REV_PARAM_RE.match?(rev)
+
+    @repository ? @repository.valid_name?(rev) : true
   end
 end

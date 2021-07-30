@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ module WatchersHelper
 
   def watcher_link(objects, user)
     return '' unless user && user.logged?
+
     objects = Array.wrap(objects)
     return '' unless objects.any?
 
@@ -51,6 +52,9 @@ module WatchersHelper
       s = ''.html_safe
       s << avatar(user, :size => "16").to_s
       s << link_to_user(user, :class => 'user')
+      if object.respond_to?(:visible?) && user.is_a?(User) && !object.visible?(user)
+        s << content_tag('span', l(:notice_invalid_watcher), class: 'icon-only icon-warning', title: l(:notice_invalid_watcher))
+      end
       if remove_allowed
         url = {:controller => 'watchers',
                :action => 'destroy',

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,10 +37,10 @@ class Token < ActiveRecord::Base
   end
 
   add_action :api,       max_instances: 1,  validity_time: nil
-  add_action :autologin, max_instances: 10, validity_time: Proc.new { Setting.autologin.to_i.days }
+  add_action :autologin, max_instances: 10, validity_time: Proc.new {Setting.autologin.to_i.days}
   add_action :feeds,     max_instances: 1,  validity_time: nil
-  add_action :recovery,  max_instances: 1,  validity_time: Proc.new { Token.validity_time }
-  add_action :register,  max_instances: 1,  validity_time: Proc.new { Token.validity_time }
+  add_action :recovery,  max_instances: 1,  validity_time: Proc.new {Token.validity_time}
+  add_action :register,  max_instances: 1,  validity_time: Proc.new {Token.validity_time}
   add_action :session,   max_instances: 10, validity_time: nil
   add_action :twofa_backup_code, max_instances: 10, validity_time: nil
 
@@ -116,11 +116,13 @@ class Token < ActiveRecord::Base
     return nil unless action.present? && /\A[a-z0-9]+\z/i.match?(key)
 
     token = Token.find_by(:action => action, :value => key)
-    if token && (token.action == action) && (token.value == key) && token.user
-      if validity_days.nil? || (token.created_on > validity_days.days.ago)
-        token
-      end
-    end
+    return unless token
+    return unless token.action == action
+    return unless ActiveSupport::SecurityUtils.secure_compare(token.value.to_s, key)
+    return unless token.user
+    return unless validity_days.nil? || (token.created_on > validity_days.days.ago)
+
+    token
   end
 
   def self.generate_token_value

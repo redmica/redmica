@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,6 +48,13 @@ class UserPreferenceTest < ActiveSupport::TestCase
   def test_no_self_notified_should_default_to_true
     preference = UserPreference.new
     assert_equal true, preference.no_self_notified
+  end
+
+  def test_no_self_notified_should_default_to_setting
+    with_settings :default_users_no_self_notified => '0' do
+      preference = UserPreference.new
+      assert_equal false, preference.no_self_notified
+    end
   end
 
   def test_create

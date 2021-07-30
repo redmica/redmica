@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,7 +27,10 @@ module Redmine
       # Adds a listener class.
       # Automatically called when a class inherits from Redmine::Hook::Listener.
       def add_listener(klass)
-        raise "Hooks must include Singleton module." unless klass.included_modules.include?(Singleton)
+        unless klass.included_modules.include?(Singleton)
+          raise "Hooks must include Singleton module."
+        end
+
         @@listener_classes << klass
         clear_listeners_instances
       end
@@ -92,7 +95,7 @@ module Redmine
           default_context = {:controller => self, :project => @project, :request => request, :hook_caller => self}
           Redmine::Hook.call_hook(hook, default_context.merge(context))
         else
-          default_context = { :project => @project, :hook_caller => self }
+          default_context = {:project => @project, :hook_caller => self}
           default_context[:controller] = controller if respond_to?(:controller)
           default_context[:request] = request if respond_to?(:request)
           Redmine::Hook.call_hook(hook, default_context.merge(context)).join(' ').html_safe

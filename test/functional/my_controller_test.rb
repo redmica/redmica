@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ class MyControllerTest < Redmine::ControllerTest
            :roles, :projects, :members, :member_roles,
            :issues, :issue_statuses, :trackers, :enumerations,
            :custom_fields, :auth_sources, :queries, :enabled_modules,
-           :journals
+           :journals, :projects_trackers
 
   def setup
     @request.session[:user_id] = 2
@@ -411,6 +411,51 @@ class MyControllerTest < Redmine::ControllerTest
       get :account
       assert_response :success
       assert_select 'select[name=?]', 'user[language]', 0
+    end
+  end
+
+  def test_page_with_calendar
+    date = '2020-10-21'
+    subject = 'calendar on my page'
+    issue = Issue.generate!(:start_date => date,
+                            :due_date   => date,
+                            :project_id => 1,
+                            :tracker_id => 1,
+                            :subject => subject)
+
+    travel_to date
+
+    preferences = User.find(2).pref
+    preferences[:my_page_layout] = {'top' => ['calendar']}
+    preferences.save!
+
+    with_settings :start_of_week => 7 do
+      get :page
+    end
+    assert_response :success
+
+    assert_select 'form[data-cm-url=?]', '/issues/context_menu'
+
+    assert_select 'table.cal' do
+      assert_select 'tr' do
+        assert_select 'td' do
+          assert_select(
+            'div.issue.hascontextmenu.tooltip.starting.ending',
+            :text => /eCookbook.*#{subject}/m
+          ) do
+            assert_select(
+              'a.issue[href=?]', "/issues/#{issue.id}",
+              :text => "Bug ##{issue.id}"
+            )
+            assert_select(
+              'input[name=?][type=?][value=?]',
+              'ids[]',
+              'checkbox',
+              issue.id.to_s
+            )
+          end
+        end
+      end
     end
   end
 

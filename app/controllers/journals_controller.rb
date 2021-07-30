@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -92,9 +92,9 @@ class JournalsController < ApplicationController
     @journal.safe_attributes = params[:journal]
     @journal.save
     @journal.destroy if @journal.details.empty? && @journal.notes.blank?
-    call_hook(:controller_journals_edit_post, { :journal => @journal, :params => params})
+    call_hook(:controller_journals_edit_post, {:journal => @journal, :params => params})
     respond_to do |format|
-      format.html { redirect_to issue_path(@journal.journalized) }
+      format.html {redirect_to issue_path(@journal.journalized)}
       format.js
     end
   end

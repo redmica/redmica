@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,9 +30,11 @@ class Redmine::ApiTest::ApiTest < Redmine::ApiTest::Base
         :params => {
           :user => {
             :login => 'foo', :firstname => 'Firstname', :lastname => 'Lastname',
-            :mail => 'foo@example.net', :password => 'secret123'}
-          },
-        :headers => credentials('admin'))
+            :mail => 'foo@example.net', :password => 'secret123'
+          }
+        },
+        :headers => credentials('admin')
+      )
       assert_response 201
     end
   ensure

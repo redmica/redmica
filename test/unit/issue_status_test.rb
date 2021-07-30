@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ class IssueStatusTest < ActiveSupport::TestCase
   def test_destroy_status_in_use
     # Status assigned to an Issue
     status = Issue.find(1).status
-    assert_raise(RuntimeError, "Cannot delete status") { status.destroy }
+    assert_raise(RuntimeError, "Cannot delete status") {status.destroy}
   end
 
   def test_new_statuses_allowed_to

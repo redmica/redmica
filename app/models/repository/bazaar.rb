@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -64,6 +64,7 @@ class Repository::Bazaar < Repository
     if entries
       entries.each do |e|
         next if e.lastrev.revision.blank?
+
         # Set the filesize unless browsing a specific revision
         if identifier.nil? && e.is_file?
           full_path = File.join(root_url, e.path)

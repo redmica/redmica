@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ module Redmine
 
       def permission(name, hash, options={})
         @permissions ||= []
-        options.merge!(:project_module => @project_module)
+        options[:project_module] = @project_module
         @permissions << Permission.new(name, hash, options)
       end
 

@@ -800,7 +800,6 @@ es-PA:
   text_issues_ref_in_commit_messages: Referencia y incidencia de corrección en los mensajes
   text_length_between: "Longitud entre %{min} y %{max} caracteres."
   text_load_default_configuration: Cargar la configuración por defecto
-  text_min_max_length_info: 0 para ninguna restricción
   text_no_configuration_data: "Todavía no se han configurado perfiles, ni tipos, estados y flujo de trabajo asociado a incidencias. Se recomiendo encarecidamente cargar la configuración por defecto. Una vez cargada, podrá modificarla."
   text_project_destroy_confirmation: ¿Estás seguro de querer eliminar el proyecto?
   text_reassign_time_entries: 'Reasignar las horas a esta incidencia:'
@@ -1175,7 +1174,7 @@ es-PA:
   notice_import_finished_with_errors: "%{count} de %{total} elementos no pudieron ser importados"
   error_invalid_file_encoding: El archivo no utiliza %{encoding} válida
   error_invalid_csv_file_or_settings: El archivo no es un archivo CSV o no coincide con la
-    configuración
+    configuración (%{value})
   error_can_not_read_import_file: Ocurrió un error mientras se leía el archivo a importar
   permission_import_issues: Importar incidencias
   label_import_issues: Importar incidencias
@@ -1424,3 +1423,26 @@ es-PA:
   error_invalid_size_parameter: Invalid size parameter
   error_attachment_not_found: Attachment %{name} not found
   permission_delete_project: Delete the project
+  field_twofa_scheme: Two-factor authentication scheme
+  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
+    all references to them? This cannot be undone. Often, locking a user instead of
+    deleting them is the better solution. To confirm, please enter their login (%{login})
+    below.
+  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
+    (%{identifier}) below.
+  button_add_subtask: Add subtask
+  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
+    because it does not have access to view this object.'
+  button_fetch_changesets: Fetch commits
+  permission_view_message_watchers: View message watchers list
+  permission_add_message_watchers: Add message watchers
+  permission_delete_message_watchers: Delete message watchers
+  label_message_watchers: Watchers
+  button_copy_link: Copy link
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

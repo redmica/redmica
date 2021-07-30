@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -154,6 +154,33 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
     assert_select 'trackers[type=array] tracker[id="2"][name="Feature request"]'
   end
 
+  test "GET /projects/:id.xml with include=trackers should return trackers based on role-based permissioning" do
+    project = Project.find(1)
+    assert_equal [1, 2, 3], project.tracker_ids
+
+    role = Role.find(3) # Reporter
+    role.permissions_all_trackers = {'view_issues' => '0'}
+    role.permissions_tracker_ids = {'view_issues' => ['1']}
+    role.save!
+
+    user = User.find_by(:login => 'jsmith')
+    member = project.members.detect{|m| m.user == user}
+    member.roles.delete_all
+    member.role_ids = [role.id]
+    member.roles.reload
+    assert_equal [role.id], member.role_ids
+
+    get '/projects/1.xml?include=trackers', :headers => credentials(user.login)
+    assert_response :success
+    assert_equal 'application/xml', @response.content_type
+
+    assert_select 'trackers[type=array]' do
+      assert_select 'tracker[id="1"]', :count => 1
+      assert_select 'tracker[id="2"]', :count => 0
+      assert_select 'tracker[id="3"]', :count => 0
+    end
+  end
+
   test "GET /projects/:id.xml with include=enabled_modules should return enabled modules" do
     get '/projects/1.xml?include=enabled_modules'
     assert_response :success
@@ -188,9 +215,11 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
   test "POST /projects.xml with valid parameters should create the project" do
     with_settings :default_projects_modules => ['issue_tracking', 'repository'] do
       assert_difference('Project.count') do
-        post '/projects.xml',
+        post(
+          '/projects.xml',
           :params => {:project => {:name => 'API test', :identifier => 'api-test'}},
           :headers => credentials('admin')
+        )
       end
     end
 
@@ -207,9 +236,17 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "POST /projects.xml should accept enabled_module_names attribute" do
     assert_difference('Project.count') do
-      post '/projects.xml',
-        :params => {:project => {:name => 'API test', :identifier => 'api-test', :enabled_module_names => ['issue_tracking', 'news', 'time_tracking']}},
+      post(
+        '/projects.xml',
+        :params => {
+          :project => {
+            :name => 'API test',
+            :identifier => 'api-test',
+            :enabled_module_names => ['issue_tracking', 'news', 'time_tracking']
+          }
+        },
         :headers => credentials('admin')
+      )
     end
 
     project = Project.order('id DESC').first
@@ -218,9 +255,17 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "POST /projects.xml should accept tracker_ids attribute" do
     assert_difference('Project.count') do
-      post '/projects.xml',
-        :params => {:project => {:name => 'API test', :identifier => 'api-test', :tracker_ids => [1, 3]}},
+      post(
+        '/projects.xml',
+        :params => {
+          :project => {
+            :name => 'API test',
+            :identifier => 'api-test',
+            :tracker_ids => [1, 3]
+          }
+        },
         :headers => credentials('admin')
+      )
     end
 
     project = Project.order('id DESC').first
@@ -229,9 +274,11 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "POST /projects.xml with invalid parameters should return errors" do
     assert_no_difference('Project.count') do
-      post '/projects.xml',
+      post(
+        '/projects.xml',
         :params => {:project => {:name => 'API test'}},
         :headers => credentials('admin')
+      )
     end
 
     assert_response :unprocessable_entity
@@ -241,9 +288,11 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "PUT /projects/:id.xml with valid parameters should update the project" do
     assert_no_difference 'Project.count' do
-      put '/projects/2.xml',
+      put(
+        '/projects/2.xml',
         :params => {:project => {:name => 'API update'}},
         :headers => credentials('jsmith')
+      )
     end
     assert_response :no_content
     assert_equal '', @response.body
@@ -254,9 +303,16 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "PUT /projects/:id.xml should accept enabled_module_names attribute" do
     assert_no_difference 'Project.count' do
-      put '/projects/2.xml',
-        :params => {:project => {:name => 'API update', :enabled_module_names => ['issue_tracking', 'news', 'time_tracking']}},
+      put(
+        '/projects/2.xml',
+        :params => {
+          :project => {
+            :name => 'API update',
+            :enabled_module_names => ['issue_tracking', 'news', 'time_tracking']
+          }
+        },
         :headers => credentials('admin')
+      )
     end
     assert_response :no_content
     assert_equal '', @response.body
@@ -266,9 +322,11 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "PUT /projects/:id.xml should accept tracker_ids attribute" do
     assert_no_difference 'Project.count' do
-      put '/projects/2.xml',
+      put(
+        '/projects/2.xml',
         :params => {:project => {:name => 'API update', :tracker_ids => [1, 3]}},
         :headers => credentials('admin')
+      )
     end
     assert_response :no_content
     assert_equal '', @response.body
@@ -278,9 +336,11 @@ class Redmine::ApiTest::ProjectsTest < Redmine::ApiTest::Base
 
   test "PUT /projects/:id.xml with invalid parameters should return errors" do
     assert_no_difference('Project.count') do
-      put '/projects/2.xml',
+      put(
+        '/projects/2.xml',
         :params => {:project => {:name => ''}},
         :headers => credentials('admin')
+      )
     end
 
     assert_response :unprocessable_entity

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,18 +24,19 @@ class RepositoriesGitTest < Redmine::IntegrationTest
            :repositories, :enabled_modules
 
   REPOSITORY_PATH = Rails.root.join('tmp/test/git_repository').to_s
-  REPOSITORY_PATH.gsub!(/\//, "\\") if Redmine::Platform.mswin?
+  REPOSITORY_PATH.tr!('/', "\\") if Redmine::Platform.mswin?
   PRJ_ID     = 3
   NUM_REV = 28
 
   def setup
     User.current = nil
     @project    = Project.find(PRJ_ID)
-    @repository = Repository::Git.create(
-                      :project       => @project,
-                      :url           => REPOSITORY_PATH,
-                      :path_encoding => 'ISO-8859-1'
-                      )
+    @repository =
+      Repository::Git.create(
+        :project       => @project,
+        :url           => REPOSITORY_PATH,
+        :path_encoding => 'ISO-8859-1'
+      )
     assert @repository
   end
 
@@ -82,14 +83,18 @@ class RepositoriesGitTest < Redmine::IntegrationTest
       @repository.fetch_changesets
       assert_equal NUM_REV, @repository.changesets.count
 
-      get "/projects/subproject1/repository/#{@repository.id}/revisions/deff712f05a90d96edbd70facc47d944be5897e3/diff/sources/watchers_controller.rb", :params => { :format => 'txt' }
+      id = "deff712f05a90d96edbd70facc47d944be5897e3"
+      get(
+        "/projects/subproject1/repository/#{@repository.id}/revisions/#{id}/diff/sources/watchers_controller.rb",
+        :params => {:format => 'txt'}
+      )
       assert_response :success
 
       assert a = css_select("a.diff").first
       assert_equal 'Unified diff', a.text
       get a['href']
       assert_response :success
-      assert_match /\Acommit deff712f05a90d96edbd70facc47d944be5897e3/, response.body
+      assert_match /\Acommit #{id}/, response.body
     end
 
     def test_entry_txt_should_return_html

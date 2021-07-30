@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -101,12 +101,18 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
   def test_macro_should_receive_the_object_as_argument_when_with_object_and_attribute
     issue = Issue.find(1)
     issue.description = "{{hello_world}}"
-    assert_equal '<p>Hello world! Object: Issue, Called with no argument and no block of text.</p>', textilizable(issue, :description)
+    assert_equal(
+      '<p>Hello world! Object: Issue, Called with no argument and no block of text.</p>',
+      textilizable(issue, :description)
+    )
   end
 
   def test_macro_should_receive_the_object_as_argument_when_called_with_object_option
     text = "{{hello_world}}"
-    assert_equal '<p>Hello world! Object: Issue, Called with no argument and no block of text.</p>', textilizable(text, :object => Issue.find(1))
+    assert_equal(
+      '<p>Hello world! Object: Issue, Called with no argument and no block of text.</p>',
+      textilizable(text, :object => Issue.find(1))
+    )
   end
 
   def test_extract_macro_options_should_with_args
@@ -135,7 +141,10 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
     end
 
     text = "{{exception}}"
-    assert_include '<div class="flash error">Error executing the <strong>exception</strong> macro (My message)</div>', textilizable(text)
+    assert_include(
+      '<div class="flash error">Error executing the <strong>exception</strong> macro (My message)</div>',
+      textilizable(text)
+    )
   end
 
   def test_macro_arguments_should_not_be_parsed_by_formatters
@@ -252,19 +261,20 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
       h2. Heading
       }}"
     RAW
-
-    expected_toc = '<ul class="toc"><li><strong>Table of contents</strong></li><li><a href="#Title">Title</a><ul><li><a href="#Heading">Heading</a></li></ul></li></ul>'
-
+    expected_toc =
+      '<ul class="toc"><li><strong>Table of contents</strong></li>' \
+      '<li><a href="#Title">Title</a><ul><li><a href="#Heading">Heading</a></li></ul></li></ul>'
     assert_include expected_toc, textilizable(text).gsub(/[\r\n]/, '')
   end
 
   def test_macro_child_pages
-    expected =  "<p><ul class=\"pages-hierarchy\">\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a>\n" +
-                 "<ul class=\"pages-hierarchy\">\n<li><a href=\"/projects/ecookbook/wiki/Child_1_1\">Child 1 1</a></li>\n</ul>\n</li>\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" +
-                 "</ul>\n</p>"
-
+    expected =
+      "<p><ul class=\"pages-hierarchy\">\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a>\n" \
+      "<ul class=\"pages-hierarchy\">\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_1_1\">Child 1 1</a></li>\n</ul>\n</li>\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" \
+      "</ul>\n</p>"
     @project = Project.find(1)
     # child pages of the current wiki page
     assert_equal expected, textilizable("{{child_pages}}", :object => WikiPage.find(2).content)
@@ -276,30 +286,37 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
   end
 
   def test_macro_child_pages_with_parent_option
-    expected =  "<p><ul class=\"pages-hierarchy\">\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Another_page\">Another page</a>\n" +
-                 "<ul class=\"pages-hierarchy\">\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a>\n" +
-                 "<ul class=\"pages-hierarchy\">\n<li><a href=\"/projects/ecookbook/wiki/Child_1_1\">Child 1 1</a></li>\n</ul>\n</li>\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" +
-                 "</ul>\n</li>\n</ul>\n</p>"
+    expected =
+      "<p><ul class=\"pages-hierarchy\">\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Another_page\">Another page</a>\n" \
+      "<ul class=\"pages-hierarchy\">\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a>\n" \
+      "<ul class=\"pages-hierarchy\">\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_1_1\">Child 1 1</a></li>\n</ul>\n</li>\n" \
+      "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" \
+      "</ul>\n</li>\n</ul>\n</p>"
 
     @project = Project.find(1)
     # child pages of the current wiki page
     assert_equal expected, textilizable("{{child_pages(parent=1)}}", :object => WikiPage.find(2).content)
     # child pages of another page
-    assert_equal expected, textilizable("{{child_pages(Another_page, parent=1)}}", :object => WikiPage.find(1).content)
-
+    assert_equal(
+      expected,
+      textilizable("{{child_pages(Another_page, parent=1)}}", :object => WikiPage.find(1).content)
+    )
     @project = Project.find(2)
-    assert_equal expected, textilizable("{{child_pages(ecookbook:Another_page, parent=1)}}", :object => WikiPage.find(1).content)
+    assert_equal(
+      expected,
+      textilizable("{{child_pages(ecookbook:Another_page, parent=1)}}", :object => WikiPage.find(1).content)
+    )
   end
 
   def test_macro_child_pages_with_depth_option
-    expected =  "<p><ul class=\"pages-hierarchy\">\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a></li>\n" +
-                 "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" +
-                 "</ul>\n</p>"
-
+    expected =
+      "<p><ul class=\"pages-hierarchy\">\n" \
+        "<li><a href=\"/projects/ecookbook/wiki/Child_1\">Child 1</a></li>\n" \
+        "<li><a href=\"/projects/ecookbook/wiki/Child_2\">Child 2</a></li>\n" \
+        "</ul>\n</p>"
     @project = Project.find(1)
     assert_equal expected, textilizable("{{child_pages(depth=1)}}", :object => WikiPage.find(2).content)
   end
@@ -380,7 +397,10 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
 
   def test_macros_should_not_mangle_next_macros_outputs
     text = '{{macro(2)}} !{{macro(2)}} {{hello_world(foo)}}'
-    assert_equal '<p>{{macro(2)}} {{macro(2)}} Hello world! Object: NilClass, Arguments: foo and no block of text.</p>', textilizable(text)
+    assert_equal(
+      '<p>{{macro(2)}} {{macro(2)}} Hello world! Object: NilClass, Arguments: foo and no block of text.</p>',
+      textilizable(text)
+    )
   end
 
   def test_macros_with_text_should_not_mangle_following_macros
@@ -410,8 +430,17 @@ class Redmine::WikiFormatting::MacrosTest < Redmine::HelperTest
   end
 
   def test_issue_macro_should_render_link_to_issue
-    issue = Issue.find 1
-    assert_equal %{<p><a class="issue tracker-1 status-1 priority-4 priority-lowest behind-schedule" href="/issues/1">Bug #1</a>: #{issue.subject}</p>}, textilizable("{{issue(1)}}")
-    assert_equal %{<p>eCookbook - <a class="issue tracker-1 status-1 priority-4 priority-lowest behind-schedule" href="/issues/1">Bug #1</a>: #{issue.subject}</p>}, textilizable("{{issue(1, project=true)}}")
+    issue = Issue.find(1)
+    assert_equal(
+      %{<p><a class="issue tracker-1 status-1 priority-4 priority-lowest behind-schedule" } +
+      %{href="/issues/1">Bug #1</a>: #{issue.subject}</p>},
+      textilizable("{{issue(1)}}")
+    )
+    assert_equal(
+      %{<p>eCookbook - } +
+      %{<a class="issue tracker-1 status-1 priority-4 priority-lowest behind-schedule" } +
+      %{href="/issues/1">Bug #1</a>: #{issue.subject}</p>},
+      textilizable("{{issue(1, project=true)}}")
+    )
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -137,7 +137,7 @@ class TimeEntryQueryTest < ActiveSupport::TestCase
   end
 
   def test_results_scope_should_be_in_the_same_order_when_paginating
-    4.times { TimeEntry.generate! }
+    4.times {TimeEntry.generate!}
     q = TimeEntryQuery.new
     q.sort_criteria = {'0' => ['user', 'asc']}
     time_entry_ids = q.results_scope.pluck(:id)

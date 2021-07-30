@@ -218,7 +218,7 @@ lt:
   warning_attachments_not_saved: "%{count} byla(-ų) negali būti išsaugota."
   error_password_expired: "Jūsų slaptažodžio galiojimo laikas baigėsi arba administratorius reikalauja jūsų jį pasikeisti"
   error_invalid_file_encoding: "Failas nėra tinkamas %{encoding} koduotės failas"
-  error_invalid_csv_file_or_settings: "Failas nėra CSV failas arba neatitinka žemiau esančių nustatymų"
+  error_invalid_csv_file_or_settings: "Failas nėra CSV failas arba neatitinka žemiau esančių nustatymų (%{value})"
   error_can_not_read_import_file: "Iškilo klaida skaitant importuojamą failą"
   error_attachment_extension_not_allowed: "Priedo plėtinys %{extension} negalimas"
   error_ldap_bind_credentials: "Netinkamas LDAP Vartotojo vardas/Slaptažodis"
@@ -1054,7 +1054,6 @@ lt:
 
   text_select_mail_notifications: Išrinkite veiksmus, apie kuriuos būtų pranešta elektroniniu paštu.
   text_regexp_info: pvz. ^[A-Z0-9]+$
-  text_min_max_length_info: 0 reiškia jokių apribojimų
   text_project_destroy_confirmation: Ar esate įsitikinęs, kad norite pašalinti šį projektą ir visus susijusius duomenis?
   text_subprojects_destroy_warning: "Šis(-ie) sub-projektas(-ai): %{value} bus taip pat pašalinti."
   text_workflow_edit: Išrinkite vaidmenį ir pėdsekį, kad redaguotumėte darbų eigą
@@ -1384,3 +1383,26 @@ lt:
   error_invalid_size_parameter: Invalid size parameter
   error_attachment_not_found: Attachment %{name} not found
   permission_delete_project: Delete the project
+  field_twofa_scheme: Two-factor authentication scheme
+  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
+    all references to them? This cannot be undone. Often, locking a user instead of
+    deleting them is the better solution. To confirm, please enter their login (%{login})
+    below.
+  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
+    (%{identifier}) below.
+  button_add_subtask: Add subtask
+  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
+    because it does not have access to view this object.'
+  button_fetch_changesets: Fetch commits
+  permission_view_message_watchers: View message watchers list
+  permission_add_message_watchers: Add message watchers
+  permission_delete_message_watchers: Delete message watchers
+  label_message_watchers: Watchers
+  button_copy_link: Copy link
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

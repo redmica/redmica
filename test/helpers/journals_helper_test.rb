@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class JournalsHelperTest < Redmine::HelperTest
   include JournalsHelper
 
-  fixtures :projects, :trackers, :issue_statuses, :issues,
+  fixtures :projects, :trackers, :issue_statuses, :issues, :journals,
            :enumerations, :issue_categories,
            :projects_trackers,
            :users, :roles, :member_roles, :members,
@@ -48,5 +48,43 @@ class JournalsHelperTest < Redmine::HelperTest
     assert_equal 1, thumbnails.count
     assert_kind_of Attachment, thumbnails.first
     assert_equal 'image.png', thumbnails.first.filename
+  end
+
+  def test_render_journal_actions_should_return_edit_link_and_actions_dropdown
+    User.current = User.find(1)
+    issue = Issue.find(1)
+    journals = issue.visible_journals_with_index # add indice
+    journal_actions = render_journal_actions(issue, journals.first, {reply_links: true})
+
+    assert_select_in journal_actions, 'a[title=?][class="icon-only icon-comment"]', 'Quote'
+    assert_select_in journal_actions, 'a[title=?][class="icon-only icon-edit"]', 'Edit'
+    assert_select_in journal_actions, 'div[class="drdn-items"] a[class="icon icon-del"]'
+    assert_select_in journal_actions, 'div[class="drdn-items"] a[class="icon icon-copy-link"]'
+  end
+
+  def test_journal_thumbnail_attachments_should_be_in_the_same_order_as_the_journal_details
+    skip unless convert_installed?
+    set_tmp_attachments_directory
+    issue = Issue.generate!
+
+    # Thumbnails should be displayed in the same order as Journal.detail, not in attachment id order.
+    attachment1 = Attachment.generate!(:file => mock_file_with_options(:original_filename => 'image1.png'), :author => User.find(1))
+    attachment2 = Attachment.generate!(:file => mock_file_with_options(:original_filename => 'image2.png'), :author => User.find(1))
+    journal = Journal.create!(:journalized => issue, :user_id => 1)
+    JournalDetail.create!(
+      :journal => journal, :property => 'attachment',
+      :prop_key => attachment2.id.to_s,
+      :value => 'image2.png'
+    )
+    JournalDetail.create!(
+      :journal => journal, :property => 'attachment',
+      :prop_key => attachment1.id.to_s,
+      :value => 'image1.png'
+    )
+    journal.reload
+    thumbnails = journal_thumbnail_attachments(journal)
+    assert_equal 2, thumbnails.count
+    assert_equal 2, journal.details.count
+    assert_equal journal.details.map(&:value), thumbnails.map(&:filename)
   end
 end

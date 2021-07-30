@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ class AccountController < ApplicationController
 
   # prevents login action to be filtered by check_if_login_required application scope filter
   skip_before_action :check_if_login_required, :check_password_change
+  skip_before_action :check_twofa_activation, :only => :logout
 
   # Overrides ApplicationController#verify_authenticity_token to disable
   # token verification on openid callbacks
@@ -308,7 +309,7 @@ class AccountController < ApplicationController
   end
 
   def password_authentication
-    user = User.try_to_login(params[:username], params[:password], false)
+    user = User.try_to_login!(params[:username], params[:password], false)
 
     if user.nil?
       invalid_credentials
@@ -403,6 +404,7 @@ class AccountController < ApplicationController
       :value => token,
       :expires => 1.year.from_now,
       :path => (Redmine::Configuration['autologin_cookie_path'] || RedmineApp::Application.config.relative_url_root || '/'),
+      :same_site => :lax,
       :secure => secure,
       :httponly => true
     }

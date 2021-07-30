@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ class TimeEntryQuery < Query
     QueryColumn.new(:project, :sortable => "#{Project.table_name}.name", :groupable => true),
     QueryColumn.new(:spent_on, :sortable => ["#{TimeEntry.table_name}.spent_on", "#{TimeEntry.table_name}.created_on"], :default_order => 'desc', :groupable => true),
     TimestampQueryColumn.new(:created_on, :sortable => "#{TimeEntry.table_name}.created_on", :default_order => 'desc', :groupable => true),
-    QueryColumn.new(:tweek, :sortable => ["#{TimeEntry.table_name}.spent_on", "#{TimeEntry.table_name}.created_on"], :caption => :label_week),
+    QueryColumn.new(:tweek, :sortable => ["#{TimeEntry.table_name}.tyear", "#{TimeEntry.table_name}.tweek"], :caption => :label_week),
     QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement}),
     QueryColumn.new(:user, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
     QueryColumn.new(:activity, :sortable => "#{TimeEntryActivity.table_name}.position", :groupable => true),
@@ -40,50 +40,50 @@ class TimeEntryQuery < Query
 
   def initialize(attributes=nil, *args)
     super attributes
-    self.filters ||= { 'spent_on' => {:operator => "*", :values => []} }
+    self.filters ||= {'spent_on' => {:operator => "*", :values => []}}
   end
 
   def initialize_available_filters
     add_available_filter "spent_on", :type => :date_past
     add_available_filter(
       "project_id",
-      :type => :list, :values => lambda { project_values }
+      :type => :list, :values => lambda {project_values}
     ) if project.nil?
     if project && !project.leaf?
       add_available_filter(
         "subproject_id",
         :type => :list_subprojects,
-        :values => lambda { subproject_values })
+        :values => lambda {subproject_values})
     end
     add_available_filter("issue_id", :type => :tree, :label => :label_issue)
     add_available_filter(
       "issue.tracker_id",
       :type => :list,
       :name => l("label_attribute_of_issue", :name => l(:field_tracker)),
-      :values => lambda { trackers.map {|t| [t.name, t.id.to_s]} })
+      :values => lambda {trackers.map {|t| [t.name, t.id.to_s]}})
     add_available_filter(
       "issue.status_id",
       :type => :list,
       :name => l("label_attribute_of_issue", :name => l(:field_status)),
-      :values => lambda { issue_statuses_values })
+      :values => lambda {issue_statuses_values})
     add_available_filter(
       "issue.fixed_version_id",
       :type => :list,
       :name => l("label_attribute_of_issue", :name => l(:field_fixed_version)),
-      :values => lambda { fixed_version_values })
+      :values => lambda {fixed_version_values})
     add_available_filter(
       "issue.category_id",
       :type => :list_optional,
       :name => l("label_attribute_of_issue", :name => l(:field_category)),
-      :values => lambda { project.issue_categories.collect{|s| [s.name, s.id.to_s] } }
+      :values => lambda {project.issue_categories.collect{|s| [s.name, s.id.to_s]}}
     ) if project
     add_available_filter(
       "user_id",
-      :type => :list_optional, :values => lambda { author_values }
+      :type => :list_optional, :values => lambda {author_values}
     )
     add_available_filter(
       "author_id",
-      :type => :list_optional, :values => lambda { author_values }
+      :type => :list_optional, :values => lambda {author_values}
     )
     activities = (project ? project.activities : TimeEntryActivity.shared)
     add_available_filter(
@@ -94,7 +94,7 @@ class TimeEntryQuery < Query
       "project.status",
       :type => :list,
       :name => l(:label_attribute_of_project, :name => l(:field_status)),
-      :values => lambda { project_statuses_values }
+      :values => lambda {project_statuses_values}
     ) if project.nil? || !project.leaf?
 
     add_available_filter "comments", :type => :text
@@ -108,13 +108,14 @@ class TimeEntryQuery < Query
 
   def available_columns
     return @available_columns if @available_columns
+
     @available_columns = self.class.available_columns.dup
     @available_columns += time_entry_custom_fields.visible.
-                            map {|cf| QueryCustomFieldColumn.new(cf) }
+                            map {|cf| QueryCustomFieldColumn.new(cf)}
     @available_columns += issue_custom_fields.visible.
-                            map {|cf| QueryAssociationCustomFieldColumn.new(:issue, cf, :totalable => false) }
+                            map {|cf| QueryAssociationCustomFieldColumn.new(:issue, cf, :totalable => false)}
     @available_columns += project_custom_fields.visible.
-                            map {|cf| QueryAssociationCustomFieldColumn.new(:project, cf) }
+                            map {|cf| QueryAssociationCustomFieldColumn.new(:project, cf)}
     @available_columns
   end
 

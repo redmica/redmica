@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ module Redmine
         @tokens = @question.scan(%r{((\s|^)"[^"]+"(\s|$)|\S+)}).collect {|m| m.first.gsub(%r{(^\s*"\s*|\s*"\s*$)}, '')}
         # tokens must be at least 2 characters long
         # but for Chinese characters (Chinese HANZI/Japanese KANJI), tokens can be one character
-        @tokens = @tokens.uniq.select {|w| w.length > 1 || w =~ /\p{Han}/ }
+        @tokens = @tokens.uniq.select {|w| w.length > 1 || w =~ /\p{Han}/}
         # no more than 5 tokens to search for
         @tokens.slice! 5..-1
       end
@@ -75,7 +75,7 @@ module Redmine
 
       # Returns the result count by type
       def result_count_by_type
-        ret = Hash.new {|h,k| h[k] = 0}
+        ret = Hash.new {|h, k| h[k] = 0}
         result_ids.group_by(&:first).each do |scope, ids|
           ret[scope] += ids.size
         end
@@ -85,7 +85,7 @@ module Redmine
       # Returns the results for the given offset and limit
       def results(offset, limit)
         result_ids_to_load = result_ids[offset, limit] || []
-        results_by_scope = Hash.new {|h,k| h[k] = []}
+        results_by_scope = Hash.new {|h, k| h[k] = []}
         result_ids_to_load.group_by(&:first).each do |scope, scope_and_ids|
           klass = scope.singularize.camelcase.constantize
           results_by_scope[scope] += klass.search_results_from_ids(scope_and_ids.map(&:last))
@@ -128,7 +128,7 @@ module Redmine
           ret += ranks_and_ids_in_scope.map {|rs| [scope, rs]}
         end
         # sort results, higher rank and id first
-        ret.sort! {|a,b| b.last <=> a.last}
+        ret.sort! {|a, b| b.last <=> a.last}
         # only keep ids now that results are sorted
         ret.map! {|scope, r| [scope, r.last]}
         ret

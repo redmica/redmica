@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,17 +26,19 @@ class RolesController < ApplicationController
   before_action :find_role, :only => [:show, :edit, :update, :destroy]
   accept_api_auth :index, :show
 
+  include RolesHelper
+
   require_sudo_mode :create, :update, :destroy
 
   def index
     respond_to do |format|
-      format.html {
+      format.html do
         @roles = Role.sorted.to_a
         render :layout => false if request.xhr?
-      }
-      format.api {
+      end
+      format.api do
         @roles = Role.givable.to_a
-      }
+      end
     end
   end
 
@@ -79,16 +81,16 @@ class RolesController < ApplicationController
     @role.safe_attributes = params[:role]
     if @role.save
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_to roles_path(:page => params[:page])
-        }
-        format.js { head 200 }
+        end
+        format.js {head 200}
       end
     else
       respond_to do |format|
-        format.html { render :action => 'edit' }
-        format.js { head 422 }
+        format.html {render :action => 'edit'}
+        format.js   {head 422}
       end
     end
   end
@@ -108,7 +110,13 @@ class RolesController < ApplicationController
       scope = scope.where(:id => params[:ids])
     end
     @roles = scope.to_a
-    @permissions = Redmine::AccessControl.permissions.select { |p| !p.public? }
+    @permissions = Redmine::AccessControl.permissions.reject(&:public?)
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data(permissions_to_csv(@roles, @permissions), :type => 'text/csv; header=present', :filename => 'permissions.csv')
+      end
+    end
   end
 
   def update_permissions

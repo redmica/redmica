@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -115,6 +115,11 @@ class Redmine::ApiTest::ApiRoutingTest < Redmine::ApiTest::Routing
 
   def test_queries
     should_route 'GET /queries' => 'queries#index'
+  end
+
+  def test_repositories
+    should_route 'POST /projects/1/repository/2/revisions/3/issues' => 'repositories#add_related_issue', :id => '1', :repository_id => '2', :rev => '3'
+    should_route 'DELETE /projects/1/repository/2/revisions/3/issues/4' => 'repositories#remove_related_issue', :id => '1', :repository_id => '2', :rev => '3', :issue_id => '4'
   end
 
   def test_roles

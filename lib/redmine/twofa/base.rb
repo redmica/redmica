@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ module Redmine
             message: 'twofa_mail_body_security_notification_paired',
             # (mis-)use field here as value wouldn't get localized
             field: "twofa__#{scheme_name}__name",
-            url: { controller: 'my', action: 'account' }
+            url: {controller: 'my', action: 'account'}
           }
         ).deliver
       end
@@ -88,7 +88,7 @@ module Redmine
           {
             title: :label_my_account,
             message: 'twofa_mail_body_security_notification_unpaired',
-            url: { controller: 'my', action: 'account' }
+            url: {controller: 'my', action: 'account'}
           }
         ).deliver
       end
@@ -114,6 +114,7 @@ module Redmine
         Token.where(user_id: @user.id).find_token('twofa_backup_code', code).try(:delete)
         # make sure the user using the backup code is the same it's been issued to
         return false unless @user.present? && @user == user_from_code
+
         ::Mailer.security_notification(
           @user,
           User.current,
@@ -121,7 +122,7 @@ module Redmine
             originator: @user,
             title: :label_my_account,
             message: 'twofa_mail_body_backup_code_used',
-            url: { controller: 'my', action: 'account' }
+            url: {controller: 'my', action: 'account'}
           }
         ).deliver
         return true
@@ -141,7 +142,7 @@ module Redmine
           {
             title: :label_my_account,
             message: 'twofa_mail_body_backup_codes_generated',
-            url: { controller: 'my', action: 'account' }
+            url: {controller: 'my', action: 'account'}
           }
         ).deliver
         tokens

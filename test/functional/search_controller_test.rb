@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -427,5 +427,20 @@ class SearchControllerTest < Redmine::ControllerTest
       assert_select 'dt.issue a span.highlight', :text => 'highlighted'
       assert_select 'dd span.highlight', :text => 'highlighted'
     end
+  end
+
+  def test_search_should_exclude_empty_modules_params
+    @request.session[:user_id] = 1
+
+    get :index, params: {
+      q: "private",
+      scope: "all",
+      issues: "1",
+      projects: nil
+    }
+
+    assert_response :success
+
+    assert_select '#search-results dt.project', 0
   end
 end

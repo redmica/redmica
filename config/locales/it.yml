@@ -564,7 +564,6 @@ it:
 
   text_select_mail_notifications: Seleziona le azioni per cui deve essere inviata una notifica.
   text_regexp_info: es. ^[A-Z0-9]+$
-  text_min_max_length_info: 0 significa nessuna restrizione
   text_project_destroy_confirmation: Sei sicuro di voler eliminare il progetto e tutti i dati ad esso collegati?
   text_workflow_edit: Seleziona un ruolo ed un tracker per modificare il workflow
   text_are_you_sure: Sei sicuro ?
@@ -1135,7 +1134,7 @@ it:
   notice_import_finished_with_errors: "%{count} out of %{total} items could not be imported"
   error_invalid_file_encoding: The file is not a valid %{encoding} encoded file
   error_invalid_csv_file_or_settings: The file is not a CSV file or does not match the
-    settings below
+    settings below (%{value})
   error_can_not_read_import_file: An error occurred while reading the file to import
   permission_import_issues: Import issues
   label_import_issues: Importa segnalazioni
@@ -1387,3 +1386,26 @@ it:
   error_invalid_size_parameter: Invalid size parameter
   error_attachment_not_found: Attachment %{name} not found
   permission_delete_project: Delete the project
+  field_twofa_scheme: Two-factor authentication scheme
+  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
+    all references to them? This cannot be undone. Often, locking a user instead of
+    deleting them is the better solution. To confirm, please enter their login (%{login})
+    below.
+  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
+    (%{identifier}) below.
+  button_add_subtask: Add subtask
+  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
+    because it does not have access to view this object.'
+  button_fetch_changesets: Fetch commits
+  permission_view_message_watchers: View message watchers list
+  permission_add_message_watchers: Add message watchers
+  permission_delete_message_watchers: Delete message watchers
+  label_message_watchers: Watchers
+  button_copy_link: Copy link
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

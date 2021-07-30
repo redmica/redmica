@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # FileSystem adapter
 # File written by Paul Rivier, at Demotera.
@@ -52,9 +52,7 @@ module Redmine
         end
 
         def info
-          info = Info.new({:root_url => target(),
-                            :lastrev => nil
-                          })
+          info = Info.new({:root_url => target(), :lastrev => nil})
           info
         rescue CommandFailed
           return nil
@@ -68,8 +66,12 @@ module Redmine
             e_utf8 = scm_iconv('UTF-8', @path_encoding, e1)
             next if e_utf8.blank?
 
-            relative_path_utf8 = format_path_ends(
-                (format_path_ends(path,false,true) + e_utf8),false,false)
+            relative_path_utf8 =
+              format_path_ends(
+                (format_path_ends(path, false, true) + e_utf8),
+                false,
+                false
+              )
             t1_utf8 = target(relative_path_utf8)
             t1 = scm_iconv(@path_encoding, 'UTF-8', t1_utf8)
             relative_path = scm_iconv(@path_encoding, 'UTF-8', relative_path_utf8)

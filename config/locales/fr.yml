@@ -152,10 +152,10 @@ fr:
         earlier_than_minimum_start_date: "ne peut pas être antérieure au %{date} à cause des demandes qui précèdent"
         not_a_regexp: "n'est pas une expression regulière valide"
         open_issue_with_closed_parent: "Une demande ouverte ne peut pas être rattachée à une demande fermée"
-        must_contain_uppercase: "must contain uppercase letters (A-Z)"
-        must_contain_lowercase: "must contain lowercase letters (a-z)"
-        must_contain_digits: "must contain digits (0-9)"
-        must_contain_special_chars: "must contain special characters (!, $, %, ...)"
+        must_contain_uppercase: "doit contenir des lettres majuscules (A-Z)"
+        must_contain_lowercase: "doit contenir des lettres minuscules (a-z)"
+        must_contain_digits: "doit contenir des chiffres (0-9)"
+        must_contain_special_chars: "doit contenir des caractères spéciaux (!, $, %, ...)"
 
   actionview_instancetag_blank_option: Choisir
 
@@ -234,7 +234,7 @@ fr:
   warning_attachments_not_saved: "%{count} fichier(s) n'ont pas pu être sauvegardés."
   error_password_expired: "Votre mot de passe a expiré ou nécessite d'être changé."
   error_invalid_file_encoding: "Le fichier n'est pas un fichier %{encoding} valide"
-  error_invalid_csv_file_or_settings: "Le fichier n'est pas un fichier CSV ou n'est pas conforme aux paramètres sélectionnés"
+  error_invalid_csv_file_or_settings: "Le fichier n'est pas un fichier CSV ou n'est pas conforme aux paramètres sélectionnés (%{value})"
   error_can_not_read_import_file: "Une erreur est survenue lors de la lecture du fichier à importer"
   error_attachment_extension_not_allowed: "L'extension %{extension} n'est pas autorisée"
   error_ldap_bind_credentials: "Identifiant ou mot de passe LDAP incorrect"
@@ -1099,7 +1099,6 @@ fr:
 
   text_select_mail_notifications: Actions pour lesquelles une notification par e-mail est envoyée
   text_regexp_info: ex. ^[A-Z0-9]+$
-  text_min_max_length_info: 0 pour aucune restriction
   text_project_destroy_confirmation: Êtes-vous sûr de vouloir supprimer ce projet et toutes ses données ?
   text_subprojects_destroy_warning: "Ses sous-projets : %{value} seront également supprimés."
   text_workflow_edit: Sélectionner un tracker et un rôle pour éditer le workflow
@@ -1132,7 +1131,7 @@ fr:
   text_load_default_configuration: Charger le paramétrage par défaut
   text_status_changed_by_changeset: "Appliqué par commit %{value}."
   text_time_logged_by_changeset: "Appliqué par commit %{value}"
-  text_issues_destroy_confirmation: 'Êtes-vous sûr de vouloir supprimer la ou les demandes(s) selectionnée(s) ?'
+  text_issues_destroy_confirmation: 'Êtes-vous sûr de vouloir supprimer la ou les demande(s) selectionnée(s) ?'
   text_issues_destroy_descendants_confirmation: "Cela entrainera également la suppression de %{count} sous-tâche(s)."
   text_time_entries_destroy_confirmation: "Etes-vous sûr de vouloir supprimer les temps passés sélectionnés ?"
   text_select_project_modules: 'Sélectionner les modules à activer pour ce projet :'
@@ -1300,87 +1299,101 @@ fr:
   label_display_type_board: "Tableau"
   label_my_bookmarks: "Favoris"
   label_import_time_entries: "Importer des temps passés"
-  field_toolbar_language_options: Code highlighting toolbar languages
-  label_user_mail_notify_about_high_priority_issues_html: Also notify me about issues
-    with a priority of <em>%{prio}</em> or higher
-  label_assign_to_me: Assign to me
-  notice_issue_not_closable_by_open_tasks: This issue cannot be closed because it has
-    at least one open subtask.
-  notice_issue_not_closable_by_blocking_issue: This issue cannot be closed because it
-    is blocked by at least one open issue.
-  notice_issue_not_reopenable_by_closed_parent_issue: This issue cannot be reopened
-    because its parent issue is closed.
-  error_bulk_download_size_too_big: These attachments cannot be bulk downloaded because
-    the total file size exceeds the maximum allowed size (%{max_size})
-  setting_bulk_download_max_size: Maximum total size for bulk download
-  label_download_all_attachments: Download all files
-  error_attachments_too_many: This file cannot be uploaded because it exceeds the maximum
-    number of files that can be attached simultaneously (%{max_number_of_files})
-  setting_email_domains_allowed: Allowed email domains
-  setting_email_domains_denied: Disallowed email domains
-  field_passwd_changed_on: Password last changed
-  label_relations_mapping: Relations mapping
-  label_import_users: Import users
-  label_days_to_html: "%{days} days up to %{date}"
-  setting_twofa: Two-factor authentication
-  label_optional: optional
-  label_required_lower: required
-  button_disable: Disable
-  twofa__totp__name: Authenticator app
-  twofa__totp__text_pairing_info_html: Scan this QR code or enter the plain text key
-    into a TOTP app (e.g. <a href="https://support.google.com/accounts/answer/1066447">Google
+  field_toolbar_language_options: Langages de la barre d'outils de mise en évidence du code
+  label_user_mail_notify_about_high_priority_issues_html: Me notifier aussi des demandes avec une priorité <em>%{prio}</em> ou supérieure
+  label_assign_to_me: M'assigner
+  notice_issue_not_closable_by_open_tasks: Cette demande ne peut pas être fermée car elle contient au moins une sous-tâche encore ouverte.
+  notice_issue_not_closable_by_blocking_issue: Cette demande ne peut pas être fermée car elle est bloqué par au moins une demande encore ouverte.
+  notice_issue_not_reopenable_by_closed_parent_issue: Cette demande ne peut être réouverte car sa demande parente est fermée.
+  error_bulk_download_size_too_big: Ces pièces jointes ne peuvent pas être téléchargées en masse car
+    la taille totale des fichiers dépasse la taille maximale autorisée (%{max_size})
+  setting_bulk_download_max_size: Taille totale maximale du télécharement groupé
+  label_download_all_attachments: Télécharger tous les fichiers
+  error_attachments_too_many: Ce fichier ne peut être transmis car il excède le nombre maximum de fichier pouvant être attaché simultanément (%{max_number_of_files})
+  setting_email_domains_allowed: Domaines de messagerie autorisés
+  setting_email_domains_denied: Domaines de messagerie non autorisés
+  field_passwd_changed_on: Mot de passe modifié pour la dernière fois
+  label_relations_mapping: Cartographie des relations
+  label_import_users: Importer les utilisateurs
+  label_days_to_html: "%{days} jours jusqu'à %{date}"
+  setting_twofa: Double authentification
+  label_optional: optionel
+  label_required_lower: obligatoire
+  button_disable: Désactiver
+  twofa__totp__name: Application d'authentication
+  twofa__totp__text_pairing_info_html: Scannez ce QR-Code ou saisissez la clé au format textee
+    dans une application de double authentification (e.g. <a href="https://support.google.com/accounts/answer/1066447">Google
     Authenticator</a>, <a href="https://authy.com/download/">Authy</a>, <a href="https://guide.duo.com/third-party-accounts">Duo
-    Mobile</a>) and enter the code in the field below to activate two-factor authentication.
-  twofa__totp__label_plain_text_key: Plain text key
-  twofa__totp__label_activate: Enable authenticator app
-  twofa_currently_active: 'Currently active: %{twofa_scheme_name}'
-  twofa_not_active: Not activated
+    Mobile</a>) et saisissez le code dans le champ de saisie ci-dessus pour activer la double authentification.
+  twofa__totp__label_plain_text_key: Clé au format texte
+  twofa__totp__label_activate: Activer la double authentification
+  twofa_currently_active: 'Activée: %{twofa_scheme_name}'
+  twofa_not_active: Désactivée
   twofa_label_code: Code
-  twofa_hint_disabled_html: Setting <strong>%{label}</strong> will deactivate and unpair
-    two-factor authentication devices for all users.
-  twofa_hint_required_html: Setting <strong>%{label}</strong> will require all users
-    to set up two-factor authentication at their next login.
-  twofa_label_setup: Enable two-factor authentication
-  twofa_label_deactivation_confirmation: Disable two-factor authentication
-  twofa_notice_select: 'Please select the two-factor scheme you would like to use:'
-  twofa_warning_require: The administrator requires you to enable two-factor authentication.
-  twofa_activated: Two-factor authentication successfully enabled. It is recommended
-    to <a data-method="post" href="%{bc_path}">generate backup codes</a> for your account.
-  twofa_deactivated: Two-factor authentication disabled.
-  twofa_mail_body_security_notification_paired: Two-factor authentication successfully
-    enabled using %{field}.
-  twofa_mail_body_security_notification_unpaired: Two-factor authentication disabled
-    for your account.
-  twofa_mail_body_backup_codes_generated: New two-factor authentication backup codes
-    generated.
-  twofa_mail_body_backup_code_used: A two-factor authentication backup code has been
-    used.
-  twofa_invalid_code: Code is invalid or outdated.
-  twofa_label_enter_otp: Please enter your two-factor authentication code.
-  twofa_too_many_tries: Too many tries.
-  twofa_resend_code: Resend code
-  twofa_code_sent: An authentication code has been sent to you.
-  twofa_generate_backup_codes: Generate backup codes
-  twofa_text_generate_backup_codes_confirmation: This will invalidate all existing backup
-    codes and generate new ones. Would you like to continue?
-  twofa_notice_backup_codes_generated: Your backup codes have been generated.
-  twofa_warning_backup_codes_generated_invalidated: New backup codes have been generated.
-    Your existing codes from %{time} are now invalid.
-  twofa_label_backup_codes: Two-factor authentication backup codes
-  twofa_text_backup_codes_hint: Use these codes instead of a one-time password should
-    you not have access to your second factor. Each code can only be used once. It is
-    recommended to print and store them in a safe place.
-  twofa_text_backup_codes_created_at: Backup codes generated %{datetime}.
-  twofa_backup_codes_already_shown: Backup codes cannot be shown again, please <a data-method="post"
-    href="%{bc_path}">generate new backup codes</a> if required.
-  error_can_not_execute_macro_html: Error executing the <strong>%{name}</strong> macro
+  twofa_hint_disabled_html: La valeur <strong>%{label}</strong> va désactiver et déconnecter
+    les applications de double authentification pour tous les utilisateurs.
+  twofa_hint_required_html: La valeur <strong>%{label}</strong> va imposer à tous les utilisateurs de mettre
+    en place la double authentification à la prochaine connexion.
+  twofa_label_setup: Activer la double authentification
+  twofa_label_deactivation_confirmation: Désactiver la double authentification
+  twofa_notice_select: 'Veuillez choisir la méthode de double authentification que vous souhaitez utiliser :'
+  twofa_warning_require: L'administrateur vous demande d'activer la double authentification.
+  twofa_activated: La double authentification a bien été activée. Il est recommandé
+    de <a data-method="post" href="%{bc_path}">générer des codes de secours</a> pour votre compte.
+  twofa_deactivated: La double authentification a été désactivée.
+  twofa_mail_body_security_notification_paired: La double authentification a bien été activée
+    en utilisant %{field}.
+  twofa_mail_body_security_notification_unpaired: La double authentification a été désactivée
+    pour votre compte.
+  twofa_mail_body_backup_codes_generated: Les nouveaux codes de secours ont été générés.
+  twofa_mail_body_backup_code_used: Un code de secours de la double authentification a été utilisé.
+  twofa_invalid_code: Le code est invalide ou expiré.
+  twofa_label_enter_otp: Veuillez saisir le code de la double authentification.
+  twofa_too_many_tries: Trop de tentatives.
+  twofa_resend_code: Envoyer un code à nouveau
+  twofa_code_sent: Un code d'authentification vous a été envoyé.
+  twofa_generate_backup_codes: Générer des codes de secours
+  twofa_text_generate_backup_codes_confirmation: Cette opération va désactiver tous les codes de secours actuels
+    et en générer de nouveaux. Souhaitez-vous continuer ?
+  twofa_notice_backup_codes_generated: Les codes de secours ont été générés.
+  twofa_warning_backup_codes_generated_invalidated: Les nouveaux codes de secours ont été générés.
+    Les anciens codes du %{time} sont à présent invalides.
+  twofa_label_backup_codes: Codes de secours pour la double authentification
+  twofa_text_backup_codes_hint: Utilisez ces codes à la place des codes temporaires à chaque fois que vous ne pouvez
+    pas utiliser l'application de double authentification. Chaque code ne peut être utilisé qu'une seule fois. Il
+    est recommandé de les imprimer et de les sauvegarder en lieu sûr.
+  twofa_text_backup_codes_created_at: Codes de secours générés le %{datetime}.
+  twofa_backup_codes_already_shown: Les codes de secours ne peuvent pas être affichés à nouveau, veuillez
+    <a data-method="post" href="%{bc_path}">générer de nouveaux codes</a> si besoin.
+  error_can_not_execute_macro_html: Erreur lors de l'exécution de la macro <strong>%{name}</strong>
     (%{error})
-  error_macro_does_not_accept_block: This macro does not accept a block of text
-  error_childpages_macro_no_argument: With no argument, this macro can be called from
-    wiki pages only
-  error_circular_inclusion: Circular inclusion detected
-  error_page_not_found: Page not found
-  error_filename_required: Filename required
-  error_invalid_size_parameter: Invalid size parameter
-  error_attachment_not_found: Attachment %{name} not found
-  permission_delete_project: Delete the project
+  error_macro_does_not_accept_block: Cette macro n'accepte pas de bloc de texte
+  error_childpages_macro_no_argument: Sans argument, cette macro ne peut uniquement être appelée que par les pages wiki
+  error_circular_inclusion: Inclusion récursive détectée
+  error_page_not_found: Page non trouvée
+  error_filename_required: Nom de fichier obligatoire
+  error_invalid_size_parameter: Paramètre de taille invalide
+  error_attachment_not_found: Pièce jointe %{name} non trouvée
+  permission_delete_project: Supprimer le projet
+  field_twofa_scheme: Méthode de double authentication
+  text_user_destroy_confirmation: Voulez-vous vraiment supprimer cet utilisateur et l'ensemble des références à celui-ci ?
+    Cette action ne peut être annulée. Il est souvent préférable de verrouiller l'utilisateur au lieu de le supprimer.
+    Pour confirmer, veuillez entrer l'identifiant (%{login}) ci dessous.
+  text_project_destroy_enter_identifier: Pour confirmer, veuillez saisir l'identifiant du projet
+    (%{identifier}) ci dessous.
+  button_add_subtask: Ajouter une sous-tâche
+  notice_invalid_watcher: "Observateur non valide: l'utilisateur ne recevra aucune notification
+    car il n'a pas accès pour afficher cet objet."
+  button_fetch_changesets: Récupérer les commits
+  permission_view_message_watchers: Afficher la liste des observateurs de messages
+  permission_add_message_watchers: Ajouter des observateurs de messages
+  permission_delete_message_watchers: Supprimer des observateurs de messages
+  label_message_watchers: Obsvervateurs
+  button_copy_link: Copier le lien
+  error_invalid_authenticity_token: Jeton d'authenticité de formulaire invalide.
+  error_query_statement_invalid: Une erreur s'est produite lors de l'exécution de la requête et a
+    été enregistré. Veuillez signaler cette erreur à votre administrateur Redmine.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

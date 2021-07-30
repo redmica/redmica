@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,7 +33,9 @@ class AdminTest < Redmine::IntegrationTest
     get "/users/new"
     assert_response :success
 
-    post "/users", :params => {
+    post(
+      "/users",
+      :params => {
         :user => {
           :login => "psmith", :firstname => "Paul",
           :lastname => "Smith", :mail => "psmith@somenet.foo",
@@ -41,7 +43,7 @@ class AdminTest < Redmine::IntegrationTest
           :password_confirmation => "psmith09"
         }
       }
-
+    )
     user = User.find_by_login("psmith")
     assert_kind_of User, user
     assert_redirected_to "/users/#{ user.id }/edit"
@@ -50,24 +52,30 @@ class AdminTest < Redmine::IntegrationTest
     assert_kind_of User, logged_user
     assert_equal "Paul", logged_user.firstname
 
-    put "/users/#{user.id}", :params => {
+    put(
+      "/users/#{user.id}",
+      :params => {
         :id => user.id,
         :user => {
           :status => User::STATUS_LOCKED
         }
       }
+    )
     assert_redirected_to "/users/#{ user.id }/edit"
     locked_user = User.try_to_login("psmith", "psmith09")
     assert_nil locked_user
   end
 
   test "Add a user as an anonymous user should fail" do
-    post '/users', :params => {
+    post(
+      '/users',
+      :params => {
         :user => {
           :login => 'psmith', :firstname => 'Paul',
           :password => "psmith09", :password_confirmation => "psmith09"
         }
       }
+    )
     assert_response :redirect
     assert_redirected_to "/login?back_url=http%3A%2F%2Fwww.example.com%2Fusers"
   end

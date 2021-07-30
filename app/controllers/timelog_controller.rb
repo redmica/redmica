@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@ class TimelogController < ApplicationController
   accept_api_auth :index, :show, :create, :update, :destroy
 
   rescue_from Query::StatementInvalid, :with => :query_statement_invalid
+  rescue_from Query::QueryError, :with => :query_error
 
   helper :issues
   include TimelogHelper
@@ -302,5 +303,10 @@ class TimelogController < ApplicationController
 
   def retrieve_time_entry_query
     retrieve_query(TimeEntryQuery, false, :defaults => @default_columns_names)
+  end
+
+  def query_error(exception)
+    session.delete(:time_entry_query)
+    super
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -163,6 +163,10 @@ class ActiveSupport::TestCase
     File.directory?(repository_path(vendor))
   end
 
+  def repository_configured?(vendor)
+    self.class.repository_configured?(vendor)
+  end
+
   def self.is_mysql_utf8mb4
     return false unless Redmine::Database.mysql?
 
@@ -177,6 +181,10 @@ class ActiveSupport::TestCase
       return false if character_sets.include?(r[0]) && r[1] != "utf8mb4"
     end
     return true
+  end
+
+  def is_mysql_utf8mb4
+    self.class.is_mysql_utf8mb4
   end
 
   def repository_path_hash(arr)

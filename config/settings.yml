@@ -1,5 +1,5 @@
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -85,7 +85,7 @@ issues_export_limit:
   default: 500
 activity_days_default:
   format: int
-  default: 30
+  default: 10
 per_page_options:
   default: '25,50,100'
 search_results_per_page:
@@ -275,12 +275,14 @@ new_project_user_role_id:
   default: ''
 sequential_project_identifiers:
   default: 0
-# encodings used to convert repository files content to UTF-8
-# multiple values accepted, comma separated
 default_users_hide_mail:
+  default: 1
+default_users_no_self_notified:
   default: 1
 default_users_time_zone:
   default: ""
+# encodings used to convert files content to UTF-8
+# multiple values accepted, comma separated
 repositories_encodings:
   default: ''
 # encoding used to convert commit logs to UTF-8

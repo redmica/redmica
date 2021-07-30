@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,12 +23,12 @@ class RoutingWorkflowsTest < Redmine::RoutingTest
   def test_workflows
     should_route 'GET /workflows' => 'workflows#index'
     should_route 'GET /workflows/edit' => 'workflows#edit'
-    should_route 'POST /workflows/edit' => 'workflows#edit'
+    should_route 'PATCH /workflows/update' => 'workflows#update'
 
     should_route 'GET /workflows/permissions' => 'workflows#permissions'
-    should_route 'POST /workflows/permissions' => 'workflows#permissions'
+    should_route 'PATCH /workflows/update_permissions' => 'workflows#update_permissions'
 
     should_route 'GET /workflows/copy' => 'workflows#copy'
-    should_route 'POST /workflows/copy' => 'workflows#copy'
+    should_route 'POST /workflows/duplicate' => 'workflows#duplicate'
   end
 end

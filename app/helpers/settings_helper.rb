@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -209,7 +209,7 @@ module SettingsHelper
   def date_format_setting_options(locale)
     Setting::DATE_FORMATS.map do |f|
       today = ::I18n.l(User.current.today, :locale => locale, :format => f)
-      format = f.gsub('%', '').gsub(/[dmY]/) do
+      format = f.delete('%').gsub(/[dmY]/) do
         {'d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy'}[$&]
       end
       ["#{today} (#{format})", f]

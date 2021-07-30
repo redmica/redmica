@@ -1,5 +1,394 @@
 # Changelog
 
+## RedMica 1.3.0 - 2021-05-31
+
+### Accounts / authentication
+
+* Defect redmine-35226: Add SameSite=Lax to cookies to fix warnings in web browsers
+* Patch redmine-34071: Handle AuthSourceExceptions in User.try_to_login
+
+### Activity view
+
+* Feature redmine-32248: Change the default value for "Days displayed on project activity" setting to 10
+* Feature redmine-33602: Add an interface to filter activities by user
+
+### Administration
+
+* Feature redmine-34258: Create tracker by copy
+* Feature redmine-34307: Create custom field by copy
+
+### Attachments
+
+* Defect redmine-33459: The order of thumbnails in journals does not match the order of file name list
+* Defect redmine-33752: Uploading a big file fails with NoMemoryError
+* Defect redmine-34999: The result of Attachment.latest_attach is unstable if attachments have the same timestamp
+* Feature redmine-30776: Drag and drop file upload to file type custom field
+* Feature redmine-32898: PDF thumbnails support on Windows
+
+### Code cleanup/refactoring
+
+* Feature redmine-34337: Remove jQuery Migrate
+* Patch redmine-32054: Add test for 4 byte characters (emoji) support
+* Patch redmine-33268: Add missing test: ProjectCustomField creation
+* Patch redmine-34119: Fix selenium chrome options so files are downloaded to tmp/downloads in system tests
+* Patch redmine-34269: Allow system tests to run on remote Selenium hub (eg: Docker)
+* Patch redmine-34321: Add missing fixtures to AttachmentsControllerTest
+* Patch redmine-34444: Remove unused key :preview from Redmine::AccessKeys::ACCESSKEYS
+* Patch redmine-34492: Fix passing a wrong parameter to assert_select in API test for 'GET /users/:id'
+* Patch redmine-34745: Remove unused i18n key "text_min_max_length_info"
+* Patch redmine-34750: Remove unsupported encodings ISO-2022-KR and ISCII91 from Setting::ENCODINGS
+* Patch redmine-34789: Fix misplaced comment in config/settings.yml
+* Patch redmine-34976: Add missing fixtures to TimeEntryCustomFieldTest
+* Patch redmine-35026: Remove rake task check_parsing_by_psych
+* Patch redmine-35075: Use named routes in base layout and account sidebar
+* Patch redmine-35076: Menu manager - generate correct URLs when rendering from a namespaced controller
+* Patch redmine-35208: Use `Time.use_zone` instead of `Time.zone=`
+* Patch redmine-35230: Fix typo in ApplicationHelper.html_title comment
+
+### Custom fields
+
+* Defect redmine-33930: 500 error when attempting to create custom field enumeration with empty name
+* Defect redmine-35115: Time entries are broken if grouped by project and issue custom fields
+
+### Gems support
+
+* Patch redmine-34443: Update roadie-rails to 2.2
+* Patch redmine-34579: Use 'webdrivers' gem to manage the Chrome driver for system tests
+* Patch redmine-34619: Update Nokogiri to 1.11
+* Patch redmine-35136: Update RuboCop to 1.15
+* Patch redmine-35142: Update RuboCop Performance to 1.11
+* Patch redmine-35207: Update RuboCop Rails to 2.10
+
+### Email notifications
+
+* Defect redmine-32199: Security notification is not sent when an admin changes the password of a user
+* Defect redmine-35017: X-Redmine-Issue-Assignee email header field is empty when the assignee of an issue is a group
+* Feature redmine-34787: Ability to set default value for  "I don't want to be notified of changes that I make myself"
+
+### Email receiving
+
+* Feature redmine-34794: Allow newlines and quote characters within mail body delimiters
+
+### Forums
+
+* Feature redmine-3390: Ability to add watchers to forum threads
+* Defect redmine-32156: No left padding for first level entries in discussion board list
+
+### Gems support
+
+* Patch redmine-34339: Update net-ldap to 0.17
+
+### I18n
+
+* Defect redmine-33232: Hard-coded error messages in ApplicationController
+
+### Importers
+
+* Feature redmine-34762: Display more detailed error message when attempting to import malformed CSV file
+
+### Issues
+
+* Defect redmine-10084: Disabled trackers of subprojects are listed in project overview
+* Defect redmine-33419: Show only valid projects on issue form when the issue is a subtask
+* Defect redmine-34982: Cannot change the default version and default assignee under settings
+* Feature redmine-33418: Bulk addition of related issues
+* Feature redmine-34303: Allow to add subtask from context menu
+* Feature redmine-34798: Show project tree instead of subprojects in the project selector when you create a new issue
+* Patch redmine-33329: Improve watchers functionality to mark the users that are watching a non visible object and to not return watchers that cannot see the object
+* Patch redmine-33337: Clean-up workflows controller
+
+### Issues filter
+
+* Defect redmine-35201: Duplicate entries in issue filter values
+* Feature redmine-5893: Filter issues by notes
+* Patch redmine-35312: Gracefully handle invalid operators and associations requested in queries
+
+### Issues list
+
+* Feature redmine-34932: "Copy link" feature for issues list
+
+### Performance
+
+* Patch redmine-34399: Use sum { ... } instead of map { ... }.sum
+
+### Permissions and roles
+
+* Feature redmine-13767: Export permissions report to CSV
+
+### Plugin API
+
+* Defect redmine-33290: Unnecessary database access when IssueQuery class is defined
+
+### Project settings
+
+* Defect redmine-34032: Project settings tab contains two items with the same id
+
+### Projects
+
+* Defect redmine-33733: No trackers are selected for new projects
+
+### REST API
+
+* Defect redmine-11870: Users can delete their own accounts unconditionally via REST API
+* Defect redmine-30121: Projects API should not return invisible trackers
+* Defect redmine-35039: API create issue relation method returns undefined method `split' when issue id is sent as integer
+* Feature redmine-22008: Associated Revision API
+* Feature redmine-24976: Include new statuses allowed by workflow in Issues REST API
+* Feature redmine-34242: Include two-factor authentication scheme in users API response
+
+### Roadmap
+
+* Defect redmine-34983: Roadmap tab is missing if there are only inherited from parent project versions
+
+### SCM
+
+* Feature redmine-16849: Render Textile and Markdown files in the repository browser
+* Feature redmine-8875: Allow manually fetching changesets
+
+### SEO
+
+* Feature redmine-33658: robots.txt: disallow crawling login, register, and lost password form
+
+### Text formatting
+
+* Defect redmine-27780: Case-insensitive matching fails for Unicode filenames when referring to attachments in text formatting
+* Defect redmine-35036: Markdown text sections broken by thematic breaks (horizontal rules)
+
+### Time tracking
+
+* Defect redmine-33952: Spent time details are displayed in incorrect order when sorted by week and date
+
+### Translations
+
+* Defect redmine-32857: Fix grammatical agreement in translation for "parent issue" in pt and pt-BR
+* Defect redmine-34456: Fix Japanese translation for less_than_x_seconds and less_than_x_minutes
+* Defect redmine-35319: Wrong Japanese translation for permission_delete_message_watchers
+* Patch redmine-34418: Unify the translation of the word "relation" in Czech
+* Patch redmine-34659: Change Traditional Chinese translation for "watch" and "watcher"
+* Patch redmine-35016: French translations for two-factor authentication
+
+### UI
+
+* Defect redmine-34580: Custom field labels do not contain class "error" when the field value is invalid
+* Defect redmine-34805: Activity tab in cross-project menu is sometimes broken
+* Feature redmine-28392: Improve wiki headings style
+* Feature redmine-30459: Switch edit/preview tabs with keyboard shortcuts
+* Feature redmine-33167: "Add news" button in cross-project News tab
+* Feature redmine-33820: Auto complete wiki page links
+* Feature redmine-34340: Make archived projects visually distinguishable in nested projects lists
+* Feature redmine-34417: Require explicit confirmation when deleting a user or a project
+* Feature redmine-34549: Add keyboard shortcuts for wiki toolbar buttons
+* Feature redmine-34703: "Copy link" feature for issue and issue journal
+* Feature redmine-34714: Move delete button for issues and journals to the dropdown menu
+
+### Wiki
+
+* Feature redmine-32629: Add edit button to Wiki sidebar
+* Feature redmine-7652: Ability to add watchers to Wiki pages
+
+## RedMica 1.2.2 - 2021-05-15
+
+* Defect redmine-34367: Allowed filename extensions of attachments can be circumvented
+* Defect redmine-34894: User link using @ not working at the end of line
+* Defect redmine-34921: Do not journalize attachments that are added during a "Copy Issue" operation
+* Defect redmine-34933: Atom feed of the activity page does not contain items after the second page
+* Defect redmine-34950: SysController and MailHandlerController are vulnerable to timing attack
+* Defect redmine-34998: Cannot open journal dropdown menu after editing note
+* Defect redmine-35045: Mail handler bypasses add_issue_notes permission
+* Defect redmine-35085: Arbitrary file read in Git adapter
+* Defect redmine-35087: Users without two-factor authentication enabled cannot sign out when two-factor authentication is required
+* Defect redmine-35100: MailHandler raises NameError exception when generating error message
+* Defect redmine-35131: Issue import - allow auto mapping for Unique ID and relation type fields
+* Defect redmine-35135: FrozenError when new LDAP users try to login
+* Feature redmine-34942: Support for Git repositories with default branch "main"
+* Patch redmine-34955: Update copyright year in the footer to 2021
+* Patch redmine-35214: Update Rails to 5.2.6
+* Patch redmine-34969: Remove dependency on MimeMagic
+* Patch redmine-35034: Improve loading speed of workflow page
+
+## RedMica 1.2.1 - 2021-03-21
+
+* Defect redmine-33206: Unable to autoload constant Version.table_name if gems uses Version class
+* Defect redmine-33338: Property changes tab does not show journals with both property changes and notes
+* Defect redmine-33355: TypeError when attempting to update a user with a blank email address
+* Defect redmine-33360: Names of private projects are leaked by issue journal details that contain project_id changes
+* Defect redmine-33548: Column header is clickable even when the column is not actually sortable
+* Defect redmine-33550: Per role visibility settings for spent time custom fields is not properly checked
+* Defect redmine-33846: Inline issue auto complete doesn't sanitize HTML tags
+* Defect redmine-34247: Web browser freezes when displaying workflow page with a large number of issue statuses
+* Defect redmine-34297: Subprojects issues are not displayed on main project when all subprojects are closed
+* Defect redmine-34326: CSV import raises an exception if CSV header has empty columns
+* Defect redmine-34375: "is not" operator for Subproject filter incorrectly excludes closed subprojects
+* Defect redmine-34447: Typo in translation string 'setting_issue_list_default_columns': s//Isuses/Issues
+* Defect redmine-34615: 'Search' falsy parameters are not respected
+* Defect redmine-34618: Cannot sign in when both enabling two-factor authentication and changing password are required
+* Feature redmine-15212: Atom feed on project with subprojects should show in article title the name of the project
+* Feature redmine-18555: Show warning when attempting to attach more than the allowed number of attachments
+* Feature redmine-33906: Upgrade Rails to 5.2.4.5
+* Feature redmine-34123: System tests for inline auto complete feature
+* Feature redmine-34495: Don't show "Two-factor authentication" on new user form
+* Patch redmine-34439: Spanish translation update for 4.1-stable
+* Patch redmine-34461: Update Redcarpet to 3.5.1
+* Patch redmine-34479: Fix possible race condition with parallel, identical file uploads
+* Patch redmine-34595: Filter list of recent projects in the project jump box
+* Patch redmine-34700: Allow to use watch_by filter in the global issues list
+
+## RedMica 1.2.0 - 2020-11-18
+
+Based on Redmine 4.1.1.devel.20401.
+
+### Accounts / authentication
+
+* Defect redmine-33601: Additional email addresses are not displayed in user profile page
+* Feature redmine-1237: Add support for two-factor authentication
+* Feature redmine-34241:  Include twofa_scheme (two-factor scheme) column when exporting users to CSV
+* Patch redmine-33929: Encrypt / decrypt TOTP secret keys with `rake db:encrypt` / `rake db:decrypt`
+
+### Activity view
+
+* Feature redmine-1422: Date selection for Activity Page
+* Feature redmine-33692: Improved view of the activity page
+
+### Code cleanup/refactoring
+
+* Defect redmine-33562: Some tests in ApplicationHelperTest are declared as private
+* Feature redmine-33383: Update jQuery to 3.5.1
+* Patch redmine-33315: IssuesSystemTest#test_bulk_watch_issues_via_context_menu randomly fails due to Capybara clicks out out of context menu
+* Patch redmine-33567: Fix typo in watchers_controller.rb
+* Patch redmine-33700: Add missing fixture to Redmine::ApiTest::ProjectsTest
+* Patch redmine-33728: Remove an unused variable in Query#add_chained_custom_field_filters
+* Patch redmine-33785: Add missing fixture to TimelogControllerTest
+* Patch redmine-33786: Add missing fixture to UsersControllerTest
+* Patch redmine-34122: Store inline autocomplete data sources in a JS variable
+* Patch redmine-34166: Fix wrong comment for Mailer.deliver_lost_password
+* Patch redmine-34169: MessagesControllerTest#test_post_new randomly fails
+
+### Documentation
+
+* Defect redmine-33939: Unnecessary translation of {{toc}} macros in Russian Wiki formatting help
+
+### Email notifications
+
+* Feature redmine-33834: Show open/closed badge in email notifications
+
+### Feeds
+
+* Defect redmine-10535: Atom feeds for the Project Activity contain incorrect hostname
+
+### Gems support
+
+* Patch redmine-32468: Update Rouge to 3.25.0
+* Patch redmine-32530: Update RuboCop to 1.0
+* Patch redmine-32531: Update RuboCop Rails to 2.8
+* Patch redmine-32763: Update mini_magick to 4.11
+* Patch redmine-34159: Update RuboCop Performance to 1.8
+
+### Hook requests
+
+* Patch redmine-34072: Hook after plugins were loaded
+
+### I18n
+
+* Defect redmine-33426: Error messages for Wiki macros are not internationalized
+* Patch redmine-33741: Decimal separator for Dutch locale should be a comma
+
+### Importers
+
+* Feature redmine-33102: Import user accounts from CSV file
+
+### Issues
+
+* Defect redmine-#34185: Trackers of subprojects are not displayed in the Issue summary page
+* Feature redmine-28471: Query links for subtasks on issue page
+* Feature redmine-31881: Add "behind-schedule" CSS class to issues
+* Feature redmine-33832: Move the "Private" badge next to the "Open/Closed" badge
+
+### Performance
+
+* Defect redmine-33289: Updating time tracking activities in project setting may take too long time
+* Patch redmine-33664: evaluate acts_as_activity_provider's scope lazily
+* Patch redmine-34150: Use match? instead of =~ when MatchData is not used
+* Patch redmine-34153: Use sum instead of inject(0, :+)
+* Patch redmine-34160: Replace Hash#merge! with Hash#[]=
+* Patch redmine-34161: Replace gsub with tr, delete, or squeeze
+
+### Permissions and roles
+
+* Patch redmine-33945: Allow normal users to delete projects with permission
+
+### Plugin API
+
+* Patch redmine-33453: Add plugin CSS classes to plugin settings views
+
+### Projects
+
+* Feature redmine-32944: Always preserve the tree structure in the project jump box
+
+### REST API
+
+* Defect redmine-33787: Redmine::ApiTest::UsersTest fail if config.time_zone is set
+* Feature redmine-33592: Include updated_on and passwd_changed_on columns in users API response
+
+### Roadmap
+
+* Defect redmine-32860: Invalid links to versions with sharing in project tree
+* Feature redmine-7956: Show Roadmap tab when subprojects have defined versions
+
+### Ruby support
+
+* Feature redmine-31500: Ruby 2.7 support
+* Feature redmine-34142: Drop Ruby 2.3 support
+
+### SEO
+
+* Feature redmine-31617: robots.txt: disallow crawling dynamically generated PDF documents
+
+### Text formatting
+
+* Feature redmine-1718: Table column sorting
+
+### Third-party libraries
+
+* Patch redmine-33424: Update Tribute to 5.1.3
+
+### Translations
+
+* Patch redmine-33763: Change Japanese translation for field_onthefly
+
+### UI
+
+* Feature redmine-29473: Submit a form with Ctrl+Enter / Command+Return
+* Patch redmine-33908: Show an icon for a bookmarked project in the projects list
+
+### UI - Responsive
+
+* Defect redmine-33913: Input fields of the login form are too small in height on mobile
+
+### Wiki
+
+* Defect redmine-31287: Ordering wiki pages should not be case sensitive
+
+## RedMica 1.1.1 - 2020-11-14
+
+* Defect redmine-33140: Gantt bar is not displayed if the due date is the leftmost date or the start date is the rightmost date
+* Defect redmine-33175: Starting or ending marker is not displayed if they are on the leftmost or rightmost boundary of the gantt
+* Defect redmine-33234: Vertical scroll bar in some browsers hide content
+* Defect redmine-33563: File selection buttons are not fully displayed with Google Chrome in some language
+* Defect redmine-33576: Done ratio of a parent issue may be shown as 99% even though all subtasks are completed
+* Defect redmine-33639: Cannot paste image from clipboard when copying the image from web browsers or some apps
+* Defect redmine-33689: Issues API bypasses add_issue_notes permission
+* Defect redmine-33724: Selected gantt columns are not displayed with MS Edge Legacy
+* Defect redmine-33768: Bundler may fail to install stringio if Ruby prior to 2.5 is used
+* Defect redmine-33769: When creating more than two identical attachments in a single db transaction, the first one always ends up unreadable
+* Defect redmine-33889: Do not show list for custom fields without list entry on project overview
+* Defect redmine-33926: Rake tasks "db:encrypt" and "db:decrypt" may fail due to validation error
+* Defect redmine-33935: Locked users in a group receive notifications when the group is added as a watcher
+* Defect redmine-6734: robots.txt: disallow crawling issues list with a query string
+* Defect redmine-8251: Classic Theme: Missed base line
+* Patch redmine-33958: Jump to end of line in editor when starting list or quote
+* Patch redmine-34062: Upgrade Rails to 5.2.4.4
+* Patch redmine-34200: Portuguese (Brazil) translation for 4.1-stable
+
 ## RedMica 1.1.0 - 2020-05-31
 
 Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r18296 and RedMica 1.0.
@@ -140,7 +529,6 @@ Based on Redmine 4.1.1
 * Defect redmine-32959: Fix selected user on log time edit page when user has permissions to log time for another user
 * Defect redmine-32971: New line between list items break a list
 * Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
-* Defect redmine-32973: Editing a time entry for a locked user changes the user to the current user
 * Defect redmine-32981: Unable to distinguish disabled input fields
 * Defect redmine-33027: Fix missing closing div in _time_entries_fields_mapping.html.erb
 * Defect redmine-33052: Missing subject and tracker name in CSV export of time entries report
@@ -151,7 +539,6 @@ Based on Redmine 4.1.1
 * Defect redmine-33110: Sort does not work with group by datetime columns
 * Defect redmine-33113: Default version and assignee are not exposed via projects API
 * Defect redmine-33163: Parent task subject column should be in the same style as Subject column
-* Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
 * Defect redmine-33169: Issues CSV export does not include custom fields with "Full width layout" enabled
 * Defect redmine-33176: Sort order icon is missing in users index
 * Defect redmine-33183: Unable to edit user or group that has custom fields with text formatting enabled

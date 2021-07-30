@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -127,10 +127,13 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
   test "POST /uploads.xml should return the token" do
     set_tmp_attachments_directory
     assert_difference 'Attachment.count' do
-      post '/uploads.xml', :headers => {
+      post(
+        '/uploads.xml',
+        :headers => {
           "RAW_POST_DATA" => 'File content',
           "CONTENT_TYPE" => 'application/octet-stream'
         }.merge(credentials('jsmith'))
+      )
       assert_response :created
       assert_equal 'application/xml', response.media_type
     end
@@ -158,10 +161,13 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
   test "POST /uploads.json should return the token" do
     set_tmp_attachments_directory
     assert_difference 'Attachment.count' do
-      post '/uploads.json', :headers => {
+      post(
+        '/uploads.json',
+        :headers => {
           "RAW_POST_DATA" => 'File content',
           "CONTENT_TYPE" => 'application/octet-stream'
         }.merge(credentials('jsmith'))
+      )
       assert_response :created
       assert_equal 'application/json', response.media_type
     end
@@ -178,10 +184,13 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
   test "POST /uploads.xml should accept :filename param as the attachment filename" do
     set_tmp_attachments_directory
     assert_difference 'Attachment.count' do
-      post '/uploads.xml?filename=test.txt', :headers => {
+      post(
+        '/uploads.xml?filename=test.txt',
+        :headers => {
           "RAW_POST_DATA" => 'File content',
           "CONTENT_TYPE" => 'application/octet-stream'
         }.merge(credentials('jsmith'))
+      )
       assert_response :created
     end
 
@@ -193,10 +202,13 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
   test "POST /uploads.xml should not accept other content types" do
     set_tmp_attachments_directory
     assert_no_difference 'Attachment.count' do
-      post '/uploads.xml', :headers => {
+      post(
+        '/uploads.xml',
+        :headers => {
           "RAW_POST_DATA" => 'PNG DATA',
           "CONTENT_TYPE" => 'image/png'
         }.merge(credentials('jsmith'))
+      )
       assert_response 406
     end
   end
@@ -205,10 +217,13 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
     set_tmp_attachments_directory
     with_settings :attachment_max_size => 1 do
       assert_no_difference 'Attachment.count' do
-        post '/uploads.xml', :headers => {
+        post(
+          '/uploads.xml',
+          :headers => {
             "RAW_POST_DATA" => ('x' * 2048),
             "CONTENT_TYPE" => 'application/octet-stream'
           }.merge(credentials('jsmith'))
+        )
         assert_response 422
         assert_select 'error', :text => /exceeds the maximum allowed file size/
       end
@@ -218,9 +233,12 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
   test "POST /uploads.json should create an empty file and return a valid token" do
     set_tmp_attachments_directory
     assert_difference 'Attachment.count' do
-      post '/uploads.json', :headers => {
+      post(
+        '/uploads.json',
+        :headers => {
           "CONTENT_TYPE" => 'application/octet-stream'
         }.merge(credentials('jsmith'))
+      )
       assert_response :created
     end
     json = ActiveSupport::JSON.decode(response.body)
@@ -230,6 +248,28 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
     assert attachment = Attachment.find_by_token(token)
     assert_equal 0, attachment.filesize
     assert attachment.digest.present?
+    assert File.exist? attachment.diskfile
+  end
+
+  test "POST /uploads.json should be compatible with an fcgi's input" do
+    set_tmp_attachments_directory
+    assert_difference 'Attachment.count' do
+      post(
+        '/uploads.json',
+        :headers => {
+          "CONTENT_TYPE" => 'application/octet-stream',
+          "CONTENT_LENGTH" => '12',
+          "rack.input" => Rack::RewindableInput.new(StringIO.new('File content'))
+        }.merge(credentials('jsmith'))
+      )
+      assert_response :created
+    end
+    json = ActiveSupport::JSON.decode(response.body)
+    assert_kind_of Hash, json['upload']
+    token = json['upload']['token']
+    assert token.present?
+    assert attachment = Attachment.find_by_token(token)
+    assert_equal 12, attachment.filesize
     assert File.exist? attachment.diskfile
   end
 end

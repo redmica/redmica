@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -257,7 +257,7 @@ class Redmine::Helpers::GanttHelperTest < Redmine::HelperTest
     issue.update(:assigned_to_id => issue.assignable_users.first.id)
     @project.issues << issue
     # :column => assigned_to
-    @output_buffer = @gantt.selected_column_content({ :column => @gantt.query.columns.last })
+    @output_buffer = @gantt.selected_column_content({:column => @gantt.query.columns.last})
     assert_select "div.issue_assigned_to#assigned_to_issue_#{issue.id}"
   end
 
@@ -490,7 +490,7 @@ class Redmine::Helpers::GanttHelperTest < Redmine::HelperTest
     issue.update(:assigned_to_id => issue.assignable_users.first.id)
     @project.issues << issue
     # :column => assigned_to
-    options = { :column => @gantt.query.columns.last, :top => 64, :format => :html }
+    options = {:column => @gantt.query.columns.last, :top => 64, :format => :html}
     @output_buffer = @gantt.column_content_for_issue(issue, options)
 
     assert_select "div.issue_assigned_to#assigned_to_issue_#{issue.id}"

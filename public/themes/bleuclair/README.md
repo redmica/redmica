@@ -1,61 +1,83 @@
-# Redmine用テーマ "farend bleuclair"
+# Redmine theme "farend bleuclair"
 
-| :warning: | 利用しているRedmineのバージョンによってインストール方法が違います。インストール方法をご確認ください。 |
+| :warning: | The installation method differs depending on the version of Redmine you are using. Please check the "Install". |
 | --- | --- |
 
-## このテーマについて
+[日本語README(Japanese README)](README.ja.md)
 
-Redmine用のカスタムテーマです。
+## Description
 
-デフォルトのRedmineよりインターフェイスをモダンな見栄えにすることを意識し、青をテーマカラーに寒色系でまとめました。  
-また、日本語環境でも見やすくなるようにフォントサイズや行間などを変更しています。  
-メニューの位置や配色はデフォルトのテーマに近いので、既存のテーマに慣れ親しんだ方も違和感なくご利用になれます。
+Custom theme for Redmine.
 
-## 画面サンプル
+I created a theme using Cool Colors with an awareness of making the interface look more modern than the default Redmine.
+The position and color scheme of the menu are close to the default theme, so even those who are familiar with existing themes can use it without any discomfort.
 
-- チケット一覧画面
+Bleuclair theme is used as standard for [RedMica - the future Redmine you can get today](https://www.farend.co.jp/products/redmica/) (RedMica is yet another distribution of Redmine)
+
+## Demo
+
+### For Redmine 4.2 or later :new:
+
+From Bleuclair compatible with Redmine 4.2, changes such as replacing the icon with an icon font and adding the folding feature of the sidebar have been added.
+
+- Issue list
+<kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/issues-4.2.png" /></kbd>
+
+### Before for Redmine 4.1
+
+- Issue list
 <kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/issues.png" /></kbd>
-- チケット表示画面
+- Issue view
 <kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/issue.png" /></kbd>
-- チケット表示画面の履歴
+- Issue histories
 <kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/notes.png" /></kbd>
 
-## インストール方法
+## Install
 
-### 1: テーマが格納されたディレクトリを作成
+### 1: Create a directory containing themes
 
-Redmineのインストールディレクトリで以下のコマンドを実行してください。
+**In the environment where Git can be used:**
 
-- Redmine3.4.nより古いバージョンの場合
+Execute the following command in the Redmine installation directory.
+
+- For versions older than Redmine 3.4
 ```bash
 $ git clone -b redmine3.4 https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
 
-- Redmine4.0.nの場合
+- For Redmine 4.0
 ```bash
 $ git clone -b redmine4.0 https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
 
-- Redmine4.1.nの場合
+- For Redmine 4.1
 ```bash
 $ git clone -b redmine4.1  https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
 
-### 2: テーマの設定を変更
+- For Redmine 4.2
+```bash
+$ git clone -b redmine4.2  https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
+```
 
-Redmineの管理画面で新しいテーマを利用する設定を行います。
+**In an environment where Git is not available:**
 
-「管理」→「設定」→「表示」画面内の項目「テーマ」で「Bleuclair」を選択、画面最下部の「保存」ボタンをクリックしてください。
+Check the https://github.com/farend/redmine_theme_farend_bleuclair/releases, download and unzip the zip file or tar.gz file of the version compatible with your Redmine, and place it in the public/themes directory of Redmine.
+
+### 2: Change theme settings
+
+Set to use the new theme on the Administration page of Redmine.
+
+"Administration" => "Settings" => "Display tab" => Select "Bleuclair" in the item "Theme" and click the "Save" button at the bottom of the page.
 
 ## Development
 
-* Docker、docker-composeを利用
-* 下のようにすると、変更を監視し、新しく変更を加えて保存する度に反映されるようになる(scssをcssに変換)
-
 ```bash
-$ cd /your/path/redmine/public/themes/bleuclair
-$ docker-compose up
-$ # 終わったらctr + c, command + cで止める
+$ cd redmine/public/themes/beuclair
+$ npm install
+$ npm run start:dev
+$ # debug
+$ npm run build
 ```
 
 ## LICENSE
@@ -65,14 +87,14 @@ https://github.com/farend/redmine_theme_farend_bleuclair/blob/master/LICENSE
 
 ---
 
-Web fonts in [/webfonts](webfonts) uses the following library:  
+Web fonts in [webfonts](src/webfonts) uses the following library:  
 Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com  
 License - https://fontawesome.com/license/free (Fonts: SIL OFL 1.1 License)
 
-The icon [/images/search.svg](images/search.svg) uses svg files from the following library:  
+The icon [search.svg](src/images/search.svg) uses svg files from the following library:  
 Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com  
 License - https://fontawesome.com/license/free (Icons: CC BY 4.0 License)
 
-## 著作者
+## Author
 
-[ファーエンドテクノロジー株式会社](https://www.farend.co.jp/)
+[Far End Technologies Corporation](https://www.farend.co.jp/)

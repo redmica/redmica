@@ -218,7 +218,7 @@ fa:
   warning_attachments_not_saved: "%{count} پرونده نتوانست ذخیره شود."
   error_password_expired: "گذرواژه‌ی شما منقضی شده است یا راه‌بر درخواست تغییر آن را داده است."
   error_invalid_file_encoding: "این پرونده یک پرونده با کدگذاری %{encoding} نیست"
-  error_invalid_csv_file_or_settings: "این پرونده یک پرونده CSV نیست یا با تنظیمات زیر همخوان نیست."
+  error_invalid_csv_file_or_settings: "این پرونده یک پرونده CSV نیست یا با تنظیمات زیر همخوان نیست. (%{value})"
   error_can_not_read_import_file: "در هنگام خواندن پرونده برای ورود، خطایی رخ داد"
   error_attachment_extension_not_allowed: "پسوند %{extension} برای پیوست یک پسوند مجاز نیست"
   error_ldap_bind_credentials: "حساب/گذرواژه نامعتبر LDAP"
@@ -1090,7 +1090,6 @@ fa:
 
   text_select_mail_notifications: عمل‌هایی که برای آن‌ها باید رایانامه فرستاده شود را انتخاب کنید.
   text_regexp_info: برای نمونه ^[A-Z0-9]+$
-  text_min_max_length_info: 0 یعنی نامحدود
   text_project_destroy_confirmation: آیا واقعاً می‌خواهید این پروژه و همه داده‌های آن را حذف کنید؟
   text_subprojects_destroy_warning: "زیرپروژه‌های آن: %{value} هم حذف خواهند شد."
   text_workflow_edit: یک نقش و یک نوع مسأله را برای ویرایش گردش کار انتخاب کنید
@@ -1368,3 +1367,26 @@ fa:
   error_invalid_size_parameter: Invalid size parameter
   error_attachment_not_found: Attachment %{name} not found
   permission_delete_project: Delete the project
+  field_twofa_scheme: Two-factor authentication scheme
+  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
+    all references to them? This cannot be undone. Often, locking a user instead of
+    deleting them is the better solution. To confirm, please enter their login (%{login})
+    below.
+  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
+    (%{identifier}) below.
+  button_add_subtask: Add subtask
+  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
+    because it does not have access to view this object.'
+  button_fetch_changesets: Fetch commits
+  permission_view_message_watchers: View message watchers list
+  permission_add_message_watchers: Add message watchers
+  permission_delete_message_watchers: Delete message watchers
+  label_message_watchers: Watchers
+  button_copy_link: Copy link
+  error_invalid_authenticity_token: Invalid form authenticity token.
+  error_query_statement_invalid: An error occurred while executing the query and has
+    been logged. Please report this error to your Redmine administrator.
+  permission_view_wiki_page_watchers: View wiki page watchers list
+  permission_add_wiki_page_watchers: Add wiki page watchers
+  permission_delete_wiki_page_watchers: Delete wiki page watchers
+  label_wiki_page_watchers: Watchers

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ module Redmine
 
       # Yields to filter the activity scope
       def scope_select(&block)
-        @scope = @scope.select {|t| yield t }
+        @scope = @scope.select {|t| yield t}
       end
 
       # Sets the scope
@@ -94,7 +94,7 @@ module Redmine
           end
         end
 
-        e.sort! {|a,b| b.event_datetime <=> a.event_datetime}
+        e.sort! {|a, b| b.event_datetime <=> a.event_datetime}
 
         if options[:limit]
           e = e.slice(0, options[:limit])

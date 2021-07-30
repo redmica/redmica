@@ -3,17 +3,18 @@ source 'https://rubygems.org'
 ruby '>= 2.4.0', '< 2.8.0'
 gem 'bundler', '>= 1.12.0'
 
-gem 'rails', '5.2.4.4'
+gem 'rails', '5.2.6'
 gem 'sprockets', '~> 3.7.2' if RUBY_VERSION < '2.5'
-gem 'rouge', '~> 3.24.0'
+gem 'globalid', '~> 0.4.2' if Gem.ruby_version < Gem::Version.new('2.6.0')
+gem 'rouge', '~> 3.26.0'
 gem 'request_store', '~> 1.5.0'
 gem "mini_mime", "~> 1.0.1"
 gem "actionpack-xml_parser"
-gem "roadie-rails", (RUBY_VERSION < "2.5" ? "~> 1.3.0" : "~> 2.1.0")
-gem "mimemagic"
+gem 'roadie-rails', (RUBY_VERSION < '2.5' ? '~> 1.3.0' : '~> 2.2.0')
+gem 'marcel'
 gem "mail", "~> 2.7.1"
 gem 'csv', (RUBY_VERSION < '2.5' ? ['>= 3.1.1', '<= 3.1.5'] : '~> 3.1.1')
-gem "nokogiri", "~> 1.10.0"
+gem 'nokogiri', (RUBY_VERSION < '2.5' ? '~> 1.10.0' : '~> 1.11.1')
 gem 'i18n', '~> 1.8.2'
 gem "rbpdf", "~> 1.20.0"
 gem 'addressable'
@@ -28,7 +29,7 @@ gem 'rqrcode'
 
 # Optional gem for LDAP authentication
 group :ldap do
-  gem "net-ldap", "~> 0.16.0"
+  gem 'net-ldap', '~> 0.17.0'
 end
 
 # Optional gem for OpenID authentication
@@ -39,12 +40,12 @@ end
 
 # Optional gem for exporting the gantt to a PNG file
 group :minimagick do
-  gem 'mini_magick', '~> 4.10.1'
+  gem 'mini_magick', '~> 4.11.0'
 end
 
 # Optional Markdown support, not for JRuby
 group :markdown do
-  gem "redcarpet", "~> 3.5.0"
+  gem 'redcarpet', '~> 3.5.1'
 end
 
 # Include database gems for the adapters found in the database
@@ -91,10 +92,11 @@ group :test do
   gem 'puma'
   gem 'capybara', '~> 3.31.0'
   gem "selenium-webdriver"
+  gem 'webdrivers', '~> 4.4', require: false
   # RuboCop
-  gem 'rubocop', '~> 1.0.0'
-  gem 'rubocop-performance', '~> 1.5.0'
-  gem 'rubocop-rails', '~> 2.8.0'
+  gem 'rubocop', '~> 1.15.0'
+  gem 'rubocop-performance', '~> 1.11.0'
+  gem 'rubocop-rails', '~> 2.10.1'
 end
 
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")

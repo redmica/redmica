@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -44,8 +44,8 @@ class RepositoriesMercurialControllerTest < Redmine::RepositoryControllerTest
   end
 
   if Encoding.default_external.to_s != 'UTF-8'
-    puts "TODO: Mercurial functional test fails " +
-         "when Encoding.default_external is not UTF-8. " +
+    puts "TODO: Mercurial functional test fails " \
+         "when Encoding.default_external is not UTF-8. " \
          "Current value is '#{Encoding.default_external}'"
     def test_fake; assert true end
   elsif File.directory?(REPOSITORY_PATH)

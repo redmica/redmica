@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ class CustomFieldEnumeration < ActiveRecord::Base
   validates_numericality_of :position, :only_integer => true
   before_create :set_position
 
-  scope :active, lambda { where(:active => true) }
+  scope :active, lambda {where(:active => true)}
 
   def to_s
     name.to_s

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Redmine - project management software
-# Copyright (C) 2006-2020  Jean-Philippe Lang
+# Copyright (C) 2006-2021  Jean-Philippe Lang
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -126,6 +126,12 @@ class MenuManagerTest < Redmine::IntegrationTest
     end
   end
 
+  def test_cross_project_menu_should_link_to_global_activity
+    log_user('dlopper', 'foo')
+    get '/queries/3/edit'
+    assert_select 'a.activity[href=?]', '/activity'
+  end
+
   def test_project_menu_should_show_roadmap_if_subprojects_have_versions
     Version.delete_all
     # Create a version in the project "eCookbook Subproject 1"
@@ -139,6 +145,23 @@ class MenuManagerTest < Redmine::IntegrationTest
     with_settings :display_subprojects_issues => '0' do
       get '/projects/ecookbook'
       assert_select '#main-menu a.roadmap', 0
+    end
+  end
+
+  def test_project_menu_should_show_roadmap_if_project_has_shared_version
+    Version.delete_all
+    project = Project.generate!(:parent_id => 2)
+
+    Version.generate!(project_id: 2, sharing: 'tree')
+
+    with_settings :display_subprojects_issues => '1' do
+      get "/projects/#{project.id}"
+      assert_select '#main-menu a.roadmap'
+    end
+
+    with_settings :display_subprojects_issues => '0' do
+      get "/projects/#{project.id}"
+      assert_select '#main-menu a.roadmap'
     end
   end
 end
