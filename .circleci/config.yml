@@ -9,10 +9,10 @@ executors:
         RUBYOPT: -EUTF-8
 commands:
   setup_environment:
-    description: "setup environment" 
     steps:
       - checkout
       - run:
+          name: Setup environment
           command: |
             apt-get update
             apt-get install -y build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libcurl4-openssl-dev libffi-dev pkg-config
@@ -22,9 +22,9 @@ commands:
             apt-get install -y debconf-utils tzdata wget sudo
             apt-get install -y curl unzip
   setup_postgres:
-    description: "setup postgres" 
     steps:
       - run:
+          name: Setup postgres
           command: |
             apt-get install -y gnupg gnupg2
             echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
@@ -34,9 +34,9 @@ commands:
             /etc/init.d/postgresql start
             su - postgres -c "psql -U postgres -d postgres -c \"alter user postgres with password 'postgres';\"" 
   setup_mysql:
-    description: "setup mysql" 
     steps:
       - run:
+          name: Setup mysql
           command: |
             echo 'mysql-server mysql-server/root_password password redmine' | debconf-set-selections
             echo 'mysql-server mysql-server/root_password_again password redmine' | debconf-set-selections
@@ -50,9 +50,9 @@ commands:
             mysql -u root -predmine -e "GRANT ALL PRIVILEGES ON redmine.* TO 'redmine'@'localhost';" 
             mysql -u root -predmine -e "FLUSH PRIVILEGES;" 
   install_chromedriver:
-    description: "install chromedriver" 
     steps:
       - run:
+          name: Install chromedriver
           command: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
             echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
@@ -64,12 +64,12 @@ commands:
             chmod 755 chromedriver
             mv chromedriver /usr/local/bin/
   build_myredmine:
-    description: "build MyRedmine" 
     steps:
       - run:
+          name: Build MyRedmine
           command: |
             cp .circleci/files/skip_test.rb lib/redmine/skip_test.rb
-            git clone https://github.com/akiko-pusu/redmine_issue_templates plugins/redmine_issue_templates
+            git clone https://github.com/agileware-jp/redmine_issue_templates.git plugins/redmine_issue_templates
             cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
             git clone https://github.com/onozaty/redmine-view-customize plugins/view_customize
             git clone https://github.com/vividtone/redmine_vividtone_my_page_blocks plugins/redmine_vividtone_my_page_blocks
@@ -80,6 +80,7 @@ commands:
     steps:
       - run:
           working_directory: lib/redmine
+          name: Change '<< parameters.database >>' database
           command: |
             cp ../../.circleci/files/<< parameters.database >>_database.yml ../../config/database.yml
             bundle install
@@ -99,10 +100,10 @@ commands:
         type: string
       skip_test:
         type: string
-    description: "test redmine utc" 
     steps:
       - run:
           working_directory: lib/redmine
+          name: Test redmine '<< parameters.time_zone >>'
           command: |
             touch build_result.txt
             ruby skip_test.rb << parameters.skip_test >>
