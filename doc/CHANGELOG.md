@@ -1,5 +1,32 @@
 # Changelog
 
+## RedMica 1.3.1 - 2021-11-05
+
+* Defect redmine-34694: Progress bar for a shared version on gantt disappears when the tree is collapsed and then expanded
+* Defect redmine-34834: Line breaks in the description of a custom field are ignored in a tooltip
+* Defect redmine-34856: Time entry error on private issue
+* Defect redmine-35417: User sessions not reset after 2FA activation
+* Defect redmine-35441: Inline image in Textile is not displayed if the image URL contains ampersands
+* Defect redmine-35463: Enforce stricter class filtering in WatchersController
+* Defect redmine-35606: Locked users should not be displayed in the members box of the project overview page
+* Defect redmine-35621: Bundler fails to install globalid when using Ruby < 2.6.0
+* Defect redmine-35634: Attachments deletable even though issue edit not permitted
+* Defect redmine-35642: Long text custom field values are not aligned with their labels
+* Defect redmine-35655: Create duplicated follows relations fails with 500 internal error
+* Defect redmine-35669: Prints of Issues Report details are messed-up due to the size of the graphs
+* Defect redmine-35715: File upload fails when run with uWSGI
+* Defect redmine-35731: Password and Confirmation fields are marked as required when editing a user
+* Defect redmine-35789: Redmine is leaking usernames on activities index view
+* Defect redmine-35827: Deleting a closed or archived project returns 403
+* Patch redmine-34979: French translation update for 4.2-stable
+* Patch redmine-35111: Russian translation update for 4.2-stable
+* Patch redmine-35267: German translation update (jstoolbar-de.js)
+* Patch redmine-35372: Better presentation for 2FA recovery codes
+* Patch redmine-35375: German translation of wiki syntax help file
+* Patch redmine-35539: Race condition (possible filename collision)  in Attachment.disk_filename
+* Patch redmine-35662: Mongolian translation update for "Notes", "Totals", and "% Done"
+* Patch redmine-35677: Preserve leading white space when quoting using the JS toolbar
+
 ## RedMica 1.3.0 - 2021-05-31
 
 ### Accounts / authentication
