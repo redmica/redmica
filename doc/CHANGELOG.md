@@ -433,7 +433,7 @@ Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r
 * Defect redmine-33103: Export to PDF fails when subject of parent task is included in issue list
 * Defect redmine-33116: Successful deletion notice is not displayed after deleting some types of content
 * Defect redmine-33186: field_activity should be used rather than label_activity in the context of time tracking
-* Defect redmine-33255: Issue auto complete doesn't work for custom fields with text formatting enabled on issue bulk edit page  
+* Defect redmine-33255: Issue auto complete doesn't work for custom fields with text formatting enabled on issue bulk edit page
 * Defect redmine-33357:  rendering extra "--" footer of git patch attachment
 * Defect redmine-33392: Fix invalid selector in function displayTabsButtons()
 * Defect redmine-33417: Updating an issue via REST API causes internal server error if invalid project id is specified
@@ -451,7 +451,7 @@ Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r
 * Feature redmine-32240: Add download buttons in Files columns of the issues list
 * Feature redmine-32528: Make languages in Highlighted code button in toolbar customizable
 * Feature redmine-32672: Add Check all / Uncheck all button to filters in permissions report
-* Feature redmine-32764: Make form validation errors more obvious for users 
+* Feature redmine-32764: Make form validation errors more obvious for users
 * Feature redmine-32783: Redirect to index page instead of edit page after creating a new custom field
 * Feature redmine-32818: Add a system settings for default results display format of project query
 * Feature redmine-32976: Display avatar on add watchar dialog
@@ -508,7 +508,7 @@ Based on Redmine 4.1.1.devel.19782. The database schema is the same as Redmine r
 * Patch redmine-33342: Remove unused i18n key "label_overall_activity" and "label_overall_spent_time"
 * Patch redmine-33367: Use more efficient "exists?" instead of "first" in tests when checking the existence of rows
 * Patch redmine-33376: Add missing fixtures to VersionsHelperTest
-* Patch redmine-33384: jQuery: replace deprecated size() method with length 
+* Patch redmine-33384: jQuery: replace deprecated size() method with length
 * Patch redmine-33393: Remove unused i18n key "notice_no_issue_selected"
 * Patch redmine-33403: Change Japanese translation for text_file_repository_writable
 * Patch redmine-33437: Add missing icon class to items with icon-checked class in the context menu
