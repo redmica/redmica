@@ -1,5 +1,148 @@
 # Changelog
 
+## RedMica 2.0.0 - 2021-11-05
+
+### Accounts / authentication
+
+* Feature redmine-31920: Require 2FA only for certain user groups
+
+### Activity view
+
+* Defect redmine-34933: Atom feed of the activity page does not contain items after the second page
+
+### Administration
+
+* Defect redmine-35421: Unhandled exception when a YAML syntax error is detected in configuration.yml
+* Feature redmine-35562: Show warning in admin/info when there are pending migrations
+
+### Code cleanup/refactoring
+
+* Defect redmine-31132: Remove unused column trackers.is_in_chlog
+* Feature redmine-35259: Output test coverage report to the console
+* Feature redmine-35671: Move subtasks section on issues show view into a separate partial
+* Patch redmine-31035: Remove redefinition of ActionMailer::LogSubscriber#deliver which is no longer necessary because of the removal of Setting.bcc_recipients
+* Patch redmine-33079: Remove unused argument from Redmine::Helpers::TimeReport
+* Patch redmine-34169: MessagesControllerTest#test_post_new randomly fails
+* Patch redmine-35396: Use base_scope for issue query results
+* Patch redmine-35466: Rename `test/fixtures/configuration/*.yml.example` to `test/fixtures/files/configuration/*.yml`
+* Patch redmine-35610: Cleanups after Wiki tab removal from project settings (#26579)
+* Patch redmine-35727: Add missing fixtures to Redmine::ProjectJumpBoxTest
+* Patch redmine-35773: Move sidebar content on versions index view (roadmap) into a  separate partial
+
+### Custom fields
+
+* Patch redmine-32977: Remove references to deleted user from "user"-Format CustomFields
+
+### Database
+
+* Patch redmine-35073: Escape values in LIKE statements to prevent injection of placeholders (_ or %)
+
+### Email notifications
+
+* Patch redmine-30820: Drop setting "Blind carbon copy recipients (bcc)"
+
+### Filters
+
+* Feature redmine-34715: Filter issues by file description
+* Feature redmine-35764: Multiple search terms in the "contains" operator of text filters
+
+### Issues filter
+
+* Patch redmine-35312: Gracefully handle invalid operators and associations requested in queries
+
+### Gantt
+
+* Defect redmine-33381: Possible double includes in issue query in gantt helper
+
+### Gems support
+
+* Patch redmine-35136: Update RuboCop to 1.17
+* Patch redmine-35207: Update RuboCop Rails to 2.11
+* Patch redmine-35361: Update CSV to 3.2
+* Patch redmine-35691: Update Nokogiri to 1.12
+
+### Groups
+
+* Feature redmine-12795: View group members by non-admin users
+
+### Hook requests
+
+* Defect redmine-34743: Hooks for queries helper
+
+### Importers
+
+* Feature redmine-35137: Reject CSV file without data row when importing
+* Feature redmine-35365: Allow sending account information when importing users
+
+### Issues
+
+* Defect redmine-15634: Add watching users to a ticket should switch "watch" link to "unwatch" if own user was added
+* Defect redmine-33521: Use issue path instead of bulk update issues path when using the context menu with only one issue selected
+* Defect redmine-35134: Change total spent time link to global time entries when issue has subtasks that can be on non descendent projects
+* Feature redmine-35559: Query links for related issues on issue page
+* Feature redmine-7360: Issue Custom Query: Default Query
+
+### Third-party libraries
+
+* Patch redmine-35729: Update jQuery to 3.6.0
+
+### Time tracking
+
+* Defect redmine-21056: Project specific TimeEntryActivity name not updating properly
+
+### UI
+
+* Patch redmine-30448: Remove wrapper2 and wrapper3 wrapping containers
+
+### Performance
+
+* Patch redmine-35324: Preload principal and roles in members#index
+* Patch redmine-35374: Reduce amount of work on projects show API
+
+### PDF export
+
+* Patch redmine-35683: PDF rendering improvements when exporting an issue or a list of issues
+
+### Plugin API
+
+* Defect redmine-35455: Require redmine/sort_criteria globally
+
+### Projects
+
+* Defect redmine-21210: Issues and Spent Time of closed subprojects are included on the overview page, but are not included on the issues, gantt or spent time details/report pages
+
+### REST API
+
+* Feature redmine-15855: Add information about whether an issue is open or closed to Issues API response
+* Feature redmine-34857: Add total estimated hours, spent hours, total spent hours for issues to issue list API
+* Feature redmine-35420: API to archive/unarchive projects
+* Feature redmine-35505: Add enabled core fields to /trackers API response
+* Feature redmine-35507: API to close/reopen projects
+
+### Rails support
+
+* Feature redmine-29914: Migrate to Rails 6.1
+
+### Roadmap
+
+* Feature redmine-35758: Add some space around the versions on the Roadmap
+* Feature redmine-6432: Allow Roadmap view without any related issues
+
+### Text formatting
+
+* Feature redmine-32424: CommonMark Markdown Text Formatting
+* Patch redmine-35104: Code blocks - consistent rendering and retaining user-supplied language name in rendered HTML
+
+### Translations
+
+* Patch redmine-35110: Lithuanian translation update for 4.2-stable
+* Patch redmine-35766: Galician translation update for 4.2-stable
+
+### UI
+
+* Feature redmine-34494: Rename the save, edit and delete buttons on the query form to clarify the scope
+* Patch redmine-35770: Change "Edit" label in the context menu to "Bulk Edit" when multiple issues are selected
+
 ## RedMica 1.3.1 - 2021-11-05
 
 * Defect redmine-34694: Progress bar for a shared version on gantt disappears when the tree is collapsed and then expanded
