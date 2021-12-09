@@ -333,7 +333,6 @@ Lint/MissingSuper:
     - 'lib/redmine/syntax_highlighting.rb'
     - 'lib/redmine/twofa/base.rb'
     - 'lib/redmine/unified_diff.rb'
-    - 'lib/redmine/diff_table.rb'
     - 'lib/redmine/views/builders/structure.rb'
     - 'lib/redmine/wiki_formatting/html_parser.rb'
 
@@ -842,8 +841,6 @@ Rails/Output:
     - 'app/models/mail_handler.rb'
     - 'config/routes.rb'
     - 'lib/redmine/unified_diff.rb'
-    - 'lib/redmine/diff_table.rb'
-    - 'lib/redmine/diff.rb'
 
 Rails/OutputSafety:
   Enabled: false
@@ -1031,7 +1028,6 @@ Style/AccessorGrouping:
     - 'app/models/user.rb'
     - 'lib/redmine/helpers/gantt.rb'
     - 'lib/redmine/unified_diff.rb'
-    - 'lib/redmine/diff.rb'
 
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -1104,7 +1100,6 @@ Style/CaseLikeIf:
     - 'lib/redmine/scm/adapters/cvs_adapter.rb'
     - 'lib/redmine/scm/adapters/git_adapter.rb'
     - 'lib/redmine/unified_diff.rb'
-    - 'lib/redmine/diff_table.rb'
 
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -1846,7 +1841,6 @@ Style/UnlessElse:
     - 'app/controllers/trackers_controller.rb'
     - 'lib/redmine/scm/adapters/abstract_adapter.rb'
     - 'lib/redmine/unified_diff.rb'
-    - 'lib/redmine/diff_table.rb'
 
 # Cop supports --auto-correct.
 Style/VariableInterpolation:
