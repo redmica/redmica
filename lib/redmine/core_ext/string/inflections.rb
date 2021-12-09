@@ -19,7 +19,7 @@
 
 module Redmine
   # @private
-  module CoreExt
+  module CoreExtensions
     # @private
     module String
       # Custom string inflections
