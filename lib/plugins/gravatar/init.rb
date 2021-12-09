@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-require File.dirname(__FILE__) + '/lib/gravatar'
+require 'gravatar'
 ActionView::Base.send :include, GravatarHelper::PublicMethods

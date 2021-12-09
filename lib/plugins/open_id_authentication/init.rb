@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-require File.dirname(__FILE__) + '/lib/open_id_authentication'
+require 'open_id_authentication'
 
 config.middleware.use OpenIdAuthentication
 
