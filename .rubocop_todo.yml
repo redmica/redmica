@@ -1753,7 +1753,6 @@ Style/SoleNestedConditional:
     - 'app/models/version.rb'
     - 'app/models/watcher.rb'
     - 'app/models/wiki_page.rb'
-    - 'app/models/wiki_annotate.rb'
     - 'lib/redmine/core_ext/active_record.rb'
 
 # Cop supports --auto-correct.
