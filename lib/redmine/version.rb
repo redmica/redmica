@@ -31,7 +31,7 @@ end
 module RedMica
   module VERSION
     MAJOR = 2
-    MINOR = 0
+    MINOR = 1
     TINY  = 0
 
     BRANCH = 'devel'
