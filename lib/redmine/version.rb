@@ -13,7 +13,7 @@ module Redmine
     # * official release: nil
     # * stable branch:    stable
     # * trunk:            devel
-    BRANCH = 'devel'
+    BRANCH = 'stable'
 
     def self.revision
       21619 # RedMica 2.1 is based on r21619
