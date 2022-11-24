@@ -1,5 +1,111 @@
 # Changelog
 
+## RedMica 2.1.1 - 2022-11-24
+
+### Activity view
+
+* Defect redmine-37875: Unnecessary closing li element when there is no "Next" button on Activity page
+
+### Code cleanup/refactoring
+
+* Defect redmine-37449: Passing a wrong parameter to `with_settings` in UserTest::test_random_password_include_required_characters
+* Defect redmine-37609: Remove obsolete remnant public/images/openid-bg.gif
+
+### Email notifications
+
+* Defect redmine-37138: Mentions of users with "@" in their username
+* Patch redmine-37065: When someone is member of watcher group, 'watched_by' may be wrong and incomplete
+
+### Email receiving
+
+* Defect redmine-37187: no-permission-check allows issue creation in closed/archived projects
+
+### Filters
+
+* Defect redmine-36940: Chained custom field filter doesn't work for User fields
+* Defect redmine-37349: Chained custom field filter for User fields returns 500 internal server error when filtering after a float value
+
+### Gems support
+
+* Defect redmine-37249: Missing rexml gem causes errors in PUT - Adding the gem manually everything works
+* Patch redmine-37867: Limit puma < 6.0.0 to avoid system test error
+* Patch redmine-37883: Limit mocha version to < 2.0.0 when Ruby version is < 2.7 to avoid test error
+
+### Issues
+
+* Defect redmine-37151: The done ratio of a parent issue may not be 100% even if all subtasks have a done ratio of 100%
+* Defect redmine-37369: Mention auto-complete not works in bulk-edit comments
+* Defect redmine-37473: Focus IssueId not working when linking issues
+* Defect redmine-37499: Default query should not be applied if the query is not allowed to be set as the default
+* Patch redmine-37608: Check visibility for passed user in IssueQuery.default
+
+### Issues list
+
+* Defect redmine-37268: Performance problem with Redmine 4.2.7 and 5.0.2
+
+### Issues workflow
+
+* Defect redmine-37685: Read-only field permission for the project field is ignored if the current project has subprojects
+
+### Plugin API
+
+* Defect redmine-37476: Psych::DisallowedClass exception when loading default plugin settings
+* Defect redmine-37719: Broken serialized columns, if saved time was with Rails 4.2
+
+### Rails support
+
+* Defect redmine-37814: Plugins that serialize Date or Time objects cause Psych::DisallowedClass exception
+* Patch redmine-37452: Update Rails to 6.1.7
+
+### SCM
+
+* Defect redmine-33953: Repository tab is not displayed if no repository is set as the main repository
+* Defect redmine-36258: Support revision without any message in Mercurial repositories
+* Defect redmine-37585: Do not show "History" tab for content in Filesystem repository
+* Defect redmine-37626: Diff of a javascript file in repository module is not displayed with layout
+* Defect redmine-37718: Repository browser does not show "+" (plus sign) in filename
+
+### SCM extra
+
+* Defect redmine-37562: POST Requests to repository WS fail with "Can't verify CSRF token authenticity"
+* Defect redmine-37256: Medium severity XSS security vulnerabilities (3x) in jQuery UI v1.12.1
+
+### Security
+
+* Defect redmine-37171: Ability to change the issue category or issue target version with nonexistent value for the specific project
+* Defect redmine-37255: Information Leak in QueryAssociationColumn/QueryAssociationCustomFieldColumn
+* Defect redmine-37492: Update jQuery UI to 1.13.2
+
+### Text formatting
+
+* Defect redmine-37237: Common Markdown Formatter does not render all properties on HTML elements
+* Defect redmine-37379: Thumbnail macro does not work when a file is attached and preview is displayed immediately
+* Patch redmine-37713: Add rel="noopener" to all external links that would open a new tab/window
+
+### Time tracking
+
+* Defect redmine-33914: Even if the default value of Activities (time tracking) is set, it may not be reflected.
+
+### Translations
+
+* Defect redmine-37529: Fix mistranslation of label button_create_and_follow in Russian translation
+* Defect redmine-37603: Missing translation for label_default_queries.for_this_user
+* Defect redmine-37812: "Yes" and "No" are swapped in Polish translation
+* Patch redmine-35613: German translation update of Wiki syntax help for 5.0-stable
+* Patch redmine-37263: Lithuanian translation update for 5.0-stable
+* Patch redmine-37698: Persian translation update for 4.2-stable
+
+### UI
+
+* Defect redmine-36901: Jump to project is misaligned in Safari 15.4 and later
+* Defect redmine-37282: Subtask isn't displayed correctly since 4.2.7
+* Defect redmine-37481: Fix the unintentional selection of rows with the context menu
+* Defect redmine-37566: The number of the ordered list in the project description is not displayed and the indentation does not match the unordered list
+
+### UI - Responsive
+
+* Defect redmine-36453: Issue subject overflow in subtasks and relations tables
+
 ## RedMica 2.1.0 - 2022-05-31
 
 ### Accounts / authentication
