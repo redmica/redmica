@@ -1,5 +1,135 @@
 # Changelog
 
+## RedMica 2.2.0 - 2022-11-28
+
+### Accounts / authentication
+
+* Patch redmine-33660: Information text on sudo password entry
+* Patch redmine-35450: Better validation error message when the domain of email is not allowed
+
+### Administration
+
+* Defect redmine-37692: Plugins page does not have a table header
+* Feature redmine-37674: Upgrade Admin/Users list to use the query system
+
+### Attachments
+
+* Patch redmine-37597: Don't create two thumbnails of different resolutions for a single image
+
+### Code cleanup/refactoring
+
+* Defect redmine-37389: Add missing fixture to JournalObserverTest
+* Defect redmine-37586: Typo in method names
+* Defect redmine-37587: Unnecessary requirement in /lib/redmine/scm/adapters/filesystem_adapter.rb
+* Feature redmine-37119: Drop redcarpet dependency for common_mark formatter
+* Patch redmine-36844: Cleanup orphaned query and role ids from habtm join table queries_roles 
+* Patch redmine-37448: Add missing fixture users to RoleTest
+* Patch redmine-37451: Add missing fixture versions to IssuesPdfHelperTest
+* Patch redmine-37466: Add missing fixture issue_categories to VersionTest
+* Patch redmine-37469: Add missing fixture versions to RepositoryTest
+* Patch redmine-37470: Add missing fixture versions to MailHandlerControllerTest 
+* Patch redmine-37477: Add missing fixture issue_categories to MyControllerTest
+* Patch redmine-37482: Replace JQuery `.focus()` method with HTML `autofocus` attribute
+* Patch redmine-37507: Normalize HTML in app/views/setttings/_users.html.erb
+* Patch redmine-37591: Use start_with? or end_with? to check the first or last character of a string
+* Patch redmine-37599: Remove extra call of Attachment#thumbnailable? in AttachmentsController#thumbnail
+* Patch redmine-37614: Cleanup app/models/repository/git.rb
+* Patch redmine-37657: Rename Repository#supports_all_revisions? to Repository#supports_history?
+* Patch redmine-37682: Add the `# frozen_string_literal: true` magic comment to config/initializers/secret_token.rb
+* Patch redmine-37851: Add missing fixture to test/integration/issue_test.rb
+
+### Custom fields
+
+* Patch redmine-37750: Use existing html pipeline based sanitization for links in custom fields 
+
+### Gems support
+
+* Patch redmine-36919: Update RuboCop to 1.39
+* Patch redmine-37236: Update Rouge to 3.30
+* Patch redmine-37247: Update RuboCop Performance to 1.14
+* Patch redmine-37248:  Update RuboCop Rails to 2.17
+* Patch redmine-37401: Update I18n to 1.12
+* Patch redmine-37525: Update Pg to 1.4
+* Patch redmine-37656: Update sqlite3 gem to 1.5
+
+### I18n
+
+* Feature redmine-37878: Allow using ideographic space (U+3000) as a separator for search terms
+
+### Issues
+
+* Feature redmine-16207: Use query name as the file name when exporting queries 
+* Feature redmine-37362: CSV export of issues report
+* Patch redmine-31505: Mark edited journal notes as "Edited"
+* Patch redmine-37532: Add CSS class for relation type to related issues list
+
+### Issues workflow
+
+* Defect redmine-37635: Respect Role#consider_workflow? when checking for allowed status transitions
+* Patch redmine-37636:  Ignore statuses if workflow only defines identity transition
+
+### Performance
+
+* Patch redmine-29171: Add an index to improve the performance of issue queries involving custom fields
+* Patch redmine-37528: Don't load changesets when IssuesController#show processes API requests without "include=changesets"
+* Patch redmine-37687: Retrieve attachments with a single query when rendering a journal
+
+### Permissions and roles
+
+* Feature redmine-37807: Allow access to /robots.txt even if logins are required
+
+### Plugin API
+
+* Defect redmine-31116: Database migrations don't run correctly for plugins when specifying the `VERSION` env variable
+
+### REST API
+
+* Patch redmine-37617: Add description field to custom fields API
+
+### SCM
+
+* Defect redmine-37626: Diff of a javascript file in repository module is not displayed with layout 
+
+### Text formatting
+
+* Feature redmine-34863: Change default text formatter for new installations from textile to common_mark
+
+### Third-party libraries
+
+* Patch redmine-37538: Update Chart.js to 3.9.1
+
+### Time tracking
+
+* Feature redmine-10314: Make the only enabled activity in a project the default one for time entry
+* Feature redmine-29286: Add default spent time activity per role
+
+### Translations
+
+* Patch redmine-32435: Change Russian translation for "Submit"
+* Patch redmine-37170: Bulgarian translation (#36691)
+* Patch redmine-37252: Japanese translation update (r21602)
+* Patch redmine-37371: Traditional Chinese translation (to r21693)
+* Patch redmine-37397: Traditional Chinese translation (to r21701)
+* Patch redmine-37455: Traditional Chinese translation (to r21714)
+* Patch redmine-37479: Japanese translation update (r21714)
+* Patch redmine-37526: Polish translation update
+* Patch redmine-37527: Japanese translation update (r21740)
+* Patch redmine-37535: Traditional Chinese translation (to r21740)
+* Patch redmine-37548: Bulgarian translation
+* Patch redmine-37563: Japanese translation update (r21764)
+* Patch redmine-37569: Galician translation update
+* Patch redmine-37592: Czech translation update
+* Patch redmine-37604: Bulgarian translation (#29286)
+* Patch redmine-37606: Traditional Chinese translation (to r21775)
+* Patch redmine-37616: Traditional Chinese translation (to r21788)
+* Patch redmine-37691: Japanese translation update (r21826)
+* Patch redmine-37699: Traditional Chinese translation (to r21827)
+
+### UI
+
+* Feature redmine-1069: Open Help in a separate tab
+* Feature redmine-36908: Improve wording on password change form
+
 ## RedMica 2.1.1 - 2022-11-24
 
 ### Activity view
