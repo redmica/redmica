@@ -16,7 +16,7 @@ module Redmine
     BRANCH = 'devel'
 
     def self.revision
-      21619 # RedMica 2.1 is based on r21619
+      21960 # RedMica 2.2 is based on this revision of Redmine trunk
     end
 
     REVISION = self.revision
@@ -31,17 +31,13 @@ end
 module RedMica
   module VERSION
     MAJOR = 2
-    MINOR = 1
-    TINY  = 1
+    MINOR = 2
+    TINY  = 0
 
     BRANCH = 'devel'
 
     # Retrieves the revision from the working copy
     def self.revision
-      return nil if BRANCH.nil?
-      return File.read(File.join(Rails.root, '.git/refs/heads/master'))[0..6]
-    rescue
-      # Could not find the current revision
       nil
     end
 
