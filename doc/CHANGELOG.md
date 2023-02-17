@@ -1,5 +1,74 @@
 # Changelog
 
+## RedMica 2.2.1 - 2023-02-17
+
+### Code cleanup/refactoring
+
+* Patch redmine-37938: Unused permission "Mention user"
+* Patch redmine-38141: Update copyright year to 2023
+
+### Documentation
+
+* Defect redmine-37983: Duplicate vertical-align property in wiki_syntax.css
+* Defect redmine-38114: Example plugin (extra/sample_plugin) breaks Activity page
+
+### Gems support
+
+* Defect redmine-38239: Test failure with Commonmarker 0.23.8
+* Patch redmine-38135: Allow use of Puma 6.0.0 or later
+* Patch redmine-38272: Update RBPDF to 1.21
+
+### Groups
+
+* Patch redmine-38144: Refactoring: Use Group.visible instead of manual visibility check in GroupsController
+
+### Importers
+
+* Defect redmine-38254: Time Entry Import fails to import custom fields with "User" format
+
+### Issues
+
+* Defect redmine-37755: Mentioning users with certain characters renders incorrectly
+* Defect redmine-37958: Groups added to watchers are not shown as links
+* Defect redmine-38217: "Property changes" tab does not appear when all issue journals have both notes and property changes
+
+### Project settings
+
+* Patch redmine-38064: Avoid exception when adding a project without any givable roles defined
+
+### Projects
+
+* Defect redmine-37925: Do not allow unkown display_type for query
+
+### Rails support
+
+* Defect redmine-36273: Modifying the source code of a plugin does not reload it after r21295
+* Defect redmine-38199: Fix deprecation warning for db:structure:dump in db:migrate when using sql schema format
+* Patch redmine-38191: Update Rails to 6.1.7.2
+
+### Security
+
+* Defect redmine-37772: Access Control Issue in attachments#download_all
+
+### SEO
+
+* Patch redmine-38201: Improve robots.txt to disallow issue lists with a sort or query_id parameter in any position
+
+### Text formatting
+
+* Defect redmine-37881: Thumbnails are no longer fetched for all notes of an issue
+* Defect redmine-38073: CommonMark Markdown formatter does not support min-width, max-width, min-height, and max-height CSS properties
+* Defect redmine-38215: Nested CommonMark Markdown task lists are not indented
+* Feature redmine-34863: Change default text formatter for new installations from textile to common_mark
+
+### Third-party libraries
+
+* Patch redmine-37987: Update Stylelint to 14.16.0 
+
+### Time tracking
+
+* Feature redmine-35066: Missing project_id in redirect after clicking "Create and add another" button
+
 ## RedMica 2.2.0 - 2022-11-28
 
 ### Accounts / authentication
