@@ -1,5 +1,19 @@
 # Changelog
 
+## RedMica 2.2.2 - 2023-03-24
+
+### Accounts / authentication
+
+* Defect redmine-38182: Exporting users query does not use the query name as file name
+
+### Rails support
+
+* Patch redmine-38374: Update Rails to 6.1.7.3
+
+### UI
+
+* Patch redmine-38359: Render numeric axes in charts as Integers
+
 ## RedMica 2.2.1 - 2023-02-17
 
 ### Code cleanup/refactoring
