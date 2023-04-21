@@ -1,5 +1,27 @@
 # Changelog
 
+## RedMica 2.2.3 - 2023-04-21
+
+### Custom fields
+
+* Defect redmine-38464: Rendering a custom field with a URL pattern set and containing " :" in the value raises Addressable::URI::InvalidURIError
+
+### Groups
+
+* Defect redmine-38443: Cannot add a user to a group if the group is a member without roles in a certain project
+
+### Project settings
+
+* Defect redmine-37166: Roles of a project member should not be made empty
+
+### Projects
+
+* Defect redmine-38286: "Cannot delete enumeration" error may occur when attempting to delete a project with time entries
+
+### UI
+
+* Defect redmine-38448: The margin below the Submit button on the issue edit page is too narrow
+
 ## RedMica 2.2.2 - 2023-03-24
 
 ### Accounts / authentication
