@@ -32,7 +32,7 @@ module RedMica
   module VERSION
     MAJOR = 2
     MINOR = 2
-    TINY  = 2
+    TINY  = 3
 
     BRANCH = 'stable'
 
