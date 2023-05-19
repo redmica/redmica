@@ -1,5 +1,209 @@
 # Changelog
 
+## RedMica 2.3.0 - 2023-05-19
+
+### Accounts / authentication
+
+* Defect redmine-38182: Exporting users query does not use the query name as file name
+* Defect redmine-6254: Remove "Unknown user" notification on password request with non-existent email address
+
+### Attachments
+
+* Feature redmine-38168: WebP images support
+
+### Calendar
+
+* Feature redmine-27346: Use the new pagination style for the calendars view
+
+### Code cleanup/refactoring
+
+* Defect redmine-15667: Fix shadowing variable in ApplicationHelper#textilizable
+* Defect redmine-20042: A test fail when running it with PostgreSQL
+* Defect redmine-38145: Unreachable branch in ApplicationHelper#format_object due to the use of the deprecated Fixnum class
+* Defect redmine-38250: config/settings.yml not closed in Setting.load_available_settings
+* Patch redmine-38091: Fix redundant 'private' modifier in repositories_git_controller_test.rb
+* Patch redmine-38093: Use require_relative instead of generating the full path for a file
+* Patch redmine-38139: Add guard clause to time_tag method to handle nil time
+* Patch redmine-38141: Update copyright year to 2023
+* Patch redmine-38228: Remove X-UA-Compatible meta tag for Internet Explorer
+* Patch redmine-38478: Remove unused i18n key label_last_login
+* Patch redmine-38496: Add missing fixtures to SearchControllerTest
+
+### Database
+
+* Defect redmine-38210: Incorrect DB migration version
+
+### Documentation
+
+* Defect redmine-38114: Example plugin (extra/sample_plugin) breaks Activity page
+
+### Email notifications
+
+* Feature redmine-34302:  Show parent issues in notification email
+* Feature redmine-38238: Auto watch issues on issue creation
+* Patch redmine-2746: Send out issue priority in the email notification header
+
+### Email receiving
+
+* Feature redmine-38263: Try importing journal replies as issue reply where applicable
+* Feature redmine-38273: Improve errors in MailHandler: add MissingContainer and LockedTopic exception
+* Feature redmine-38274: Receive e-mail replies to news and news comments
+* Patch redmine-38408: Remove experimental flag from "Preferred part of multipart (HTML) emails" setting
+
+### Filters
+
+* Feature redmine-38435: "contains any of" operator for text filters to perform OR search of multiple terms
+* Feature redmine-38456: OR search with multiple terms for "starts with" and "ends with" filter operators
+
+### Gems support
+
+* Patch redmine-36919: Update RuboCop to 1.51
+* Patch redmine-37236: Update Rouge to 4.1
+* Patch redmine-37247: Update RuboCop Performance to 1.17
+* Patch redmine-37248: Update RuboCop Rails to 2.19
+* Patch redmine-37401: Update I18n to 1.13
+* Patch redmine-37993: Update Mail gem to 2.8
+* Patch redmine-38121: Update MiniMagick to 4.12
+* Patch redmine-38122: Remove Bundler from requirements 
+* Patch redmine-38124: Update csv, net-imap, net-pop, and net-smtp gems to the same versions shipped with Ruby 3.2.0
+* Patch redmine-38137: Update SimpleCov to 0.22
+* Patch redmine-38181: Update Nokogiri to 1.14
+* Patch redmine-38187: Update SQLite3 gem to 1.6
+* Patch redmine-38220: Update Redcarpet to 3.6
+* Patch redmine-38272: Update RBPDF to 1.21
+
+### Groups
+
+* Patch redmine-38144: Refactoring: Use Group.visible instead of manual visibility check in GroupsController
+
+### I18n
+
+* Defect redmine-38509: Untranslated string "OK" in the repository browser
+* Patch redmine-38529: Limit available locales to those defined by Redmine itself
+
+### Issues
+
+* Defect redmine-38217: "Property changes" tab does not appear when all issue journals have both notes and property changes
+* Defect redmine-38458: Display order of watchers in the sidebar is indeterminate
+* Feature redmine-38416: Ability to disable the priority field
+
+### Issues filter
+
+* Feature redmine-38301: Multiple issue ids in "Related to" filter
+* Feature redmine-38402: "Any searchable text" filter for issues
+* Feature redmine-38527: New issues filter operators "has been", "has never been", and "changed from"
+
+### News
+
+* Patch redmine-2631: Add breadcrumbs to news pages
+
+### PDF export
+
+* Feature redmine-38368: WebP images support in PDF output
+
+### Performance
+
+* Patch redmine-38146: Fix all performance-related RuboCop offenses
+* Patch redmine-38198: Improve MySQL query plan for Project#project_condition
+* Patch redmine-38474: Preload default_status when listing trackers
+
+### Permissions and roles
+
+* Feature redmine-38048: Introduce permission to set a project public
+
+### Project settings
+
+* Defect redmine-37166: Roles of a project member should not be made empty
+* Defect redmine-38064: Avoid exception when adding a project without any givable roles defined
+
+### Rails support
+
+* Defect redmine-36273: Modifying the source code of a plugin does not reload it after r21295
+* Defect redmine-38199: Fix deprecation warning for db:structure:dump in db:migrate when using sql schema format
+* Patch redmine-38191: Update Rails to 6.1.7.2
+* Patch redmine-38216: Add template filenames as comments to HTML output in development mode
+* Patch redmine-38374: Update Rails to 6.1.7.3
+
+### Roadmap
+
+* Feature redmine-36679: Export a version as changelog text
+
+### Ruby support
+
+* Defect redmine-38100: Ruby 3.2: Encoding::CompatibilityError when running ChangesetTest#test_invalid_utf8_sequences_in_comments_should_be_replaced_latin1
+* Feature redmine-38099: Ruby 3.2 support
+* Feature redmine-38134: Drop Ruby 2.6 support
+
+### SCM
+
+* Feature redmine-35432: Git: View annotation prior to the change
+
+### SEO
+
+* Defect redmine-38201: Fix robots.txt to disallow issue lists with a sort or query_id parameter in any position
+
+### Search engine
+
+* Feature redmine-38459: Support "My bookmarks" in the search
+* Feature redmine-38481: Further narrow search results with issues filter
+
+### Text formatting
+
+* Defect redmine-37881: Thumbnails are no longer fetched for all notes of an issue
+* Defect redmine-38215: Nested CommonMark Markdown task lists are not indented
+* Feature redmine-38372: Use Commonmarker instead of Redcarpet by default when rendering Markdown attachments
+
+### Third-party libraries
+
+* Patch redmine-37987: Update Stylelint to 14.16.0 
+* Patch redmine-38162: Update jQuery UI Datepicker i18n files to 1.13.2
+
+### Time tracking
+
+* Defect redmine-35066: Missing project_id in redirect after clicking "Create and add another" button
+* Feature redmine-27821: "Issue's subject" filter for spent time
+* Feature redmine-37623: Add Parent task filter and column to Spent time
+
+### Translations
+
+* Defect redmine-38477: Fix the English and Japanese translations of field_last_login_on
+* Defect redmine-38507: Fix typo in French translation of setting_bulk_download_max_size
+* Patch redmine-38054: Remove unused i18n keys label_sort_highest, label_sort_higher, label_sort_lower, and label_sort_lowest
+* Patch redmine-38092: Turkish translation update
+* Patch redmine-38171: Galician translation update
+* Patch redmine-38192: Traditional Chinese translation (to r22061)
+* Patch redmine-38208: Japanese translation update (r22039)
+* Patch redmine-38306: Japanese translation update (r22117)
+* Patch redmine-38327: Bulgarian translation
+* Patch redmine-38328: Polish translation update (r22133)
+* Patch redmine-38332: Traditional Chinese translation (to 22120)
+* Patch redmine-38412: Japanese translation update (r22167)
+* Patch redmine-38419: German translation update
+* Patch redmine-38422: Bulgarian translation (#38402)
+* Patch redmine-38451: Traditional Chinese translation (to 22185)
+* Patch redmine-38455: Japanese translation update (r22189)
+* Patch redmine-38457: Traditional Chinese translation (to 22200)
+* Patch redmine-38489: Bulgarian translation
+* Patch redmine-38497: Japanese translation update (r22213)
+* Patch redmine-38503: Japanese translation update (r22218)
+* Patch redmine-38516: Traditional Chinese translation (to 22221)
+* Patch redmine-38523: Polish translation update (r22231)
+* Patch redmine-38533: Improve the clarity of German translation of label_user_mail_notify_about_high_priority_issues_html
+* Patch redmine-38537: Traditional Chinese translation (to 22241)
+* Patch redmine-38545: Japanese translation update (r22241)
+* Patch redmine-38551: Bulgarian translation
+* Patch redmine-38564:  Galician translation update
+
+### UI
+
+* Defect redmine-33502: Issue field labels for fields with descriptions are missing styling on issues show view
+* Feature redmine-38231: Limit the year to 4 digits in date input
+* Patch redmine-38449: Align buttons in modal dialogs to the left instead of right
+
+### UI - Responsive
+
+* Patch redmine-38360: Do not apply table-layout:fixed in potentially wide tables of detailed issue reports
+
 ## RedMica 2.2.3 - 2023-04-21
 
 ### Custom fields

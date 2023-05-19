@@ -16,7 +16,7 @@ module Redmine
     BRANCH = 'devel'
 
     def self.revision
-      21960 # RedMica 2.2 is based on this revision of Redmine trunk
+      nil
     end
 
     REVISION = self.revision
@@ -31,8 +31,8 @@ end
 module RedMica
   module VERSION
     MAJOR = 2
-    MINOR = 2
-    TINY  = 3
+    MINOR = 3
+    TINY  = 0
 
     BRANCH = 'devel'
 
