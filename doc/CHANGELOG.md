@@ -95,7 +95,6 @@
 * Defect redmine-37881: Thumbnails are no longer fetched for all notes of an issue
 * Defect redmine-38073: CommonMark Markdown formatter does not support min-width, max-width, min-height, and max-height CSS properties
 * Defect redmine-38215: Nested CommonMark Markdown task lists are not indented
-* Feature redmine-34863: Change default text formatter for new installations from textile to common_mark
 
 ### Third-party libraries
 
@@ -190,10 +189,6 @@
 ### REST API
 
 * Patch redmine-37617: Add description field to custom fields API
-
-### SCM
-
-* Defect redmine-37626: Diff of a javascript file in repository module is not displayed with layout 
 
 ### Text formatting
 
@@ -346,7 +341,6 @@
 ### Accounts / authentication
 
 * Feature redmine-30998: Add an rake task to prune registered users after a certain number of days
-* Feature redmine-31920: Require 2FA only for certain user groups
 * Feature redmine-33345: Include an authentication method name in LDAP connection error messages
 * Feature redmine-35001: Disable API authentication with username and password when two-factor authentication is enabled for the user
 * Feature redmine-35439: Option to require 2FA only for users with administration rights
@@ -508,10 +502,6 @@
 * Feature redmine-34766: Better error message when no API format is recognised
 * Feature redmine-36303: Include avatar URL in Users API
 
-### Roadmap
-
-* Feature redmine-6432: Allow unchecking all trackers in Roadmap view sidebar
-
 ### Ruby support
 
 * Feature redmine-36205: Ruby 3.1 support
@@ -555,7 +545,6 @@
 * Defect redmine-36363: Cannot select text in a table with a context menu available
 * Defect redmine-36446: Watchers autocomplete fails with 403 error when the search is made from multiple objects with different projects
 * Defect redmine-36524: Query Links on Issues and Time Logs Import Sidebars broken
-* Feature redmine-35770: Change "Edit" label in the context menu to "Bulk Edit" when multiple issues are selected
 * Patch redmine-35215: Don't display "No Match Found!" when the inline autocomplete doesn't return any result
 * Patch redmine-36429: Make issue tabs DOM more consistent
 
@@ -570,10 +559,6 @@
 
 * Feature redmine-31920: Require 2FA only for certain user groups
 
-### Activity view
-
-* Defect redmine-34933: Atom feed of the activity page does not contain items after the second page
-
 ### Administration
 
 * Defect redmine-35421: Unhandled exception when a YAML syntax error is detected in configuration.yml
@@ -586,7 +571,6 @@
 * Feature redmine-35671: Move subtasks section on issues show view into a separate partial
 * Patch redmine-31035: Remove redefinition of ActionMailer::LogSubscriber#deliver which is no longer necessary because of the removal of Setting.bcc_recipients
 * Patch redmine-33079: Remove unused argument from Redmine::Helpers::TimeReport
-* Patch redmine-34169: MessagesControllerTest#test_post_new randomly fails
 * Patch redmine-35396: Use base_scope for issue query results
 * Patch redmine-35466: Rename `test/fixtures/configuration/*.yml.example` to `test/fixtures/files/configuration/*.yml`
 * Patch redmine-35610: Cleanups after Wiki tab removal from project settings (#26579)
@@ -609,10 +593,6 @@
 
 * Feature redmine-34715: Filter issues by file description
 * Feature redmine-35764: Multiple search terms in the "contains" operator of text filters
-
-### Issues filter
-
-* Patch redmine-35312: Gracefully handle invalid operators and associations requested in queries
 
 ### Gantt
 
@@ -957,7 +937,6 @@
 * Defect redmine-34615: 'Search' falsy parameters are not respected
 * Defect redmine-34618: Cannot sign in when both enabling two-factor authentication and changing password are required
 * Feature redmine-15212: Atom feed on project with subprojects should show in article title the name of the project
-* Feature redmine-18555: Show warning when attempting to attach more than the allowed number of attachments
 * Feature redmine-33906: Upgrade Rails to 5.2.4.5
 * Feature redmine-34123: System tests for inline auto complete feature
 * Feature redmine-34495: Don't show "Two-factor authentication" on new user form
