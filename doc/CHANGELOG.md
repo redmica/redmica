@@ -4,7 +4,6 @@
 
 ### Accounts / authentication
 
-* Defect redmine-38182: Exporting users query does not use the query name as file name
 * Defect redmine-6254: Remove "Unknown user" notification on password request with non-existent email address
 
 ### Attachments
@@ -24,7 +23,6 @@
 * Patch redmine-38091: Fix redundant 'private' modifier in repositories_git_controller_test.rb
 * Patch redmine-38093: Use require_relative instead of generating the full path for a file
 * Patch redmine-38139: Add guard clause to time_tag method to handle nil time
-* Patch redmine-38141: Update copyright year to 2023
 * Patch redmine-38228: Remove X-UA-Compatible meta tag for Internet Explorer
 * Patch redmine-38478: Remove unused i18n key label_last_login
 * Patch redmine-38496: Add missing fixtures to SearchControllerTest
@@ -32,10 +30,6 @@
 ### Database
 
 * Defect redmine-38210: Incorrect DB migration version
-
-### Documentation
-
-* Defect redmine-38114: Example plugin (extra/sample_plugin) breaks Activity page
 
 ### Email notifications
 
@@ -70,11 +64,6 @@
 * Patch redmine-38181: Update Nokogiri to 1.14
 * Patch redmine-38187: Update SQLite3 gem to 1.6
 * Patch redmine-38220: Update Redcarpet to 3.6
-* Patch redmine-38272: Update RBPDF to 1.21
-
-### Groups
-
-* Patch redmine-38144: Refactoring: Use Group.visible instead of manual visibility check in GroupsController
 
 ### I18n
 
@@ -83,7 +72,6 @@
 
 ### Issues
 
-* Defect redmine-38217: "Property changes" tab does not appear when all issue journals have both notes and property changes
 * Defect redmine-38458: Display order of watchers in the sidebar is indeterminate
 * Feature redmine-38416: Ability to disable the priority field
 
@@ -111,18 +99,9 @@
 
 * Feature redmine-38048: Introduce permission to set a project public
 
-### Project settings
-
-* Defect redmine-37166: Roles of a project member should not be made empty
-* Defect redmine-38064: Avoid exception when adding a project without any givable roles defined
-
 ### Rails support
 
-* Defect redmine-36273: Modifying the source code of a plugin does not reload it after r21295
-* Defect redmine-38199: Fix deprecation warning for db:structure:dump in db:migrate when using sql schema format
-* Patch redmine-38191: Update Rails to 6.1.7.2
 * Patch redmine-38216: Add template filenames as comments to HTML output in development mode
-* Patch redmine-38374: Update Rails to 6.1.7.3
 
 ### Roadmap
 
@@ -149,18 +128,14 @@
 
 ### Text formatting
 
-* Defect redmine-37881: Thumbnails are no longer fetched for all notes of an issue
-* Defect redmine-38215: Nested CommonMark Markdown task lists are not indented
 * Feature redmine-38372: Use Commonmarker instead of Redcarpet by default when rendering Markdown attachments
 
 ### Third-party libraries
 
-* Patch redmine-37987: Update Stylelint to 14.16.0 
 * Patch redmine-38162: Update jQuery UI Datepicker i18n files to 1.13.2
 
 ### Time tracking
 
-* Defect redmine-35066: Missing project_id in redirect after clicking "Create and add another" button
 * Feature redmine-27821: "Issue's subject" filter for spent time
 * Feature redmine-37623: Add Parent task filter and column to Spent time
 
@@ -306,7 +281,7 @@
 
 ### Time tracking
 
-* Feature redmine-35066: Missing project_id in redirect after clicking "Create and add another" button
+* Defect redmine-35066: Missing project_id in redirect after clicking "Create and add another" button
 
 ## RedMica 2.2.0 - 2022-11-28
 
