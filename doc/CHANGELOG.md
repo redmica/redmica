@@ -1,5 +1,23 @@
 # Changelog
 
+## RedMica 2.3.0 - 2023-07-06
+
+### Code cleanup/refactoring
+
+* Defect redmine-38797: Fix incorrect argument format for assert_select
+
+### Gems support
+
+* Patch redmine-38181: Update Nokogiri to 1.15.2
+
+### Issues
+
+* Defect redmine-38788: "has been" and "has never been" filter operators can be very slow
+
+### Rails support
+
+* Patch redmine-38374: Update Rails to 6.1.7.4
+
 ## RedMica 2.3.0 - 2023-05-19
 
 ### Accounts / authentication
