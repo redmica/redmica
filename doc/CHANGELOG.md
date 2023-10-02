@@ -1,5 +1,37 @@
 # Changelog
 
+## RedMica 2.3.2 - 2023-10-02
+
+### Gantt
+
+* Defect redmine-38728: Correctly escape issue text in Gantt PNG export for ImageMagick convert
+
+### Gems support
+
+* Patch redmine-39070: Allow using the latest version of mocha even when using Ruby < 2.7
+
+### PDF export
+
+* Defect redmine-37694: CommonMark Markdown task list item markers are not exported to PDF
+
+### Rails support
+
+* Patch redmine-38374: Update Rails to 6.1.7.6
+
+### Security
+
+* Defect redmine-38417: XSS Vulnerability in Thumbnails
+* Defect redmine-38806: XSS in Markdown formatter
+* Defect redmine-38807: XSS in Textile formatter
+
+### Text formatting
+
+* Defect redmine-38697: Exception during thumbnail macro to image tag conversion in emails
+
+### Time tracking
+
+* Defect redmine-39079: NoMethodError when trying to remove the date of an existing time entry
+
 ## RedMica 2.3.1 - 2023-07-06
 
 ### Code cleanup/refactoring
