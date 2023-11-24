@@ -34,7 +34,7 @@ module RedMica
     MINOR = 4
     TINY  = 0
 
-    BRANCH = 'devel'
+    BRANCH = 'stable'
 
     # Retrieves the revision from the working copy
     def self.revision
