@@ -1,5 +1,125 @@
 # Changelog
 
+## RedMica 2.4.0 - 2023-11-24
+
+### Accounts / authentication
+
+* Defect redmine-36969: EmailAddress regex matches invalid email addresses
+* Feature redmine-37679: Raise the maximum length of the last name to 255 characters
+
+### Administration
+
+* Feature redmine-36695: Add check in Redmine information page if default queue adapter is used in production
+* Patch redmine-39181: /users backwards API compatibility 
+
+### Calendar
+
+* Feature redmine-33682: Display calendar in vertical list layout on mobile screens
+
+### Code cleanup/refactoring
+
+* Defect redmine-39180: Fix an intermittent test failure in JournalTest
+* Patch redmine-36806: Remove rss_* deprecated methods
+* Patch redmine-37668: Fix bad I18n `t` call in macro error handler
+* Patch redmine-37974: Database migration to remove unused "mention_users" permission
+* Patch redmine-38646: Remove unused locale entry: label_optgroup_others
+* Patch redmine-38772: <=> should return nil when invoked with an incomparable object
+* Patch redmine-39021: Add ".byebug_history" to svn:ignore, .gitignore, and .hgignore
+* Patch redmine-39066: Remove set_language_if_valid from MyController
+* Patch redmine-39109: Improving Test Reliability with Capybara Assertions
+* Patch redmine-39184: Cleanup debug code in app/models/mail_handler.rb
+* Patch redmine-39207: Replace `YAML.load` with `YAML.load_file` in locales.rake and improve error reporting for invalid YAML files
+* Patch redmine-39380: Replace hardcoded issues count check with `limit` variable in IssuesController#retrieve_previous_and_next_issue_ids
+
+### Database
+
+* Defect redmine-39437: MySQL / MariaDB issue nested set deadlocks and consistency
+* Defect redmine-39443: Invalid statement query error on MSSQL when role filter is used in issues query
+
+### Email notifications
+
+* Defect redmine-39553: Mention notification is not sent (MENTION_PATTERN / LINKS_RE inconsistency)
+
+### Gems support
+
+* Defect redmine-39576: `rake yard` does not work with Ruby >= 3.2
+* Patch redmine-36919: Update RuboCop to 1.57
+* Patch redmine-37236: Update Rouge to 4.2
+* Patch redmine-37247: Update RuboCop Performance to 1.19
+* Patch redmine-37248: Update RuboCop Rails to 2.22
+* Patch redmine-37401: Update I18n to 1.14
+* Patch redmine-37525: Update Pg to 1.5
+* Patch redmine-37558: Update webdrivers to 5.0
+* Patch redmine-39211: Update roadie-rails to 3.1
+* Patch redmine-39547: Prevent automatic requiring of 'yard' gem
+
+### Issues
+
+* Defect redmine-38493: The related issues count on the issue view is not updated after deleting one of the related issues
+* Defect redmine-39186: Missing synchronization between watchers and watcher_users for unsaved objects
+* Defect redmine-39521: Mention autocomplete not displaying for users without "Edit issues" permission
+* Feature redmine-2568: Description for issue statuses
+* Feature redmine-37621: Add field separator option to CSV export dialog
+* Patch redmine-38820: Retry in case of stale issue during Issue.update_versions
+
+### PDF export
+
+* Defect redmine-39534: Error (undefined method) in issue list PDF export
+
+### Performance
+
+* Patch redmine-38319: Optimize IssueQuery#sql_for_assigned_to_role_field for PostgreSQL performance
+
+### Plugin API
+
+* Defect redmine-38707: Fix order of loading plugins' config/routes.rb
+* Feature redmine-38730: Generate snake-case file name by redmine_plugin_migration
+
+### REST API
+
+* Defect redmine-38668: Unable to retrieve custom fields set as "For all projects" via Projects API
+* Feature redmine-39113: Add missing Homepage attribute in Projects API response
+
+### SCM
+
+* Feature redmine-39238: Redirect to repositories#show after repositories#fetch_changesets to avoid the user-visible browser URL
+
+### Text formatting
+
+* Defect redmine-38852: ## issue syntax is not kept when selecting an issue from the inline autocomplete
+
+### Third-party libraries
+
+* Feature redmine-39400: Migrate Stylelint to 15.11.0
+
+### Translations
+
+* Defect redmine-38391: Updated catalan translation for redmine
+* Defect redmine-38871: Fix mistranslation of label_board_sticky in Spanish translation
+* Feature redmine-34924: Add Tamil language support
+* Patch redmine-29692: Bosnian localization update
+* Patch redmine-33074: Korean translation update for 4.1-stable
+* Patch redmine-34061: Update locales for Vietnamese language
+* Patch redmine-36387: Updating Hungarian translation
+* Patch redmine-38315: Translation for ru.yml
+* Patch redmine-38544: Updated french translation.
+* Patch redmine-38709: Update Persian translation to Redmine-5.0-stable
+* Patch redmine-39020: Traditional Chinese translation (to 22290)
+* Patch redmine-39032: Japanese translation update (r22289 )
+* Patch redmine-39179: Czech localisation update
+* Patch redmine-39192: Japanese translation update (r22344)
+* Patch redmine-39195: Traditional Chinese translation update (to 22351)
+* Patch redmine-39197: Turkish translation update
+* Patch redmine-39215: Galician translation update
+* Patch redmine-39221: Traditional Chinese translation update (to 22365)
+* Patch redmine-39430: Japanese translation update (r22362)
+* Patch redmine-39513: Bulgarian translation update for 5.1-stable
+* Patch redmine-39551: Simplified Chinese translation update for 5.1-stable
+
+### Wiki
+
+* Defect redmine-34634: Deletion of project wiki leaves the project wiki inaccessible (404) until module reactivation
+
 ## RedMica 2.3.2 - 2023-10-02
 
 ### Gantt
