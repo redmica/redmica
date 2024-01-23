@@ -1,5 +1,35 @@
 # Changelog
 
+## RedMica 2.4.1 - 2024-01-23
+
+### Code cleanup/refactoring
+
+* Patch redmine-39894: Explicitly render a 404 on non-JS requests to watchers#new
+
+### Database
+
+* Patch redmine-39592: Set transaction isolation level of MySQL to READ-COMMITTED in database.yml.example
+* Patch redmine-39737: Support MySQL 8
+* Patch redmine-39865: extend mysql8? test helper to handle complex version strings
+
+### Filters
+
+* Defect redmine-39714: Query grouping filter not working for custom field relations
+* Defect redmine-39991: Fix "any" operator for text filters to exclude empty text values
+
+### Issues
+
+* Defect redmine-39932: Incorrect position of "Edited" mark in issue notes with h4 headings
+
+### Text formatting
+
+* Defect redmine-39755: CommonMark Markdown help page does not reflect user's language setting
+* Feature redmine-39884: Allow multiple footnotes per single word
+
+### Translations
+
+* Defect redmine-39801: Fix typo in Russian translation of text_status_no_workflow
+
 ## RedMica 2.4.0 - 2023-11-24
 
 ### Accounts / authentication
