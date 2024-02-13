@@ -27,11 +27,8 @@
 /public/assets/*
 /public/dispatch.*
 /public/plugin_assets/*
-/public/themes/*
-!/public/themes/alternate
-!/public/themes/bleuclair
-!/public/themes/classic
-!/public/themes/README
+/themes/*
+!/themes/README
 /tmp/*
 /tmp/cache/*
 /tmp/pdf/*
