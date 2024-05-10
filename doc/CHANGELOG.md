@@ -1,5 +1,43 @@
 # Changelog
 
+## RedMica 2.4.2 - 2024-05-10
+
+### Administration
+
+* Defect redmine-40166: Internationalize "Check all / Uncheck all" tooltip in project list for admins
+
+### Code cleanup/refactoring
+
+* Defect redmine-40239: Add missing fixtures in Redmine::ApiTest::IssuesTest
+
+### Gems support
+
+* Defect redmine-40603: Mocha 2.2.0 causes test failure: "unexpected invocation"
+
+### Issues
+
+* Defect redmine-40410: Watcher groups on new issue form get dereferenced on validation error
+* Feature redmine-40556: Focus on the textarea after clicking the Edit Journal button
+
+### REST API
+
+* Defect redmine-40099: User api filtering by status=* broke on upgrade from 5.0 to 5.1
+
+### SEO
+
+* Defect redmine-40208: An ActionController::RespondToMismatchError occurred in welcome#robots
+
+### Text formatting
+
+* Defect redmine-40193: Performance issue with email address auto-linking in the default ("none") formatter
+
+### UI
+
+* Defect redmine-39780: User select element on activity sidebar views cutoff when displaying long user names
+* Defect redmine-39802: Fix click event handling in mobile view after closing flyout menu
+* Defect redmine-40237: Error in autocomplete (`ActionController::BadRequest (Invalid query parameters: invalid %-encoding (%)`)
+* Defect redmine-40555: Watcher group checkbox on new issue form on validation error will be checked only submitted
+
 ## RedMica 2.4.1 - 2024-01-23
 
 ### Code cleanup/refactoring
