@@ -1,14 +1,193 @@
 # Changelog
 
-## RedMica 2.4.2 - 2024-05-10
+## RedMica 3.0.0 - 2024-05-30
+
+### Accounts / authentication
+
+* Defect redmine-28243: Principal.not_member_of scope does not accept ActiveRecord::Relation
+* Feature redmine-39500: Change the default notification option for users to "Only for things I watch or I am assigned to"
 
 ### Administration
 
 * Defect redmine-40166: Internationalize "Check all / Uncheck all" tooltip in project list for admins
 
+### Attachments
+
+* Feature redmine-37530: Add timeout for thumbnail generation process
+
 ### Code cleanup/refactoring
 
+* Defect redmine-31507: Test fails if trailing whitespaces are removed
+* Defect redmine-31831: Back url parse in validation
+* Defect redmine-32985: Remove unnecessary use of instance variables in CSV and Atom response handlers
+* Defect redmine-37730: Missing copyright headers in source files
+* Defect redmine-39527: Deprecate unused ApplicationHelper#render_if_exist
+* Defect redmine-40205: ThemesTest may fail if a third-party theme having theme.js is installed
 * Defect redmine-40239: Add missing fixtures in Redmine::ApiTest::IssuesTest
+* Feature redmine-39111: Enable Asset Pipeline Integration using Propshaft
+* Feature redmine-40190: Stop appending the utf8 checkmark parameter to form URLs
+* Patch redmine-35217: Replace use of Digest::MD5 / Digest::SHA1 with ActiveSupport::Digest
+* Patch redmine-38975: Use ApplicationRecord instead of ActiveRecord::Base
+* Patch redmine-39110: Replacing request_store with ActiveSupport::CurrentAttributes
+* Patch redmine-39777: Remove useless method #run_in_request? from db/migrate/20221214173537_add_select_project_publicity_permission.rb
+* Patch redmine-39971: Remove specific platform constraints for database adapter gems
+* Patch redmine-39999: Explicitly render a 404 on non-JS requests to messages#quote
+* Patch redmine-40043: Remove year ranges from all copyright headers
+* Patch redmine-40087: Rewrite ApplicationHelper#favicon_url method using image_url
+* Patch redmine-40124: Remove deprecated empty status param to get all users from API
+* Patch redmine-40210: Remove overrides that inserts a non-breaking space (nbsp) to empty option elements
+* Patch redmine-40211: Remove appveyor.yml
+* Patch redmine-40506: Remove redundant ApplicationHelper inclusions
+* Patch redmine-40513: Fix initial_page_content method to avoid referencing @page instance variable in wiki formatting helpers
+* Patch redmine-40559: Fix incorrect icon image paths for Wiki help pages
+* Patch redmine-40652: Replace MD5 with SHA256 when creating the hash for gravatar URL
+* Patch redmine-40691: Remove ambiguity in queries utilizing a Project scope
+
+### Custom fields
+
+* Defect redmine-27543: Key/value-pair custom field type not available to all customisable contents
+
+### Documentation
+
+* Feature redmine-40681: Dynamic generation of supported code highlighting languages in help section
+
+### Email notifications
+
+* Feature redmine-40569: Add an option to send email notification when an attachment is added
+
+### Feeds
+
+* Defect redmine-33829: Fix Atom feed for issues to correctly use the updated time for "updated" element instead of the created time
+* Feature redmine-34025: Raise the maximum length of the title element in the Atom feed from 100 to 300 characters
+
+### Filters
+
+* Defect redmine-39714: Query grouping filter not working for custom field relations
+* Defect redmine-39991: Fix "any" operator for text filters to exclude empty text values
+
+### Gems support
+
+* Patch redmine-37258: Switch default backend of ActiveSupport::XmlMini from rexml to Nokogiri
+* Patch redmine-39887: Update RuboCop to 1.64
+* Patch redmine-39888: Update RuboCop Performance to 1.21
+* Patch redmine-39889: Update RuboCop Rails to 2.25
+* Patch redmine-39972: Update Nokogiri to 1.16.0
+* Patch redmine-39985: Update SQLite3 gem to 1.7
+* Patch redmine-40148: Update activerecord-sqlserver-adapter to 7.1
+* Patch redmine-40685: Update roadie-rails to 3.2.0
+
+### I18n
+
+* Feature redmine-21677: Support localized decimal separator for hours in the web UI
+* Feature redmine-22024: Support localized decimal separators for float values
+* Feature redmine-29208: Support email addresses with IDN (internationalized domain names) in user accounts
+* Patch redmine-39879: Fix hardcoded string on user preferences page
+
+### Issues
+
+* Defect redmine-40410: Watcher groups on new issue form get dereferenced on validation error
+* Defect redmine-40412: Issue list filter "Watched by: me" only shows issues watched via group for projects with the view_issue_watchers permission
+* Feature redmine-31756: Introduce configuration for done ratio options interval
+
+### Issues filter
+
+* Feature redmine-39805: Extend "contains" operator in "Parent task" filter to support multiple issue IDs
+
+### Issues list
+
+* Feature redmine-29894: View watchers on the issue list
+* Patch redmine-37862: Estimated time remaining issue query column
+
+### Issues workflow
+
+* Patch redmine-40693: Ignore status in roleld_up_status if workflow only defines identity transition
+
+### Performance
+
+* Defect redmine-40610: Slow display of projects list when including project description column
+* Patch redmine-23328: Optimize Project#notified_users to improve issue create/update speed
+* Patch redmine-39835: Optimize repository menu visibility check
+* Patch redmine-39837: Optimize query models by replacing `map` with `pluck`
+* Patch redmine-39840: Optimize `Issue#relations` method to fetch both `relations_from` and `relations_to` using a single query
+* Patch redmine-39847: Cache the result of `Journal#attachments`
+* Patch redmine-39849: Optimize IssueCategory SQL queries when showing an issue
+* Patch redmine-39852: Optimize queries visibility check
+* Patch redmine-39857: Optimize users visibility check
+* Patch redmine-39993: Optimize loading of journals, relations, and allowed_statuses in IssuesController#show for API requests
+* Patch redmine-40000: Optimize gantt chart rendering for issues without subtasks
+* Patch redmine-40008: Replace String#sub with delete_prefix / delete_suffix
+* Patch redmine-40010: Replace regular expression matches with String#start_with? / end_with?
+
+### Plugin API
+
+* Defect redmine-39862: Attachments functionality for (custom) plugins broken since fix for CVE-2022-44030
+* Feature redmine-39948: Add Redmine::Plugin proxy method for Redmine::Acts::Attachable::ObjectTypeConstraint.register_object_type
+
+### Projects
+
+* Feature redmine-23954: Shows the date of the last activity on Projects administration
+* Feature redmine-40706: Enhance "Last activity" column to link to project activity page
+
+### REST API
+
+* Defect redmine-39760: Some API tests fail with Ruby 2.7
+* Defect redmine-40099: User api filtering by status=* broke on upgrade from 5.0 to 5.1
+* Feature redmine-23307: Include auth_source field in User API response
+* Feature redmine-38948: Add user status to users list API
+* Feature redmine-40449: Add updated_on and updated_by fields to Issues API journal response
+
+### Rails support
+
+* Defect redmine-38155: RuntimeError when reloading Rails console
+* Defect redmine-39834: Extract tests for plugin autoloading and Restore Plugin directory settings
+* Defect redmine-40204: `rake redmine:plugins` fails with the error "Don't know how to build task 'redmine:plugins:assets'"
+* Feature redmine-36320: Migrate to Rails 7.1
+* Feature redmine-40092: Drop FastCGI support
+
+### Roadmap
+
+* Defect redmine-24457: Progress of version should be calculated the same way as parent tasks
+* Defect redmine-4682: Completed version with wrong progress bar status
+
+### Ruby support
+
+* Feature redmine-38585: Drop Ruby 2.7 support
+* Feature redmine-39761: Ruby 3.3 support
+
+### SCM
+
+* Defect redmine-37626: Diff of a javascript file in repository module is not displayed with layout 
+* Defect redmine-37732: Fix "DEPRECATION WARNING: Rendering actions with '.' in the name is deprecated" in RepositoriesController
+* Defect redmine-39747: Diff of a javascript file in repository module is not displayed with layout 
+* Defect redmine-40020: ScmData.binary? incorrectly considers UTF-8 text as binary
+
+### Text formatting
+
+* Defect redmine-40193: Performance issue with email address auto-linking in the default ("none") formatter
+* Defect redmine-40515: Displaying issue descriptions in the issues list ignores CommonMark table alignment
+* Defect redmine-40650: Fix duplicate alt and title attributes when alt text is specified for attached images in Textile formatter
+* Feature redmine-36594: Relax rouge version dependency in Gemfile
+* Patch redmine-40137: Jstoolbar help files should import images from the asset pipeline
+
+### Translations
+
+* Defect redmine-39801: Fix typo in Russian translation of text_status_no_workflow
+
+### UI
+
+* Defect redmine-37390: Extraneous whitespace when selecting and copying issue number on Chrome/Windows
+* Defect redmine-39795: Fix improper error highlighting for description field in issue form
+* Patch redmine-33638: Add informative default welcome text for new installations
+
+### UI - Responsive
+
+* Feature redmine-39806: Improve filter rendering on narrow screens by replacing the layout tables with a flex layout
+
+## RedMica 2.4.2 - 2024-05-10
+
+### Administration
+
+* Defect redmine-40166: Internationalize "Check all / Uncheck all" tooltip in project list for admins
 
 ### Gems support
 
