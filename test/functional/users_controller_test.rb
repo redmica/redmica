@@ -1105,7 +1105,7 @@ class UsersControllerTest < Redmine::ControllerTest
       assert_no_difference 'User.count' do
         delete :destroy, params: {id: user.id}
       end
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
     end
   end
 
@@ -1116,7 +1116,7 @@ class UsersControllerTest < Redmine::ControllerTest
       assert_no_difference 'User.count' do
         delete :destroy, params: {id: user.id}
       end
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
     end
   end
 

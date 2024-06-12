@@ -4747,7 +4747,7 @@ class IssuesControllerTest < Redmine::ControllerTest
           }
         }
       )
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
     end
   end
 
