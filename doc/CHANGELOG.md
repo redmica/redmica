@@ -1,5 +1,11 @@
 # Changelog
 
+## RedMica 3.0.1 - 2024-06-27
+
+### Gems support
+
+* Patch redmine-40802: Support builder 3.3.0
+
 ## RedMica 3.0.0 - 2024-05-30
 
 ### Accounts / authentication
