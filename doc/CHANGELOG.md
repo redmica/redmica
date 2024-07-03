@@ -189,6 +189,12 @@
 
 * Feature redmine-39806: Improve filter rendering on narrow screens by replacing the layout tables with a flex layout
 
+## RedMica 2.4.3 - 2024-07-03
+
+### Gems support
+
+* Patch redmine-40802: Support builder 3.3.0
+
 ## RedMica 2.4.2 - 2024-05-10
 
 ### Administration
