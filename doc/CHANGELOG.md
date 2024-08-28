@@ -1,5 +1,32 @@
 # Changelog
 
+## RedMica 3.0.2 - 2024-08-28
+
+### Filters
+
+* Defect redmine-41079: Incorrect sorting of users grouped by status in issue filters for administrators
+
+### Gems support
+
+* Patch redmine-39889: Update RuboCop Rails to 2.25
+
+### I18n
+
+* Defect redmine-39778: Untranslated string "OK" in the repository browser
+
+### Issues
+
+* Defect redmine-40860: Creating a new issue fails with an internal error if no issue priorities are defined
+
+### Time tracking
+
+* Defect redmine-40924: Spent Hours ignoring "Time Span Format" Setting on several pages
+
+### Wiki
+
+* Defect redmine-40655: Revisions count is wrong on the wiki content page
+* Defect redmine-40716: "Edit this section" on Wiki pages misinterprets issue links with double hash (##nnn) as ATX headings
+
 ## RedMica 3.0.1 - 2024-06-27
 
 ### Gems support
