@@ -1,5 +1,23 @@
 # Changelog
 
+## RedMica 3.0.3 - 2024-09-18
+
+### Forums
+
+* Defect redmine-41234: Forum message's subject field overflows beyond container
+
+### Issues
+
+* Defect redmine-8539: Fix NoMethodError in Issue#blocked? due to invalid issue_from_id in Issue#relations_from
+
+### Projects
+
+* Defect redmine-41217: Broken project list table when filter scheduled for deletion
+
+### Text formatting
+
+* Defect redmine-41096: "##" syntax auto complete does not work
+
 ## RedMica 3.0.2 - 2024-08-28
 
 ### Filters
