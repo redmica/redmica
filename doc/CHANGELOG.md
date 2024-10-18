@@ -1,5 +1,27 @@
 # Changelog
 
+## RedMica 3.0.4 - 2024-10-18
+
+### Code cleanup/refactoring
+
+* Patch redmine-41313: Fix test/unit/issue_test.rb to use correct IANA timezone name "Asia/Hong_Kong" instead of deprecated "Hongkong"
+
+### Gantt
+
+* Defect redmine-41263: Gantt progress line misrendering for 0% progress issues/versions with future start dates beyond chart range
+
+### Rails support
+
+* Update Rails to 7.1.4.1
+
+### Text formatting
+
+* Defect redmine-41467: Unexpected font size on CommonMark Markdown help pages due to missing doctype declaration
+
+### Time tracking
+
+* Defect redmine-41401: Hours column in "Details" tab of Spent time is not right-aligned
+
 ## RedMica 3.0.3 - 2024-09-18
 
 ### Forums
