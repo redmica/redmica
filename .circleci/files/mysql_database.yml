@@ -1,8 +1,0 @@
-# database.yml for MySQL database
-test:
-  adapter: mysql2
-  database: redmine
-  username: redmine
-  password: <%= ENV['mysql_database'] %>
-  host: localhost
-  encoding: utf8

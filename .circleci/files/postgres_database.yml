@@ -1,9 +1,0 @@
-# database.yml for postgreSQL database
-test:
-  adapter: postgresql
-  database: redmine
-  username: postgres
-  password: <%= ENV['postgres_database'] %>
-  host: localhost
-  encoding: utf8
-  template: template0
