@@ -19,7 +19,7 @@ Bleuclair theme is used as standard for [RedMica - the future Redmine you can ge
 Storybook([redmine-theme/storybook](https://github.com/redmine-theme/storybook)): https://farend.github.io/redmine_theme_farend_bleuclair
 
 - Issue list
-<kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/issues-4.2.png" /></kbd>
+<kbd><img src="https://github.com/farend/redmine_theme_farend_bleuclair/blob/images/issues-6.0.png" /></kbd>
 
 ## Install
 
@@ -51,12 +51,12 @@ $ git clone -b redmine4.2 https://github.com/farend/redmine_theme_farend_bleucla
 
 - For Redmine 5.0, Redmine 5.1
 ```bash
-$ git clone https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
+$ git clone -b redmine5.1 https://github.com/farend/redmine_theme_farend_bleuclair.git public/themes/bleuclair
 ```
 
-- For RedMica 3.0, Redmine trunk
+- For Redmine 6.0, Redmine trunk
 ```bash
-$ git clone -b support-propshaft https://github.com/farend/redmine_theme_farend_bleuclair.git themes/bleuclair
+$ git clone https://github.com/farend/redmine_theme_farend_bleuclair.git themes/bleuclair
 ```
 
 **In an environment where Git is not available:**
