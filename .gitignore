@@ -30,6 +30,7 @@
 /public/plugin_assets/*
 /themes/*
 !/themes/README
+!/themes/bleuclair/*
 /tmp/*
 /tmp/cache/*
 /tmp/pdf/*
