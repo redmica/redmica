@@ -1,5 +1,205 @@
 # Changelog
 
+## RedMica 3.1.0 - 2024-11-19
+
+### Accounts / authentication
+
+* Feature redmine-37279: Reject passwords that are the same as login, first name, last name, or email
+* Feature redmine-38853: Changes user visibility from "all" to "member of visible projects" for new roles and existing builtin roles
+
+### Administration
+
+* Feature redmine-12521: Improve tracker deletion error message to display projects containing issues under the tracker 
+* Feature redmine-40913: Add bulk lock/unlock feature to user list context menu
+
+### Attachments
+
+* Defect redmine-38966: Attachment custom fields not removed when issue is deleted
+
+### Calendar
+
+* Patch redmine-41509: Replace "even" and "odd" CSS classes with "this-month" and "other-month" for calendar days
+
+### Code cleanup/refactoring
+
+* Patch redmine-27510: Introduce active? method to Group via Principal model
+* Patch redmine-32523: Replace `for` loops with `forEach` in buildFilterRow function
+* Patch redmine-35648: Changelog generator should allow merging two or more versions
+* Patch redmine-40801: Add missing fixture journal_details to JournalsHelperTest
+* Patch redmine-40882: Remove unused "label_browse" from all locales
+* Patch redmine-41023: Set default age parameter for User.prune to 30 days
+* Patch redmine-41141: Replace deprecated `ActiveSupport::Deprecation.warn` with custom deprecation object
+* Patch redmine-41142: Add missing assertion in Redmine::MenuManager::MapperTest#test_push_onto_root
+* Patch redmine-41188: Refactor Calendar#first_wday method for improved readability and efficiency
+* Patch redmine-41238: Fix test failure in IssuesSystemTest due to incorrect attachment count expectation
+* Patch redmine-41287: Add .vscode to svn:ignore, .gitignore, and .hgignore
+* Patch redmine-41402: Remove Internet Explorer-specific CSS rules and vendor prefixes
+* Patch redmine-41623: Fix tests that randomly failed due to required fixtures not being loaded
+* Patch redmine-7770: use unless in control structures where it improves readability
+
+### Custom fields
+
+* Feature redmine-39997: Add an option to render values of Integer- and Float-format custom fields with thousands delimiters
+
+### Database
+
+* Patch redmine-34218: Increase size of value field in settings
+
+### Documentation
+
+* Patch redmine-40202: Add LICENSE.txt in the root directory
+* Patch redmine-41011: Add more configuration examples to config/additional_environment.rb.example
+* Patch redmine-41469: Update helps and docs to use HTTPS links instead of HTTP
+
+### Email notifications
+
+* Feature redmine-13359: Add project identifier to List-Id header in notification emails for better Gmail filtering
+* Feature redmine-41450: Include attachment filename in "File added" email notification subject
+
+### Email receiving
+
+* Defect redmine-41737: Deprecation warning for IMAP4 email receiving: "Call Net::IMAP.new with keyword options"
+
+### Gantt
+
+* Defect redmine-41447: Gantt collapse/expand buttons are not available
+* Defect redmine-41786: Long subject may not be displayed in Gantt chart with narrow column width
+
+### Gems support
+
+* Defect redmine-41729: Installing Redmine 6.0.0 may cause a LoadError for svg_sprite
+* Defect redmine-41749: Warning during startup: "Unresolved or ambiguous specs during Gem::Specification.reset"
+* Patch redmine-39887: Update RuboCop to 1.68
+* Patch redmine-39888: Update RuboCop Performance to 1.22
+* Patch redmine-39889: Update RuboCop Rails to 2.27
+* Patch redmine-40197: Update commonmark to 1.1
+* Patch redmine-40849: Update MiniMagick to 4.13
+* Patch redmine-41312: Update MiniMagick to 5.0
+* Patch redmine-41723: Update roadie-rails to 3.3
+* Patch redmine-41728: Update Rouge gem to 4.5
+* Patch redmine-41761: Update Rubocop Performance to 1.23
+
+### Hook requests
+
+* Feature redmine-41044: Add view hooks in My page
+
+### I18n
+
+* Defect redmine-37072: Capitalization issue for object names in I18n keys: button_save_object, button_edit_object, and button_delete_object
+
+### Importers
+
+* Defect redmine-41464: CSV file encoding auto-detection may fail with multibyte characters
+* Defect redmine-41465: "Import issues" and "Import time entries" pages are visible to users without "Add issues" and "Log spent time" permissions
+
+### Issues
+
+* Defect redmine-41572: `updated_by_id` in Journal retains deleted user id instead of being set to `User.anonymous`
+* Feature redmine-16045: Add "Author / Previous assignee" group to assignee dropdown in issue form
+* Feature redmine-36197: Add configurable setting for copying attachments when copying an issue
+* Feature redmine-41202: Change the default CSV export encoding to UTF-8
+* Feature redmine-691: Add column totals to Issues Summary Report
+* Feature redmine-9309: Add description field to custom queries
+
+### Issues filter
+
+* Feature redmine-7867: Add filters for "Author's group" and "Author's role" to issues list
+
+### Issues list
+
+* Defect redmine-40303: Layout distortion in issue list descriptions with code blocks
+
+### Performance
+
+* Patch redmine-40775: Reduce an extra SQL query in IssuesController#retrieve_default_query
+* Patch redmine-40798: Optimize Version model
+
+### Projects
+
+* Feature redmine-40829: Expose project updated_on column and filter in project query
+* Patch redmine-41678: Fix lost backward compatibility about return type of ProjectQuery#results_scope
+
+### Rails support
+
+* Feature redmine-36320: Migrate to Rails 7.2
+
+### Ruby support
+
+* Feature redmine-38585: Drop Ruby 2.7 and 3.0 support
+
+### SCM
+
+* Defect redmine-40948: ActiveRecord::ValueTooLong error with git author longer than 255 characters
+
+### Search engine
+
+* Feature redmine-38446: Support multiple multi-word phrases in the search engine
+
+### Security
+
+* Defect redmine-40946: Watcher list visible with only add watchers permissions
+
+### Text formatting
+
+* Defect redmine-34473: Displaying the table of content on the right causes wrong position
+* Defect redmine-41513: Error after update to revision 23153
+* Feature redmine-40149: Drop deprecated Redcarpet based Markdown formatter
+* Patch redmine-40014: Add support for quoted arguments containing commas in wiki macros
+* Patch redmine-40939: Add "underline" button to jsToolbar for CommonMark Markdown formatting
+
+### Themes
+
+* Defect redmine-26778: Invalid "theme-*" CSS class in body element when theme name contains spaces
+
+### Third-party libraries
+
+* Feature redmine-40853: Upgrade jQuery to 3.7.1
+* Feature redmine-40864: Upgrade jQuery UI to 1.13.3
+
+### Time tracking
+
+* Defect redmine-36897: The minutes part of a time entry is displayed as 60 instead of being carried over
+* Defect redmine-40914: Fix precision issues in TimeEntry#hours calculation by returning Rational instead of Float
+* Feature redmine-41053: Add "User's group" and "User's role" filters to Spent time list
+* Patch redmine-1671: Show a breakdown of estimated/spent/remaining time for a version
+
+### Translations
+
+* Patch redmine-40875: Improve Czech translation for "two-factor authentication"
+* Patch redmine-40950: Improve english translation for invalid watcher notice
+* Patch redmine-41420: Italian translation update for 5.1-stable
+* Patch redmine-41736: Update Turkish translation of label_description from "Yorum" to "Açıklama"
+
+### UI
+
+* Defect redmine-38915: Duplicate spacer id in jsToolBar
+* Defect redmine-41712: Fix Path for Plugin Assets Added by Rake Task
+* Defect redmine-41721: Principal link text with special characters not displayed correctly after r23222
+* Defect redmine-41724: Missing key icon image on Change password button
+* Defect redmine-41756: An unnecessary scroll bar is displayed on the user's profile page
+* Defect redmine-41778: Name field in custom query creation/edit form is not marked as required
+* Defect redmine-41779: Restore `margin-top` for `#sidebar h3`
+* Defect redmine-41780: Unnecessary indentation for "Completed versions" in the Roadmap sidebar
+* Feature redmine-21808: Make the Sidebar collapsible, stateful
+* Feature redmine-23980: Replace icon images with Tabler SVG icons
+* Feature redmine-2464: Add placeholder "h:mm" to hours field for better user guidance
+* Feature redmine-2499: Change CSS font-size units from px to rem to respect browser font settings
+* Feature redmine-40901: Disable custom query links while loading to prevent multiple requests
+* Feature redmine-41266: Improve header design with gradient background
+* Feature redmine-41272: Improve tooltip positioning for thumbnails
+* Feature redmine-41294: Partial quoting feature for Issues and Forums
+* Feature redmine-41298: Refine UI with updated box styling and border colors
+* Feature redmine-41321: Improve readability by refining font sizes and switching to Noto Sans font
+* Feature redmine-41475: Improve table readability by adding row borders
+* Feature redmine-41500: Swap odd and even table row background colors
+* Feature redmine-41748: Optimize font loading by replacing variable fonts with specific weights for Noto Sans
+* Patch redmine-41231: Expand the width of the estimated hours input field
+* Patch redmine-41569: Use custom properies to font-family
+* Patch redmine-41624: CSS-fix to prevent 'blinking' tooltips
+* Patch redmine-41710: Checkmarks in tables still have the old icon style
+* Patch redmine-41711: Group icons in members box still have the old icon style
+* Patch redmine-41720: Switch checked icon in context menu to SVG icon
+
 ## RedMica 3.0.4 - 2024-10-18
 
 ### Code cleanup/refactoring
@@ -80,10 +280,6 @@
 * Defect redmine-28243: Principal.not_member_of scope does not accept ActiveRecord::Relation
 * Feature redmine-39500: Change the default notification option for users to "Only for things I watch or I am assigned to"
 
-### Administration
-
-* Defect redmine-40166: Internationalize "Check all / Uncheck all" tooltip in project list for admins
-
 ### Attachments
 
 * Feature redmine-37530: Add timeout for thumbnail generation process
@@ -136,7 +332,6 @@
 ### Filters
 
 * Defect redmine-39714: Query grouping filter not working for custom field relations
-* Defect redmine-39991: Fix "any" operator for text filters to exclude empty text values
 
 ### Gems support
 
@@ -158,7 +353,6 @@
 
 ### Issues
 
-* Defect redmine-40410: Watcher groups on new issue form get dereferenced on validation error
 * Defect redmine-40412: Issue list filter "Watched by: me" only shows issues watched via group for projects with the view_issue_watchers permission
 * Feature redmine-31756: Introduce configuration for done ratio options interval
 
@@ -204,7 +398,6 @@
 ### REST API
 
 * Defect redmine-39760: Some API tests fail with Ruby 2.7
-* Defect redmine-40099: User api filtering by status=* broke on upgrade from 5.0 to 5.1
 * Feature redmine-23307: Include auth_source field in User API response
 * Feature redmine-38948: Add user status to users list API
 * Feature redmine-40449: Add updated_on and updated_by fields to Issues API journal response
@@ -236,15 +429,10 @@
 
 ### Text formatting
 
-* Defect redmine-40193: Performance issue with email address auto-linking in the default ("none") formatter
 * Defect redmine-40515: Displaying issue descriptions in the issues list ignores CommonMark table alignment
 * Defect redmine-40650: Fix duplicate alt and title attributes when alt text is specified for attached images in Textile formatter
 * Feature redmine-36594: Relax rouge version dependency in Gemfile
 * Patch redmine-40137: Jstoolbar help files should import images from the asset pipeline
-
-### Translations
-
-* Defect redmine-39801: Fix typo in Russian translation of text_status_no_workflow
 
 ### UI
 
