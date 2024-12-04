@@ -1,5 +1,46 @@
 # Changelog
 
+## RedMica 3.1.1 - 2024-12-04
+
+### Code cleanup/refactoring
+
+* Defect redmine-41795: Missing fixture: a test does not pass if the 'issue_categories' fixtures are not already loaded
+* Patch redmine-41861: Add License URLs to Icons Credits
+* Patch redmine-41881: Improper deletion of custom fields in IssueNestedSetConcurrencyTest causes test failures of other tests
+* Patch redmine-41889: Fix random test failures in Redmine::Acts::MentionableTest due to unsorted mentioned_users
+* Patch redmine-41894: Fix random test failure by ensuring WatchersController#find_objects_from_params returns results in consistent order
+* Patch redmine-41901: Fix random test failure in DestroyProjectsJobTest due to unsorted @projects
+* Patch redmine-41902: Fix class name to match file name in keyboard_shortcuts_test.rb
+* Patch redmine-41914: Fix random test failure in UserTest#test_validate_password_complexity due to missing explicit language setting
+* Patch redmine-41931: Fix random failures in IssueRelationTest#test_create_with_initialized_journals due to ambiguous conditions for retrieving the expected detail
+* Patch redmine-41934: Fix random test failure in ProjectsControllerTest::test_post_copy_should_copy_requested_items due to missing :issue_categories fixture
+
+### Gems support
+
+* Defect redmine-41860: FrozenError when using SQLite3 gem version 2.0.0 or later
+
+### REST API
+
+* Defect redmine-41791: Projects endpoint returns list of all projects
+* Defect redmine-41819: Time entry API returning `hours` as Rational instead of Float
+
+### Time tracking
+
+* Defect redmine-41895: Spent time CSV report returning `hours` as Rational instead of Float
+
+### UI
+
+* Defect redmine-41789: HTML syntax broken for sidebar-wrapper
+* Defect redmine-41818: Redundant tooltip appearing after clicking the ellipsis button in the action menus
+* Defect redmine-41821: Icons shrink in the Activity view when event titles are long
+* Defect redmine-41864: Report tab of Spent time page still displays deprecated raster icons instead of SVGs
+* Defect redmine-41873: Table layout breaks due to .icon class on td elements
+* Defect redmine-41883: Download button in issue comments still uses deprecated raster icon
+
+### UI - Responsive
+
+* Defect redmine-41822: First icon on the Activity page is replaced with chevrons-left or chevrons-right in responsive mode
+
 ## RedMica 3.1.0 - 2024-11-19
 
 ### Accounts / authentication
