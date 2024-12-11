@@ -1,5 +1,38 @@
 # Changelog
 
+## RedMica 3.1.2 - 2024-12-11
+
+### Accounts / authentication
+
+* Feature redmine-41927: Enable browser autocomplete for 2FA input fields
+* Feature redmine-41937: Enable browser autocomplete for login input fields
+
+### Code cleanup/refactoring
+
+* Patch redmine-41951: Fix random test failure in IssueTest due to unsorted expected_statuses
+
+### Documentation
+
+* Feature redmine-41754: Add asset precompilation instructions to doc/INSTALL and doc/UPGRADING
+
+### Issues
+
+* Defect redmine-40301: Error when create a version with custom field of "File" type from Issue page
+
+### Plugin API
+
+* Defect redmine-41880: Plugin activity icons broken after switching to SVG icons
+
+### SCM
+
+* Patch redmine-41775: Adjust the vertical alignment of icons in the tree view of the repository browser
+
+### UI
+
+* Defect redmine-41714: Replace search and magnifier icons with SVG icon
+* Defect redmine-41853: Group icons in watchers and membership modals are using a mix of legacy and SVG icons
+* Defect redmine-41957: Remove nesting selectors because are not support in old browsers
+
 ## RedMica 3.1.1 - 2024-12-04
 
 ### Code cleanup/refactoring
