@@ -9,6 +9,8 @@ IGNORE_LIST = [
 
 class RedmineInflector < Zeitwerk::Inflector
   def camelize(basename, abspath)
+    return 'VERSION' if abspath.match?('redmica\/version.rb\z')
+
     abspath.match?('redmine\/version.rb\z') ? 'VERSION' : super
   end
 end
@@ -16,6 +18,7 @@ end
 Rails.autoloaders.each do |loader|
   loader.inflector = RedmineInflector.new
   loader.inflector.inflect(
+    'redmica' => 'RedMica',
     'html' => 'HTML',
     'csv' => 'CSV',
     'pdf' => 'PDF',
