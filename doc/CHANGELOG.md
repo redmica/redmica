@@ -1,5 +1,51 @@
 # Changelog
 
+## RedMica 3.1.3 - 2025-01-22
+
+### Activity view
+
+* Defect redmine-42003: Misalignment of icons and titles in Activity view
+* Defect redmine-42070: Whitespace missing after hyphen between project name and event title in Activity view
+* Feature redmine-42038: Improve readability by adjusting font sizes and colors in activity view and search results
+
+### Attachments
+
+* Defect redmine-42084: Placeholder icon for non-existent thumbnail flickers rapidly on hover
+
+### Code cleanup/refactoring
+
+* Patch redmine-41961: Use `fixtures :all` to ensure consistent test data and improve test reliability
+* Patch redmine-42140: Update footer copyright year to 2025
+
+### Gantt
+
+* Defect redmine-41925: Context menu submenus close unexpectedly on Gantt chart due to z-index conflict
+
+### Gems support
+
+* Defect redmine-42013: Redmine fails to start with error: Unknown database adapter `"mysql2"` found in config/database.yml
+
+### Issues
+
+* Defect redmine-42066: NoMethodError exception occurs in IssuePriority#high and #low when both default and active priorities are absent
+
+### Permissions and roles
+
+* Defect redmine-42106: Member roles are incorrectly added when a user's memberships are updated
+
+### Rails support
+
+* Patch redmine-41970: Updates Rails to 7.2.2.1
+
+### UI
+
+* Defect redmine-41918: Replaces warning icon with SVG in watcher list and workflow warnings
+* Defect redmine-42023: Search results page uses legacy icons
+* Defect redmine-42051: "Font used for text areas" setting causes inconsistent font size
+* Defect redmine-42117: Key-value list reorder icon uses legacy icon
+* Feature redmine-42005: Improve readability of error pages by updating fonts and layout
+* Feature redmine-42072: Adjust font size for breadcrumb and subtitle to improve readability and consistency
+
 ## RedMica 3.1.2 - 2024-12-11
 
 ### Accounts / authentication
