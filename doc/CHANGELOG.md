@@ -1,5 +1,43 @@
 # Changelog
 
+## RedMica 3.1.4 - 2025-02-14
+
+### Administration
+
+* Feature redmine-42008: Expose default Rails health check endpoint "/up" for load balancers and uptime monitoring
+
+### Code cleanup/refactoring
+
+* Defect redmine-42200: InlineAutocompleteSystemTest login test fails randomly
+* Patch redmine-42244: Fix random failures in IssuesTest#test_bulk_copy due to StaleElementReferenceError
+
+### Custom fields
+
+* Defect redmine-42233: Float custom values with ',' as decimal separator are not converted to '.' and cause SQL errors when sorting or summing
+
+### Project settings
+
+* Defect redmine-42192: Project settings members tab may raise ArgumentError if orphaned member records exist
+
+### Time tracking
+
+* Defect redmine-42172: `format_hours` method produces incorrect output for negative time values when `Setting.timespan_format` is "minutes"
+
+### Translations
+
+* Defect redmine-42170: Fix Turkish translation of field_assignable
+* Patch redmine-42239: Czech translation update for 6.0-stable
+
+### UI
+
+* Defect redmine-42126: The member table layout breaks due to .icon class on td elements
+* Defect redmine-42130: Multiselect toggle uses legacy icons
+* Defect redmine-42229: Latest news box on home page misses icons
+
+### UI - Responsive
+
+* Defect redmine-42182: Poor color contrast of icons on flyout menu
+
 ## RedMica 3.1.3 - 2025-01-22
 
 ### Activity view
