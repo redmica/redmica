@@ -1,5 +1,9 @@
 # Changelog
 
+## RedMica 3.1.5 - 2025-02-28
+
+* Update Bleuclair theme to 1.0.4
+
 ## RedMica 3.1.4 - 2025-02-14
 
 ### Administration
