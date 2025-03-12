@@ -1,5 +1,15 @@
 # Changelog
 
+## RedMica 3.1.6 - 2025-03-12
+
+### Security
+
+* Unknown redmine-42194: my/account does not correctly enforce sudo mode
+* Unknown redmine-42238: Stored Cross-Site Scripting (XSS) in custom query
+* Unknown redmine-42326: Stored Cross-Site Scripting (XSS) in macros
+* Unknown redmine-42333: Update Nokogiri to 1.18.3
+* Unknown redmine-42352: ProjectQuery leaks details of private projects
+
 ## RedMica 3.1.5 - 2025-02-28
 
 * Update Bleuclair theme to 1.0.4
