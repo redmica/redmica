@@ -1,5 +1,59 @@
 # Changelog
 
+## RedMica 3.1.7 - 2025-04-15
+
+### Attachments
+
+* Defect redmine-42394: Inconsistent behaviour between attachment download routes with and without filename
+
+### Code cleanup/refactoring
+
+* Patch redmine-42514: Fix rubocop offence "Layout/LineLength: Line is too long"
+* Patch redmine-42562: Fix random test failure in ProjectAdminQueryTest due to missing language setting
+* Patch redmine-42572: Fix random test failure in MemberTest#test_update_roles_with_inherited_roles due to non-deterministic ordering
+
+### Custom fields
+
+* Defect redmine-42342: Missing thousands separator in Integer and Float custom field totals
+
+### Gantt
+
+* Defect redmine-42145: MiniMagick (> 5) removed cli_path, result crash when supplied imagemagick_convert_command
+
+### Issues
+
+* Defect redmine-42458: "For all projects" checkbox should be disabled when editing an existing query in which the checkbox is already checked
+
+### Performance
+
+* Defect redmine-35927: Slow loading of /time_entries/new
+* Defect redmine-40728: Slow loading of global spent time list in MySQL
+
+### Projects
+
+* Patch redmine-42440: Fix project selector focus by explicitly targeting the first selected item
+
+### SCM
+
+* Patch redmine-42500: Skip repository tests when the SCM client command is unavailable
+
+### UI
+
+* Defect redmine-41833: Tabs left / right buttons use legacy icons
+* Defect redmine-41947: Collapse arrow shows the wrong direction at /workflows/edit
+* Defect redmine-41952: Flash notice icons use the legacy icons 
+* Defect redmine-41967: Replace SCM action legacy icons with SVG icons in the tree view of the repository browser
+* Defect redmine-42181: Project jump box uses legacy caret icons
+* Defect redmine-42285: Icon expanded for closed fixed versions missing
+* Defect redmine-42286: Context menu right arrow uses the legacy icon
+* Defect redmine-42369: Expander icons not switch in Collapse all/Expand all 
+* Defect redmine-42465: Improve SVG icon compatibility with RTL languages
+* Defect redmine-42487: Improve SVG contrast when a row is selected on table list
+* Defect redmine-42520: PNG icon displayed instead of SVG in subtasks list when viewing all tasks
+* Defect redmine-42532: Expander icon not working in repository tree
+* Defect redmine-42575: Fix sidebar switch button display in RTL language
+* Patch redmine-42497: Adjust the position of the news comment delete button
+
 ## RedMica 3.1.6 - 2025-03-12
 
 ### Security
