@@ -1,5 +1,144 @@
 # Changelog
 
+## RedMica 3.2.0 - 2025-05-28
+
+### Accounts / authentication
+
+* Defect redmine-41930: Redirection after signing in fails when the back_url includes a port number
+
+### Activity view
+
+* Feature redmine-42041: Increase the maximum description length to 240 characters in the Activity view
+* Feature redmine-42043: Abbreviate quoted text in descriptions in Activity view
+
+### Administration
+
+* Defect redmine-42584: NoMethodError when creating a user with an invalid email address and domain restrictions are enabled
+* Feature redmine-42441: Improve error message on role deletion by listing projects using the role
+* Patch redmine-41560: Improve clarity of translations in Self-registration settings
+
+### Attachments
+
+* Feature redmine-42133: Refactor thumbnail markup for improved structure and semantics
+
+### Code cleanup/refactoring
+
+* Defect redmine-42687: Fix random failures in several system tests with Chrome 133 and later
+* Patch redmine-42124: Refactor `Member#role_ids=` method for improved clarity and efficiency in removing obsolete member roles
+* Patch redmine-42422: Use Capybara's assert_current_path in "log_user" steps to wait for page in ApplicationSystemTestCase
+* Patch redmine-42600: Suppress "Change your password" popup for stable system tests
+* Patch redmine-42602: Replaces deckar01-task_list with commonmarks tasklist extension
+* Patch redmine-42756: Update tests for rails-dom-testing 2.3.0 whitespace collapsing
+
+### Custom fields
+
+* Feature redmine-42335: "Progress bar" custom field format
+* Feature redmine-41935: Add "editable" attribute in the custom fields API response
+
+### Database
+
+* Defect redmine-42622: Joining both atom_token and api_token on the User model causes an error due to the ambiguous column name "action"
+* Feature redmine-42675: Add support for Trilogy adapter, a MySQL-compatible database adapter
+
+### Documentation
+
+* Defect redmine-42644: Noto Sans fonts are not applied on Wiki syntax help pages
+* Defect redmine-42657: Update documentation links and fix config flag typo
+* Patch redmine-42618: Add missing allowed CSS properties to the CommonMark Markdown help
+
+### Email receiving
+
+* Feature redmine-41738: Allow IMAP4 email receiving to skip SSL certificate verification with `ssl=force` option
+
+### Gems support
+
+* Defect redmine-37394: commonmarker gem is marked optional but required at runtime
+* Feature redmine-42510: Add Stimulus as a Javascript framework
+* Patch redmine-40197: Update commonmarker to 2.3.0
+* Patch redmine-41761: Update Rubocop Performance to 1.25
+* Patch redmine-41865: Update SQLite3 gem to 2.5
+* Patch redmine-41884: Update RuboCop to 1.75
+* Patch redmine-41964: Update Nokogiri to 1.18
+* Patch redmine-42044: Update Rubocop Rails to 2.31
+* Patch redmine-42071: Update rubyzip to 2.4
+* Patch redmine-42104: Update MiniMagick to 5.2
+
+### Issues
+
+* Feature redmine-42073: Remove navigation parameters from issue detail URLs after updates
+* Feature redmine-42477: Configurable columns for the lists of child and related issues
+
+### Performance
+
+* Feature redmine-42077: Optimize activity view performance through association preloading for journals
+* Feature redmine-42121: Optimize Version#wiki_page method
+* Feature redmine-42144: Optimize IssuesController#show by skipping time tracking queries when disabled
+* Feature redmine-42150: Optimize TimeEntryActivity#default_activity_id method by introducing early returns to reduce SQL queries
+* Patch redmine-42555: Adds the Bullet gem to detect query problems such as N+1 and improve performance
+* Feature redmine-42574: Optimize autocomplete issue listing triggered by typing "##" by eager loading trackers
+* Feature redmine-42589: Optimize watchers list rendering by eager loading email addresses
+* Feature redmine-42663: Optimize Gantt chart rendering by reducing version-related queries
+* Feature redmine-42671: Avoid unnecessary SQL query for subprojects in ProjectsController#show when project has no children
+* Feature redmine-42673: Optimize `Version::FixedIssuesExtension#issues_progress` by avoiding repeated `Issue#closed?` calls
+* Feature redmine-42681: Avoid unnecessary SQL queries by reordering conditions in Gantt version subject rendering
+* Feature redmine-42682: Optimize the rendering of versions on the roadmap by preloading the email addresses of issue assignees
+
+### Plugin API
+
+* Defect redmine-42509: Plugin activity icons broken when multiple plugins are loaded
+
+### Projects
+
+* Defect redmine-41975: Uniqueness of Project model fields is not checked sufficiently
+
+### Ruby support
+
+* Feature redmine-41976: Ruby 3.4 support
+* Patch redmine-42496: Drop support for Ruby 3.1
+
+### SCM
+
+* Feature redmine-33784: Update Mercurial repository support to be compatible with Python 3 and remove support for Mercurial < 5.1
+
+### Text formatting
+
+* Defect redmine-42332: "Edit this section" button is missing for headings rendered as multiline HTML
+* Defect redmine-42545: Commit message in issue history might be rendered in incorrect context
+* Defect redmine-42648: Wiki/CommonMark: Broken references for multiple footnote usage
+* Feature redmine-38504: Display pasted images in appropriate size on HiDPI displays
+* Feature redmine-42603: Enable commonmark alert extension
+
+### Time tracking
+
+* Feature redmine-13596: Add setting to allow/deny time logging on closed issues
+
+### Translations
+
+* Defect redmine-42580: Array#to_sentence produces incorrect output due to missing translation keys
+
+### UI
+
+* Defect redmine-41828: In mobile view, delete relation svg icon in 'Related Issues' on an issue page, overflow text
+* Defect redmine-42576: Newly attached files are displayed using the legacy icons
+* Defect redmine-42640: Query totals overlaps query buttons when an RTL language is used
+* Defect redmine-42654: Text in project jump box is vertically misaligned
+* Defect redmine-42773: Padding in the Preview tab is larger than in the actual rendered content
+* Feature redmine-29214: Button to copy `pre` code block content to the clipboard
+* Feature redmine-40588: Ability to disable table sort
+* Feature redmine-41910: Bold current user's name in Assignee and Author columns on issues list
+* Feature redmine-42305: Changes watch button icon to eye image to align icon with function and improve visual clarity
+* Feature redmine-42598: Drop Atom icon in "Also available in" links
+* Feature redmine-42623: Adds initials to the list of default gratavar options
+* Feature redmine-42630: Introduce reaction feature to issues, notes, news, and forums
+* Feature redmine-42684: Add a sticky header to keep the issue subject visible on scroll
+* Patch redmine-42596: Do not show user icon in add watchers modal when gravatar is disabled
+* Patch redmine-42625: Adjust padding of the copy-to-clipboard button in pre tag
+* Patch redmine-42641: Improve SVG contrast when an item is selected in administration sidebar
+
+### Wiki
+
+* Defect redmine-42558: JPEG images are not shown in exported PDF files
+
 ## RedMica 3.1.7 - 2025-04-15
 
 ### Attachments
