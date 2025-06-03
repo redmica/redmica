@@ -23,10 +23,6 @@ RedMica is fully compatible with Redmine. You can check more details on the offi
   * [Developer guide](https://www.redmine.org/projects/redmine/wiki/Developer_Guide)
     * [Redmine API](https://www.redmine.org/projects/redmine/wiki/Rest_api)
 
-## Docker image
-
-* Docker Hub: [redmica/redmica](https://hub.docker.com/r/redmica/redmica)
-
 ## Maintainer
 
 [Far End Technologies Corporation](https://www.farend.co.jp/)
