@@ -1,5 +1,22 @@
 # Changelog
 
+## RedMica 3.2.1 - 2025-06-18
+
+### Issues list
+
+* Defect redmine-42807: Progress Bar in issues list has a border above it
+
+### Issues workflow
+
+* Defect redmine-42875: "Page not found" error when saving workflows with many statuses on Rack >= 3.1.14
+
+### UI
+
+* Defect redmine-42774: Linked content is hidden under the #sticky-issue-header when using anchor links
+* Defect redmine-42786: "Clear" button for custom queries has incorrect styling inside the flyout menu
+* Defect redmine-42797: Loading and waiting icons overlap filename when attaching files
+* Defect redmine-42818: Unnecessary margin below icons on the board-style projects page
+
 ## RedMica 3.2.0 - 2025-05-28
 
 ### Accounts / authentication
