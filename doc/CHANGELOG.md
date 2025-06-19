@@ -1,5 +1,9 @@
 # Changelog
 
+## RedMica 3.2.2 - 2025-06-19
+
+* Fixed an issue where an exception occurred when opening issues due to mistakenly cherry-picking dd04939 in the stable-3.2 branch.
+
 ## RedMica 3.2.1 - 2025-06-18
 
 ### Issues list
