@@ -1,5 +1,34 @@
 # Changelog
 
+## RedMica 3.2.3 - 2025-07-15
+
+### Attachments
+
+* Defect redmine-42920: Missing icon in attachments upload form
+
+### Email receiving
+
+* Defect redmine-42962: Mail handler fails to create issues from emails over 4MB on Rack >= 3.1.14
+
+### Performance
+
+* Defect redmine-42933: Fix N+1 query issue in Wiki history page when loading authors of  Wiki content versions
+
+### SCM
+
+* Defect redmine-42839: Downloading .js files from the repository browser fails with a 422 error due to ActionController::InvalidCrossOriginRequest
+
+### Translations
+
+* Patch redmine-42971: Italian translation update for 6.0-stable
+
+### UI
+
+* Defect redmine-42797: Loading and waiting icons use legacy icons and overlap filename when attaching files
+* Defect redmine-42953: Replace legacy other download icon with SVG icon
+* Defect redmine-43004: Watchers list is not properly displayed in Gantt table
+* Patch redmine-42794: Hide irrelevant information when printing
+
 ## RedMica 3.2.2 - 2025-06-19
 
 * Fixed an issue where an exception occurred when opening issues due to mistakenly cherry-picking dd04939 in the stable-3.2 branch.
