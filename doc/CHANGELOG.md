@@ -1,5 +1,19 @@
 # Changelog
 
+## RedMica 3.2.4 - 2025-08-18
+
+### Gantt
+
+* Defect redmine-43014: Content in selected columns overflows to the right in Gantt chart
+
+### Importers
+
+* Defect redmine-42957: Incorrect "for" attribute in labels of issue relations import
+
+### Rails support
+
+* Patch redmine-43141: Update Rails to 7.2.2.2
+
 ## RedMica 3.2.3 - 2025-07-15
 
 ### Attachments
