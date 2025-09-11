@@ -801,7 +801,8 @@ div.journal span.update-info {color: #666; font-size: 0.9em;}
 /* Prevent content from being hidden behind a #sticky-issue-header when scrolling via anchor links. */
 .controller-issues.action-show div.wiki a[name],
 .controller-issues.action-show #history div[id^="note-"],
-.controller-issues.action-show #history div[id^="change-"] {
+.controller-issues.action-show #history div[id^="change-"],
+.controller-issues.action-show #update {
   scroll-margin-top: 50px;
 }
 
