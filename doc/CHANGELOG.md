@@ -1,5 +1,23 @@
 # Changelog
 
+## RedMica 3.2.5 - 2025-09-16
+
+### Administration
+
+* Defect redmine-43164: Deleting role that used by many projects raises CookieOverflow error
+* Defect redmine-43174: CookieOverflow error when deleting a tracker used by many projects
+
+### Issues
+
+* Defect redmine-43192: Done ratio interval in issue context menu does not respect Done Ratio Interval setting
+
+### UI
+
+* Defect redmine-43143: Edit heading is hidden behind sticky header after clicking the "Edit" link on issue page
+* Defect redmine-43168: Responsive mode layout breaks when table headers are enabled in related and sub-issues list
+* Defect redmine-43175: Fix some issues with missing or misplaced html tags
+* Patch redmine-43196: Improve spacing of checkboxes in CSV export options dialog
+
 ## RedMica 3.2.4 - 2025-08-18
 
 ### Gantt
