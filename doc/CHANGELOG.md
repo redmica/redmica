@@ -1,5 +1,11 @@
 # Changelog
 
+## RedMica 3.2.6 - 2025-10-24
+
+### UI
+
+* Defect redmine-43378: Column headers are slightly shifted to the right in tables in list views
+
 ## RedMica 3.2.5 - 2025-09-16
 
 ### Administration
