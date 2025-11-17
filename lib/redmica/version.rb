@@ -2,9 +2,9 @@
 
 module RedMica
   module VERSION
-    MAJOR = 3
-    MINOR = 2
-    TINY  = 6
+    MAJOR = 4
+    MINOR = 0
+    TINY  = 0
 
     BRANCH = 'devel'
 

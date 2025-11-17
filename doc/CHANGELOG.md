@@ -1,5 +1,128 @@
 # Changelog
 
+## RedMica 4.0.0 - 2025-11-17
+
+### Accounts / authentication
+
+* Feature redmine-42880: Make 'auto watch issues' default user settings configurable
+
+### Activity view
+
+* Feature redmine-43221: Unify Activity date header color with the issue journal header
+
+### Code cleanup/refactoring
+
+* Defect redmine-42408: Typo in Javascript function name 'toggleExpendCollapseIcon': s//Expend/Expand
+* Defect redmine-43441: Fix failures in test/system/issues_test.rb
+* Patch redmine-42515: Reimplement partial quote feature using Stimulus
+* Patch redmine-42737: Replacing html-pipeline with Loofah for HTML Filtering
+* Patch redmine-42859: Remove custom Redmine::I18n::Backend
+* Patch redmine-42934: Add model/controller generators tests
+* Patch redmine-43125: Remove redundant fixtures declaration from OauthProviderSystemTest
+* Patch redmine-43130: Fix random test failures by calling Setting.clear_cache after all tests
+* Patch redmine-43206: Remove deprecated icon-* classes from stylesheets
+* Patch redmine-43244: Remove unused style for `td.revision_graph`
+* Patch redmine-43246: Remove unused style for `div#issue-changesets`
+* Patch redmine-43247: Remove unused styles for `div.action_M`, `div.action_D`, and `div.action_A`
+* Patch redmine-43257: Remove unused files related to the quote reply feature
+* Patch redmine-43276: Replace the use of form.text_area with form.textarea 
+* Patch redmine-43289: Incorrect comments_count value in News fixture for news_001
+* Patch redmine-43321: Remove deprecated method ApplicationHelper#render_if_exist
+* Patch redmine-43388: Remove CSS hacks for Internet Explorer
+
+### Documentation
+
+* Defect redmine-43204: Adds missing documentation for issue macro to fr and ru languages
+* Patch redmine-43215: Add Japanese CommonMark Markdown help
+* Patch redmine-43447: Update INSTALL document to mention additional_environment.rb
+
+### Email notifications
+
+* Defect redmine-43420: Markdown alerts are missing styling in email notifications
+
+### Gantt
+
+* Feature redmine-43397: Organize Gantt chart code by separating it into views and Stimulus controllers
+
+### Gems support
+
+* Patch redmine-43266: Update activerecord-sqlserver-adapter to 8.0
+* Patch redmine-43322: Update SQLite3 gem to 2.7
+* Patch redmine-43323: Update RuboCop Performance to 1.26
+* Patch redmine-43324: Update Rubyzip to 3.2
+* Patch redmine-43395: Update roadie-rails to 3.4
+* Patch redmine-43396: Update propshaft to 1.3
+* Patch redmine-43408: Update Commonmark gem to 2.5
+* Patch redmine-43437: Update RuboCop to 1.81
+* Patch redmine-43438: Update RuboCop Rails to 2.33
+* Patch redmine-43465: Update pg gem to 1.6
+* Patch redmine-43466: Update sqlite3 gem to 2.8
+* Patch redmine-43472: Update Mail gem to 2.9
+
+### I18n
+
+* Defect redmine-42815: Limit available locales to those defined by Redmine itself no longer works
+
+### Importers
+
+* Feature redmine-43363: Improve error message display in imports view
+
+### Issues list
+
+* Defect redmine-43283: Overdue due date text does not turn light gray when issue is selected
+
+### PDF export
+
+* Defect redmine-34709: No Images in PDF export of issue list (with option show description)
+
+### Performance
+
+* Patch redmine-43208: Reduce requests sent for issue numbers, usernames, and Wiki page name autocompletion
+* Patch redmine-43214: Optimize Project.allowed_to_condition by replacing `projects.status <> ...` with `projects.status IN (...)`
+
+### REST API
+
+* Feature redmine-24808: OAuth2 support for Redmine API Apps (OAuth2 Provider)
+
+### Rails support
+
+* Defect redmine-43230: [Rails 8] ArgumentError: wrong number of arguments (given 0, expected 1) in ApplicationController#find_model_object
+* Defect redmine-43231: DEPRECATION WARNING: `to_time` will always preserve the receiver timezone rather than system local time in Rails 8.1
+* Defect redmine-43268: Labels not displayed for form.text_area fields in Redmine with Rails 8
+* Feature redmine-43205: Update to Rails 8
+
+### Text formatting
+
+* Feature redmine-38501: recent_pages macro that displays a list of recently updated Wiki pages
+* Feature redmine-43234: Enable CJK-friendly emphasis extension for CommonMark
+* Feature redmine-43425: Update colors of Markdown "Warning" and "Caution" alerts to be consistent with standards
+* Patch redmine-43328: List marker missing when regular items and task list items are mixed
+* Patch redmine-43379: Localize default commonmark alert titles (note, tip, warning, caution and important)
+
+### UI
+
+* Defect redmine-43358: Code block copy button icon appears gray instead of blue
+* Defect redmine-43409: Progress bar custom field shows only "%" instead of "0%" when value is nil
+* Defect redmine-43422: File format custom fields use legacy download icon instead of SVG icon
+* Feature redmine-29824: Add user initials when Gravatar is disabled
+* Feature redmine-31531: Change quote note icon to quotation mark icon
+* Feature redmine-35616: Remove "Delete" from the context menu for related issues and subtasks
+* Feature redmine-40744: Refresh history tabs look and feel
+* Feature redmine-41725: Add SVG icons sample view
+* Feature redmine-43095: Support automatic list marker insertion in textareas
+* Feature redmine-43256: Introduce Open Color to unify and standardize CSS colors
+* Feature redmine-43279: Simplify fieldset borders in issue edit form
+* Feature redmine-43280: Improve visual distinction of link presence in SVG icons
+* Feature redmine-43390: Remove avatars-on / avatars-off classes from body element
+* Patch redmine-42966: Replace legacy loader.gif with SVG icon in attachment upload form and in ajax indicator
+* Patch redmine-42972: Refactor and unify the structure of journals, replies and comments
+* Patch redmine-43008: Display icon-actions on hover with the same color as links
+* Patch redmine-43227: Refine avatar background colors
+
+### UI - Responsive
+
+* Defect redmine-38795: Submit button incorrectly displayed in the middle of the form on mobile view
+
 ## RedMica 3.2.6 - 2025-10-24
 
 ### UI
@@ -62,7 +185,6 @@
 
 ### UI
 
-* Defect redmine-42797: Loading and waiting icons use legacy icons and overlap filename when attaching files
 * Defect redmine-42953: Replace legacy other download icon with SVG icon
 * Defect redmine-43004: Watchers list is not properly displayed in Gantt table
 * Patch redmine-42794: Hide irrelevant information when printing
