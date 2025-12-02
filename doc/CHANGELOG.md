@@ -1,5 +1,50 @@
 # Changelog
 
+## RedMica 4.0.1 - 2025-12-02
+
+### Administration
+
+* Defect redmine-43282: Locked users are not shown in gray in the user list
+
+### Code cleanup/refactoring
+
+* Patch redmine-43206: Remove deprecated icon-* classes from stylesheets
+
+### Documentation
+
+* Defect redmine-43491: Fix incorrect link for the Japanese CommonMark Quick Reference
+
+### I18n
+
+* Defect redmine-43522: "Ratio interval" custom field label is not localized
+
+### SCM
+
+* Defect redmine-43525: "label_added" is not translated in the repository revision view legend
+
+### Translations
+
+* Patch redmine-43433: Persian translation update for 6.1-stable
+* Patch redmine-43490: Japanese translation update (jstoolbar-ja.js) for 6.0-stable
+* Patch redmine-43493: Japanese translation update (field_ratio_interval and setting_issue_done_ratio_interval)
+
+### UI
+
+* Defect redmine-41680: Incorrect label/value order on the issue view in RTL layout
+* Defect redmine-43492: Initials avatar shrink in the Activity view when event titles are long
+* Defect redmine-43504: Unexpected file name shown when hovering over a link in the Files column
+* Defect redmine-43507: Markdown alerts do not respect RTL text direction
+* Defect redmine-43508: legacy-icons-compat.css misses PNG icon styles removed from responsive.css, rtl.css, and scm.css
+* Defect redmine-43509: Avatar in issue view is positioned incorrectly in RTL layout
+* Defect redmine-43510: Reaction buttons are positioned incorrectly in RTL layout
+* Defect redmine-43511: "Lost password" link in login form is positioned incorrectly in RTL layout
+* Defect redmine-43512: Copy button on code blocks is positioned incorrectly in RTL layout
+* Defect redmine-43514: Legacy icons still displayed alongside new SVG icons on some RTL pages
+* Defect redmine-43520: Repository browser does not indent directory hierarchy in RTL layout
+* Defect redmine-43523: Avatar layout breaks for initials icon in user import completion page
+* Defect redmine-43527: Login and Email columns are unexpectedly center-aligned on the Users page since Redmine 5.1
+* Feature redmine-43506: Declare text direction on HTML element for better RTL/LTR styling support
+
 ## RedMica 4.0.0 - 2025-11-17
 
 ### Accounts / authentication
