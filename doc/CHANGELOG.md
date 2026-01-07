@@ -1,5 +1,46 @@
 # Changelog
 
+## RedMica 4.0.2 - 2026-01-07
+
+### Code cleanup/refactoring
+
+* Patch redmine-43638: Update copyright year to 2026
+
+### Custom fields
+
+* Defect redmine-43521: Saving a custom field fails with 500 when regular expression is invalid
+
+### Gems support
+
+* Defect redmine-43609: Tests fail with minitest 6.0
+
+### Issues list
+
+* Defect redmine-43603: Delete link is missing from the context menu when using a relative URL root
+
+### REST API
+
+* Feature redmine-43569: Adds project to wiki page API response
+
+### Text formatting
+
+* Defect redmine-43526: When using the include macro in the project description, an execution error occurs in the project list (list view)
+* Defect redmine-43612: Inline code rendering does not preserve multiple spaces
+
+### Translations
+
+* Patch redmine-43620: Italian translation update for 6.1-stable
+* Patch redmine-43630: Traditional Chinese translation update for 6.1-stable
+
+### UI
+
+* Defect redmine-43591: Context menu is hidden behind sidebar in RTL layout
+* Defect redmine-43592: Ajax indicator is broken in RTL layouts
+
+### Wiki
+
+* Patch redmine-43372: Allow macro recent_pages to display pages from a specific  project
+
 ## RedMica 4.0.1 - 2025-12-02
 
 ### Administration
