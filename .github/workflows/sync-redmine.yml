@@ -123,7 +123,7 @@ jobs:
           git switch ${REDMICA_BRANCH}
 
           # Apply the Redmine patches
-          git am ${GITHUB_WORKSPACE}/redmine/*.patch
+          git am ${GITHUB_WORKSPACE}/redmine/*.patch --exclude=doc/CHANGELOG
           git log --oneline -n 50
 
           # Update REDMINE_LAST_SYNCED_COMMIT repo variable to the new synced commit
