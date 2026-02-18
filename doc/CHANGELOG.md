@@ -1,5 +1,51 @@
 # Changelog
 
+## RedMica 4.0.3 - 2026-02-18
+
+### Calendar
+
+* Defect redmine-43718: Issue beginning/ending arrows should be flipped in RTL calendars
+
+### Code cleanup/refactoring
+
+* Patch redmine-43649: Remove MySQL 5.7-related comments from database.yml.example
+* Patch redmine-43713: Add missing entries "apps" and "shield-check" to icon_source.yml
+
+### Database
+
+* Patch redmine-43668: Serialize address limit checks during email_addresses#create
+
+### Issues
+
+* Defect redmine-33610: Submitting the issue edit form without changes unexpectedly updates updated_on
+
+### Issues filter
+
+* Patch redmine-43736: author.group filter test fix
+
+### Performance
+
+* Defect redmine-43651: Searching issues with searchable custom fields causes a performance regression on MySQL
+
+### Permissions and roles
+
+* Feature redmine-43659: Set minimum width for Permission column in permission report
+
+### Text formatting
+
+* Defect redmine-43662: Cursor may move to incorrect position when pasting inline images from clipboard
+
+### UI
+
+* Defect redmine-43664: Project menu tab left/right buttons are broken in RTL layout
+* Defect redmine-43672: Indent icons for subtasks and subprojects in list tables are misplaced in RTL layout
+* Defect redmine-43674: Unintended global `ol` styling in changeset CSS
+* Defect redmine-43715: Project selector does not indent subprojects in RTL layout
+
+### Wiki
+
+* Feature redmine-43631: Add "include_subprojects" parameter to recent_pages macro to include pages from subprojects
+
 ## RedMica 4.0.2 - 2026-01-07
 
 ### Code cleanup/refactoring
