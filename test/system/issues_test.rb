@@ -674,4 +674,39 @@ class IssuesSystemTest < ApplicationSystemTestCase
     # assert add notes form does not exist anymore for user without required permissions on the new project
     assert page.has_no_css?('#add_notes')
   end
+
+  def test_preview_custom_field_on_bulk_edit_across_projects
+    field = IssueCustomField.create!(
+      :field_format => 'text',
+      :name => 'Long text with formatting',
+      :is_for_all => true,
+      :text_formatting => 'full',
+      :full_width_layout => '1',
+      :trackers => Tracker.all
+    )
+
+    log_user('admin', 'admin')
+
+    visit '/issues'
+    issue1 = Issue.find(1)
+    issue4 = Issue.find(4)
+    assert_not_equal issue1.project_id, issue4.project_id
+
+    find('tr#issue-1 input[type=checkbox]').click
+    find('tr#issue-4 input[type=checkbox]').click
+    find('tr#issue-1 td.updated_on').right_click
+    within('#context-menu') do
+      click_link 'Bulk edit'
+    end
+
+    assert_current_path '/issues/bulk_edit', :ignore_query => true
+
+    fill_in "issue_custom_field_values_#{field.id}", :with => 'Previewing **custom field** text'
+    first(:link, 'Preview').click
+
+    within("div#preview_issue_custom_field_values_#{field.id}") do
+      assert page.has_css?('strong', text: 'custom field')
+      assert page.has_content?('Previewing custom field text')
+    end
+  end
 end
