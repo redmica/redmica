@@ -108,6 +108,15 @@ class OauthProviderSystemTest < ApplicationSystemTestCase
         RestClient.get "http://localhost:#{test_port}/projects/onlinestore/time_entries.json", headers
       end
     end
+
+    def test_oauth_authorize_with_rest_api_disabled_should_render_403
+      with_settings rest_api_enabled: 0 do
+        log_user 'admin', 'admin'
+        visit '/oauth/authorize'
+
+        assert_text "You are not authorized to access this page."
+      end
+    end
   end
 
   private

@@ -113,6 +113,15 @@ Rails.application.config.to_prepare do
 
   Doorkeeper::AuthorizationsController.class_eval do
     require_sudo_mode :create, :destroy
+
+    alias_method :doorkeeper_render_error, :render_error
+    def render_error(arg = nil)
+      if arg
+        super
+      else
+        doorkeeper_render_error
+      end
+    end
   end
 end
 
