@@ -219,6 +219,20 @@ class WebhookTest < ActiveSupport::TestCase
     assert_equal @issue.id, payload.dig(:data, :issue, :id)
   end
 
+  test "should trigger issue updated webhook when attachment removal creates a journal without saving issue" do
+    issue = Issue.find(3)
+    attachment = Attachment.find(1)
+    issue.init_journal(@dlopper)
+
+    Webhook.expects(:trigger).with('issue.updated', issue).once
+    issue.attachments.delete(attachment)
+
+    journal = issue.journals.order(:id).last
+    assert_equal attachment.id.to_s, journal.details.last.prop_key
+    assert_equal 'attachment', journal.details.last.property
+    assert_equal attachment.filename, journal.details.last.old_value
+  end
+
   test "should compute correct signature" do
     # we're implementing the same signature mechanism as GitHub, so might as well re-use their
     # example. https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries

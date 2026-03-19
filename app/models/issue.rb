@@ -1958,6 +1958,8 @@ class Issue < ApplicationRecord
     if current_journal && !attachment.new_record?
       current_journal.journalize_attachment(attachment, :removed)
       current_journal.save
+      # Attachment removal via AJAX saves only the journal, so the usual issue update callback does not fire.
+      Webhook.trigger(event_name('updated'), self) unless saved_changes?
     end
   end
 
