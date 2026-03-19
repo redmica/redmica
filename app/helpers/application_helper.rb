@@ -1289,12 +1289,12 @@ module ApplicationHelper
                 link = link_to_project(p, {:only_path => only_path}, :class => 'project')
               end
             when 'user'
-              u = User.visible.find_by("LOWER(login) = :s AND type = 'User'", :s => name.downcase)
+              u = User.visible.find_by_login(name.downcase)
               link = link_to_user(u, :only_path => only_path) if u
             end
           elsif sep == "@"
             name = remove_double_quotes(identifier)
-            u = User.visible.find_by("LOWER(login) = :s AND type = 'User'", :s => name.downcase)
+            u = User.visible.find_by_login(name.downcase)
             link = link_to_mention(u, obj, only_path: only_path) if u
           end
         end
