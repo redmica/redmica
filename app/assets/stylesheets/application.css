@@ -700,8 +700,7 @@ form {display: inline;}
 input, select, button {
   vertical-align: middle;
   margin-block: 1px;
-  block-size: 24px;
-  padding-block: 0;
+  padding-block: 4px;
   padding-inline: 7px;
 }
 input, select, textarea, button { color: var(--oc-gray-9); background-color: var(--oc-white); border:1px solid var(--oc-gray-4); border-radius:3px; box-sizing: border-box;}
