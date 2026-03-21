@@ -167,6 +167,7 @@ class JournalsControllerTest < Redmine::ControllerTest
     assert_response :success
 
     assert_equal 'text/javascript', response.media_type
+    assert_include 'showAndScrollTo("add_notes");', response.body
     assert_include '> This is an issue', response.body
   end
 
@@ -189,6 +190,7 @@ class JournalsControllerTest < Redmine::ControllerTest
     )
     assert_response :success
     assert_equal 'text/javascript', response.media_type
+    assert_include 'showAndScrollTo("add_notes");', response.body
     assert_include 'Redmine Admin wrote in #note-1:', response.body
     assert_include '> A comment with a private version', response.body
   end
