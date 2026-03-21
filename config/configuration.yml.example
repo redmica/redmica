@@ -239,9 +239,28 @@ default:
 
   # Preview for Office documents (Microsoft Office / LibreOffice)
   #
+  # Redmine uses Pandoc to convert supported Microsoft Office and LibreOffice
+  # attachments to Markdown for preview. The settings below named
+  # `markdownized_preview_*` control that Markdown-based preview generation.
+  #
   # Absolute path (e.g. /usr/local/bin/pandoc) to the Pandoc command
   # used to convert supported attachments to Markdown for preview.
   #pandoc_command:
+  #
+  # Timeout when generating Markdown previews using the Pandoc command.
+  # Timeout is set in seconds.
+  # Default: 10
+  #markdownized_preview_generation_timeout: 10
+  #
+  # Maximum source file size in bytes for Markdown preview generation.
+  # Files larger than this limit are skipped.
+  # Default: 10485760 (10 megabytes)
+  #markdownized_preview_max_source_size: 10485760
+  #
+  # Maximum output size in bytes saved after Markdown conversion.
+  # Larger output is truncated to this limit.
+  # Default: 102400 (100 kilobytes)
+  #markdownized_preview_max_output_size: 102400
 
 # specific configuration options for production environment
 # that overrides the default ones

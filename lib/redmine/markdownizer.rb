@@ -27,8 +27,9 @@ module Redmine
     extend Redmine::Utils::Shell
 
     COMMAND = (Redmine::Configuration['pandoc_command'] || 'pandoc').freeze
-    MAX_SOURCE_SIZE = 20.megabytes
-    MAX_PREVIEW_SIZE = 512.kilobytes
+    PREVIEW_GENERATION_TIMEOUT = Redmine::Configuration['markdownized_preview_generation_timeout'].to_i
+    MAX_SOURCE_SIZE = Redmine::Configuration['markdownized_preview_max_source_size'].to_i
+    MAX_OUTPUT_SIZE = Redmine::Configuration['markdownized_preview_max_output_size'].to_i
 
     def self.supports?(filename)
       markdownizable_extensions.include?(File.extname(filename.to_s).downcase)
@@ -50,7 +51,7 @@ module Redmine
       output = Tempfile.new('markdownized-preview')
 
       begin
-        Timeout.timeout(Redmine::Configuration['thumbnails_generation_timeout'].to_i) do
+        Timeout.timeout(PREVIEW_GENERATION_TIMEOUT) do
           pid = Process.spawn(*args, out: output.path)
           _, status = Process.wait2(pid)
           unless status.success?
@@ -72,8 +73,8 @@ module Redmine
         output.close
       end
 
-      preview = File.binread(output.path, MAX_PREVIEW_SIZE + 1) || +""
-      File.binwrite(target, preview.byteslice(0, MAX_PREVIEW_SIZE))
+      preview = File.binread(output.path, MAX_OUTPUT_SIZE + 1) || +""
+      File.binwrite(target, preview.byteslice(0, MAX_OUTPUT_SIZE))
       target
     ensure
       output&.unlink

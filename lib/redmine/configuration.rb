@@ -27,7 +27,10 @@ module Redmine
       'email_delivery' => nil,
       'max_concurrent_ajax_uploads' => 2,
       'common_mark_enable_hardbreaks' => true,
-      'thumbnails_generation_timeout' => 10
+      'thumbnails_generation_timeout' => 10,
+      'markdownized_preview_generation_timeout' => 10,
+      'markdownized_preview_max_source_size' => 10.megabytes,
+      'markdownized_preview_max_output_size' => 100.kilobytes
     }
 
     @config = nil
