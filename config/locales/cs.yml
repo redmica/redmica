@@ -1540,3 +1540,4 @@ cs:
   button_remove: Odstranit
   label_open_in_full_view: Úplné zobrazení
   text_pandoc_available: Pandoc available (optional)
+  label_user_mail_option_only_my_watches: Only for things I watch

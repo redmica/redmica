@@ -1500,3 +1500,4 @@ bg:
   reaction_text_x_other_users:
     one: 1 друг
     other: "%{count} други"
+  label_user_mail_option_only_my_watches: Only for things I watch
