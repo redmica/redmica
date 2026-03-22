@@ -471,6 +471,28 @@ class MailerTest < ActiveSupport::TestCase
     assert_include user.mail, recipients
   end
 
+  test "#issue_add should notify issue watchers with only_my_watches mail notification" do
+    issue = Issue.find(1)
+    user = User.find(9)
+    user.mail_notification = 'only_my_watches'
+    user.save!
+
+    Watcher.create!(:watchable => issue, :user => user)
+    assert Mailer.deliver_issue_add(issue)
+    assert_include user.mail, recipients
+  end
+
+  test "#issue_add should not notify the author with only_my_watches mail notification unless watched" do
+    author = User.find(1)
+    author.mail_notification = 'only_my_watches'
+    author.save!
+
+    issue = Issue.generate!(project_id: 1, author: author)
+
+    assert Mailer.deliver_issue_add(issue)
+    assert_not_include author.mail, recipients
+  end
+
   test "#issue_add should not notify watchers not allowed to view the issue" do
     issue = Issue.find(1)
     user = User.find(9)
