@@ -1,5 +1,36 @@
 # Changelog
 
+## RedMica 4.0.4 - 2026-03-23
+
+### Code cleanup/refactoring
+
+* Patch redmine-43872: Update GitHub Actions workflow dependencies
+
+### Issues
+
+* Feature redmine-43837: Add a hint to the issue relation add form that clarifies multiple comma-separated issue IDs are accepted
+
+### Issues list
+
+* Defect redmine-31972: An empty group_count badge is displayed when grouped with created_on
+
+### REST API
+
+* Defect redmine-43698: ArgumentError occurs on /oauth/authorize when REST API is disabled
+
+### Text formatting
+
+* Defect redmine-40918: Wiki "Edit this section" does not extract SeText headings correctly in CommonMark Markdown
+
+### Themes
+
+* Feature redmine-43087: Allow to change icons sprites from theme
+
+### UI
+
+* Defect redmine-43804: Custom field preview does not work on bulk issue edit
+* Defect redmine-43869: Default assignee selected by category is not shown in UI
+
 ## RedMica 4.0.3 - 2026-02-18
 
 ### Calendar
