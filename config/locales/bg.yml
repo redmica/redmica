@@ -974,6 +974,7 @@ bg:
   label_user_mail_option_only_my_events: Само за неща, в които съм включен/а
   label_user_mail_option_only_assigned: Само за неща, които наблюдавам или са назначени на мен
   label_user_mail_option_only_owner: Само за неща, които наблюдавам или съм техен собственик
+  label_user_mail_option_only_my_watches: Само за неща, които наблюдавам
   label_user_mail_no_self_notified: "Не искам известия за извършени от мен промени"
   label_user_mail_notify_about_high_priority_issues_html: Известявайте ме и за задачи с приоритет <em>%{prio}</em> или по-голям
   label_registration_activation_by_email: активиране на профила по email
@@ -1500,4 +1501,3 @@ bg:
   reaction_text_x_other_users:
     one: 1 друг
     other: "%{count} други"
-  label_user_mail_option_only_my_watches: Only for things I watch
