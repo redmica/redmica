@@ -131,7 +131,7 @@ if Object.const_defined?(:Commonmarker)
       ],
       [
         '<b>Lo<!-- comment -->rem</b> <a href="pants" title="foo" style="text-decoration: underline;">ipsum</a> <a href="http://example.com/"><strong>dolor</strong></a> sit<br/>amet <style>.foo { color: #fff; }</style> <script>alert("hello world");</script>',
-        '<b>Lorem</b> <a href="pants" title="foo">ipsum</a> <a href="http://example.com/"><strong>dolor</strong></a> sit<br>amet .foo { color: #fff; } '
+        '<b>Lorem</b> <a href="pants" title="foo" style="text-decoration: underline;">ipsum</a> <a href="http://example.com/"><strong>dolor</strong></a> sit<br>amet .foo { color: #fff; } '
       ],
       [
         'Lo<!-- comment -->rem</b> <a href=pants title="foo>ipsum <a href="http://example.com/"><strong>dolor</a></strong> sit<br/>amet <script>alert("hello world");',

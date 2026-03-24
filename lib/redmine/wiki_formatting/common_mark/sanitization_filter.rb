@@ -121,7 +121,7 @@ module Redmine
                 margin margin-left margin-right margin-top margin-bottom
                 border border-left border-right border-top border-bottom border-radius border-style border-collapse border-spacing
                 font font-style font-variant font-weight font-stretch font-size line-height font-family
-                text-align
+                text-align text-decoration
                 float
               ].freeze
             }
