@@ -78,11 +78,6 @@ https://www.redmine.org/
 
 8. Migrate your database
 
-   If you are upgrading to Rails 2.3.14 as part of this migration, you
-   need to upgrade the plugin migrations before running the plugin migrations
-   using:
-     bundle exec rake db:migrate:upgrade_plugin_migrations RAILS_ENV="production"
-
    Please make a backup before doing this! Under the new application
    directory run:
      bundle exec rake db:migrate RAILS_ENV="production"
