@@ -22,13 +22,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-Icons and styles credits:
-
-* Mark James (Silk Icons) licensed under a Creative Commons Attribution 2.5 License (https://creativecommons.org/licenses/by/2.5).
-* Yusuke Kamiyamane (Fugue Icons https://p.yusukekamiyamane.com/) licensed under a Creative Commons Attribution 3.0 License (https://creativecommons.org/licenses/by/3.0).
-* Paweł Kuna (Tabler Icons https://tabler.io/icons) licensed under MIT License (https://github.com/tabler/tabler-icons/blob/master/LICENSE).
-* heeyeun (Open Color https://yeun.github.io/open-color/) licensed under MIT License (https://github.com/yeun/open-color/blob/master/LICENSE).
-
 = Licenses for bundled third-party components
 
 The license text for each bundled third-party component is available
@@ -36,12 +29,20 @@ under doc/licenses/.
 
 * Chart.js by Chart.js Contributors (https://www.chartjs.org/)
   licensed under the MIT License; see doc/licenses/chartjs.txt
+* Fugue Icons by Yusuke Kamiyamane (https://p.yusukekamiyamane.com/)
+  licensed under the Creative Commons Attribution 3.0 License; see doc/licenses/fugue-icons.txt
 * jQuery by OpenJS Foundation and other contributors (https://jquery.com/)
   licensed under the MIT License; see doc/licenses/jquery.txt
 * jQuery UI by OpenJS Foundation and other contributors (https://jqueryui.com/)
   licensed under the MIT License; see doc/licenses/jquery-ui.txt
 * Noto Sans by The Noto Project Authors (https://github.com/notofonts/latin-greek-cyrillic)
   licensed under the SIL Open Font License 1.1; see doc/licenses/notosans.txt
+* Open Color by heeyeun (https://yeun.github.io/open-color/)
+  licensed under the MIT License; see doc/licenses/open-color.txt
+* Silk Icons by Mark James (https://github.com/markjames/famfamfam-silk-icons)
+  licensed under the Creative Commons Attribution 2.5 License; see doc/licenses/silk-icons.txt
+* Tabler Icons by Paweł Kuna (https://tabler.io/icons)
+  licensed under the MIT License; see doc/licenses/tabler-icons.txt
 * Tablesort by Tristen Brown (https://github.com/tristen/tablesort)
   licensed under the MIT License; see doc/licenses/tablesort.txt
 * Tribute by ZURB, Inc., Jeff Collins, and Matt York (https://github.com/zurb/tribute)
