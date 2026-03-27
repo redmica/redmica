@@ -28,3 +28,23 @@ Icons and styles credits:
 * Yusuke Kamiyamane (Fugue Icons https://p.yusukekamiyamane.com/) licensed under a Creative Commons Attribution 3.0 License (https://creativecommons.org/licenses/by/3.0).
 * Paweł Kuna (Tabler Icons https://tabler.io/icons) licensed under MIT License (https://github.com/tabler/tabler-icons/blob/master/LICENSE).
 * heeyeun (Open Color https://yeun.github.io/open-color/) licensed under MIT License (https://github.com/yeun/open-color/blob/master/LICENSE).
+
+= Licenses for bundled third-party components
+
+The license text for each bundled third-party component is available
+under doc/licenses/.
+
+* Chart.js by Chart.js Contributors (https://www.chartjs.org/)
+  licensed under the MIT License; see doc/licenses/chartjs.txt
+* jQuery by OpenJS Foundation and other contributors (https://jquery.com/)
+  licensed under the MIT License; see doc/licenses/jquery.txt
+* jQuery UI by OpenJS Foundation and other contributors (https://jqueryui.com/)
+  licensed under the MIT License; see doc/licenses/jquery-ui.txt
+* Noto Sans by The Noto Project Authors (https://github.com/notofonts/latin-greek-cyrillic)
+  licensed under the SIL Open Font License 1.1; see doc/licenses/notosans.txt
+* Tablesort by Tristen Brown (https://github.com/tristen/tablesort)
+  licensed under the MIT License; see doc/licenses/tablesort.txt
+* Tribute by ZURB, Inc., Jeff Collins, and Matt York (https://github.com/zurb/tribute)
+  licensed under the MIT License; see doc/licenses/tribute.txt
+* Turndown by Dom Christie (https://github.com/mixmark-io/turndown)
+  licensed under the MIT License; see doc/licenses/turndown.txt
