@@ -87,7 +87,12 @@ class WebhookEndpointValidatorTest < ActiveSupport::TestCase
         192.168.2.1
         224.0.0.1
         ::1/128
+        [::1]
         fe80::/10
+
+        0.0.0.0
+        ::
+        [::]
       ].each do |ip|
         assert_not WebhookEndpointValidator.safe_webhook_uri? ip
         h = TestModel.new "http://#{ip}"
