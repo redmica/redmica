@@ -43,7 +43,7 @@ class WebhookEndpointValidator < ActiveModel::EachValidator
   end
 
   def self.valid_port?(port)
-    !BAD_PORTS.include?(port)
+    port.between?(1, 65535) && !BAD_PORTS.include?(port)
   end
 
   def self.valid_scheme?(scheme)
