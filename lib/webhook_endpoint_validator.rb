@@ -33,7 +33,7 @@ class WebhookEndpointValidator < ActiveModel::EachValidator
     return false if uri.nil?
 
     return false unless valid_scheme?(uri.scheme)
-    return false unless valid_host?(uri.host)
+    return false unless valid_host?(uri.hostname)
     return false unless valid_port?(uri.port)
 
     true
