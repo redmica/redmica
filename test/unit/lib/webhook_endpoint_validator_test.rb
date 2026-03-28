@@ -46,6 +46,7 @@ class WebhookEndpointValidatorTest < ActiveSupport::TestCase
         file://example.com
         https://x.example.org/
         http://x.example.org/
+        http://missinghost.invalid
       ].each do |url|
         assert_not WebhookEndpointValidator.safe_webhook_uri?(url), "#{url} should be invalid"
         record = TestModel.new url
@@ -53,8 +54,8 @@ class WebhookEndpointValidatorTest < ActiveSupport::TestCase
         assert record.errors[:url].any?
       end
 
-      assert WebhookEndpointValidator.safe_webhook_uri? 'https://acme.com/some/webhook?foo=bar'
-      record = TestModel.new 'https://acme.com/some/webhook?foo=bar'
+      assert WebhookEndpointValidator.safe_webhook_uri? 'https://example.com/some/webhook?foo=bar'
+      record = TestModel.new 'https://example.com/some/webhook?foo=bar'
       assert record.valid?, record.errors.inspect
     end
   end
@@ -66,13 +67,14 @@ class WebhookEndpointValidatorTest < ActiveSupport::TestCase
     ].each do |url|
       assert_not WebhookEndpointValidator.safe_webhook_uri?(url), "#{url} should be invalid"
     end
+
     %w[
       http://example.com
       http://example.com:80
       http://example.com:443
       http://example.com:8080
     ].each do |url|
-      assert WebhookEndpointValidator.safe_webhook_uri? url
+      assert WebhookEndpointValidator.safe_webhook_uri?(url), "#{url} should be valid"
     end
   end
 
@@ -81,6 +83,12 @@ class WebhookEndpointValidatorTest < ActiveSupport::TestCase
       %w[
         127.0.0.0
         127.0.0.1
+        2130706433
+        0177.0.1
+        0x7f000001
+        127.0.0.01
+        127.1
+
         10.0.0.0
         10.0.1.0
         169.254.1.9
