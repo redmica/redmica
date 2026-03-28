@@ -86,6 +86,7 @@ class WebhookEndpointValidator < ActiveModel::EachValidator
 
     Resolv.each_address(host) do |ip|
       ipaddr = IPAddr.new(ip)
+      return false if ipaddr.to_i.zero? # 0.0.0.0 and ::
       return false if ipaddr.link_local? || ipaddr.loopback?
       return false if IPAddr.new('224.0.0.0/24').include?(ipaddr) # multicast
       return false if blocked_hosts[:ips].any? { |net| net.include?(ipaddr) }
