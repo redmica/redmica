@@ -35,7 +35,13 @@ class Webhook < ApplicationRecord
         headers['X-Redmine-Signature-256'] = compute_signature
       end
       Rails.logger.debug { "Webhook: POST #{url}" }
-      RestClient.post url, payload, headers
+      RestClient::Request.execute(
+        method: :post,
+        url: url,
+        payload: payload,
+        headers: headers,
+        max_redirects: 0
+      )
     end
 
     # Computes the HMAC signature for the given payload and secret.
