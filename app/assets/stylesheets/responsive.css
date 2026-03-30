@@ -882,6 +882,24 @@
   .pagination ul.pages li.current,
   .pagination ul.pages li.previous,
   .pagination ul.pages li.next {display: inline-block; inline-size: 32%; overflow: hidden;}
+  div.issue .next-prev-links {
+    float: none;
+    clear: both;
+    display: block;
+    margin-block-end: 12px;
+    padding-inline-start: 0;
+    text-align: center;
+  }
+  div.issue .next-prev-links .pagination ul.pages {
+    display: inline-flex;
+  }
+  div.issue .next-prev-links .pagination ul.pages li.previous,
+  div.issue .next-prev-links .pagination ul.pages li.position,
+  div.issue .next-prev-links .pagination ul.pages li.next {
+    display: inline-block;
+    inline-size: auto;
+    overflow: visible;
+  }
 
   #login-form {inline-size: 100%; margin-block-start: 2em;}
 
