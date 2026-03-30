@@ -2627,7 +2627,7 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_select 'div.next-prev-links' do
       assert_select 'a[href="/issues/2"]', :text => /Previous/
       assert_select 'a[href="/issues/5"]', :text => /Next/
-      assert_select 'span.position', :text => "3 of #{count}"
+      assert_select 'li.page.position', :text => "3 of #{count}"
     end
   end
 
@@ -2704,7 +2704,12 @@ class IssuesControllerTest < Redmine::ControllerTest
     end
     assert_response :success
     assert_select 'div.next-prev-links' do
-      assert_select 'a', :text => /Previous/, :count => 0
+      # "Previous" button for the first issue does not have the "page" class and a link
+      assert_select 'span.pagination ul.pages li.previous', 1
+      assert_select 'span.pagination ul.pages li.previous.page', 0
+      assert_select 'li.previous span', :text => /Previous/
+      assert_select 'li.previous a', :count => 0
+      assert_select 'span.pagination ul.pages li.next.page', 1
       assert_select 'a[href="/issues/2"]', :text => /Next/
     end
   end
@@ -2749,7 +2754,7 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_select 'div.next-prev-links' do
       assert_select 'a[href="/issues/7"]', text: /Previous/
       assert_select 'a[href="/issues/9"]', text: /Next/
-      assert_select 'span.position', text: "7 of 10"
+      assert_select 'li.page.position', text: "7 of 10"
     end
   end
 

@@ -8,23 +8,37 @@
 <div class="<%= @issue.css_classes %> details">
   <% if @prev_issue_id || @next_issue_id %>
     <div class="next-prev-links contextual">
-      <%= link_to_if @prev_issue_id,
-                     "\xc2\xab #{l(:label_previous)}",
-                     (@prev_issue_id ? issue_path(@prev_issue_id) : nil),
-                     :title => "##{@prev_issue_id}",
-                     :accesskey => accesskey(:previous) %> |
-      <% if @issue_position && @issue_count %>
-        <span class="position">
-          <%= link_to_if @query_path,
-                         l(:label_item_position, :position => @issue_position, :count => @issue_count),
-                         @query_path %>
-        </span> |
-      <% end %>
-      <%= link_to_if @next_issue_id,
-                     "#{l(:label_next)} \xc2\xbb",
-                     (@next_issue_id ? issue_path(@next_issue_id) : nil),
-                     :title => "##{@next_issue_id}",
-                     :accesskey => accesskey(:next) %>
+      <span class="pagination">
+        <ul class="pages">
+          <li class="<%= @prev_issue_id ? 'previous page' : 'previous' %>">
+            <% if @prev_issue_id %>
+              <%= link_to "\xc2\xab #{l(:label_previous)}",
+                          issue_path(@prev_issue_id),
+                          :title => "##{@prev_issue_id}",
+                          :accesskey => accesskey(:previous) %>
+            <% else %>
+              <%= content_tag(:span, "\xc2\xab #{l(:label_previous)}") %>
+            <% end %>
+          </li>
+          <% if @issue_position && @issue_count %>
+            <li class="page position">
+              <%= link_to_if @query_path,
+                             l(:label_item_position, :position => @issue_position, :count => @issue_count),
+                             @query_path %>
+            </li>
+          <% end %>
+          <li class="<%= @next_issue_id ? 'next page' : 'next' %>">
+            <% if @next_issue_id %>
+              <%= link_to "#{l(:label_next)} \xc2\xbb",
+                          issue_path(@next_issue_id),
+                          :title => "##{@next_issue_id}",
+                          :accesskey => accesskey(:next) %>
+            <% else %>
+              <%= content_tag(:span, "#{l(:label_next)} \xc2\xbb") %>
+            <% end %>
+          </li>
+        </ul>
+      </span>
     </div>
   <% end %>
 

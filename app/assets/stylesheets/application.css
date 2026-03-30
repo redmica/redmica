@@ -774,7 +774,9 @@ div.issue div.subject>div>p { margin-block-start: 0.5em; }
 div.issue div.subject h3 {margin-block: 0 0.1em; margin-inline: 0;}
 div.issue p.author {margin-block-start: 0.5em; font-size: 93%}
 div.issue span.private, div.journal span.private {font-size: 60%;}
-div.issue .next-prev-links {color:var(--oc-gray-6);}
+div.issue .next-prev-links {color: var(--oc-gray-6); margin-block: 1px 0;}
+div.issue .next-prev-links .pagination ul.pages {margin-inline: 0; display: inline-flex;}
+div.issue .next-prev-links .pagination ul.pages li {margin-block-end: 0;}
 div.issue .attributes {margin-block-start: 2em;}
 div.issue .attributes .attribute {padding-inline-start: 180px; clear: inline-start; min-block-size: 1.8em;}
 div.issue .attributes .attribute .label {inline-size: 170px; margin-inline-start: -180px; font-weight: bold; float: inline-start; overflow: clip visible; text-overflow: ellipsis;}
