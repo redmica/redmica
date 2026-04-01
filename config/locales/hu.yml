@@ -4,6 +4,7 @@
 # Cleaned up by László Bácsi (http://lackac.hu)
 # updated by kfl62 kfl62g@gmail.com
 # updated by Gábor Takács (taky77@gmail.com)
+# updated by Tibor Konkolyi in 2026
 
 "hu":
   direction: ltr
@@ -147,16 +148,16 @@
         greater_than_start_date: "nagyobbnak kell lennie, mint az indítás dátuma"
         not_same_project: "nem azonos projekthez tartozik"
         circular_dependency: "Ez a kapcsolat egy körkörös függőséget eredményez"
-        cant_link_an_issue_with_a_descendant: "An issue can not be linked to one of its subtasks"
-        earlier_than_minimum_start_date: "cannot be earlier than %{date} because of preceding issues"
-        not_a_regexp: "is not a valid regular expression"
-        open_issue_with_closed_parent: "An open issue cannot be attached to a closed parent task"
-        must_contain_uppercase: "must contain uppercase letters (A-Z)"
-        must_contain_lowercase: "must contain lowercase letters (a-z)"
-        must_contain_digits: "must contain digits (0-9)"
-        must_contain_special_chars: "must contain special characters (!, $, %, ...)"
-        domain_not_allowed: "contains a domain not allowed (%{domain})"
-        too_simple: "is too simple"
+        cant_link_an_issue_with_a_descendant: "Feladat nem kapcsolható saját alfeladatához"
+        earlier_than_minimum_start_date: "nem lehet korábbi, mint %{date}, mert megelőző feladatok függnek tőle"
+        not_a_regexp: "nem érvényes reguláris kifejezés"
+        open_issue_with_closed_parent: "Nyitott feladat nem csatolható lezárt szülőfeladathoz"
+        must_contain_uppercase: "nagybetűket kell tartalmaznia (A-Z)"
+        must_contain_lowercase: "kisbetűket kell tartalmaznia (a-z)"
+        must_contain_digits: "számjegyeket kell tartalmaznia (0-9)"
+        must_contain_special_chars: "különleges karaktereket kell tartalmaznia (!, $, %, ...)"
+        domain_not_allowed: "nem engedélyezett domaint tartalmaz (%{domain})"
+        too_simple: "túl egyszerű"
 
   actionview_instancetag_blank_option: Kérem válasszon
 
@@ -176,28 +177,28 @@
   notice_account_invalid_credentials: Hibás felhasználói név, vagy jelszó
   notice_account_password_updated: A jelszó módosítása megtörtént.
   notice_account_wrong_password: Hibás jelszó
-  notice_account_register_done: A fiók sikeresen létrehozva. Aktiválásához kattints az e-mailben kapott linkre
+  notice_account_register_done: A fiók sikeresen létrehozva. Aktiválásához kattintson az e-mailben kapott linkre
   notice_can_t_change_password: A fiók külső azonosítási forrást használ. A jelszó megváltoztatása nem lehetséges.
-  notice_account_lost_email_sent: Egy e-mail üzenetben postáztunk Önnek egy leírást az új jelszó beállításáról.
+  notice_account_lost_email_sent: E-mailt küldünk Önnek az új jelszó beállításáról.
   notice_account_activated: Fiókját aktiváltuk. Most már be tud jelentkezni a rendszerbe.
   notice_successful_create: Sikeres létrehozás.
   notice_successful_update: Sikeres módosítás.
   notice_successful_delete: Sikeres törlés.
   notice_successful_connection: Sikeres bejelentkezés.
   notice_file_not_found: Az oldal, amit meg szeretne nézni nem található, vagy átkerült egy másik helyre.
-  notice_locking_conflict: Az adatot egy másik felhasználó idő közben módosította.
+  notice_locking_conflict: Az adatot egy másik felhasználó időközben módosította.
   notice_not_authorized: Nincs hozzáférési engedélye ehhez az oldalhoz.
   notice_email_sent: "Egy e-mail üzenetet küldtünk a következő címre %{value}"
   notice_email_error: "Hiba történt a levél küldése közben (%{value})"
-  notice_feeds_access_key_reseted: Az Atom hozzáférési kulcsát újra generáltuk.
-  notice_failed_to_save_issues: "Nem sikerült a %{count} feladat(ok) mentése a %{total} -ban kiválasztva: %{ids}."
+  notice_feeds_access_key_reseted: Az Atom hozzáférési kulcsa újragenerálva.
+  notice_failed_to_save_issues: "Nem sikerült menteni %{count} feladatot a kiválasztott %{total}-ból: %{ids}."
   notice_account_pending: "A fiókja létrejött, és adminisztrátori jóváhagyásra vár."
   notice_default_data_loaded: Az alapértelmezett konfiguráció betöltése sikeresen megtörtént.
 
   error_can_t_load_default_data: "Az alapértelmezett konfiguráció betöltése nem lehetséges: %{value}"
   error_scm_not_found: "A bejegyzés, vagy revízió nem található a tárolóban."
   error_scm_command_failed: "A tároló elérése közben hiba lépett fel: %{value}"
-  error_scm_annotate: "A bejegyzés nem létezik, vagy nics jegyzetekkel ellátva."
+  error_scm_annotate: "A bejegyzés nem létezik, vagy nincs jegyzetekkel ellátva."
   error_issue_not_found_in_project: 'A feladat nem található, vagy nem ehhez a projekthez tartozik'
 
   mail_subject_lost_password: Az Ön Redmine jelszava
@@ -207,7 +208,7 @@
   mail_body_account_information_external: "A %{value} azonosító használatával bejelentkezhet a Redmine-ba."
   mail_body_account_information: Az Ön Redmine azonosítójának információi
   mail_subject_account_activation_request: Redmine azonosító aktiválási kérelem
-  mail_body_account_activation_request: "Egy új felhasználó (%{value}) regisztrált, azonosítója jóváhasgyásra várakozik:"
+  mail_body_account_activation_request: "Egy új felhasználó (%{value}) regisztrált, azonosítója jóváhagyásra várakozik:"
 
 
   field_name: Név
@@ -317,10 +318,10 @@
   setting_cross_project_issue_relations: Kereszt-projekt feladat hivatkozások engedélyezése
   setting_issue_list_default_columns: Az alapértelmezésként megjelenített oszlopok a feladat listában
   setting_emails_footer: E-mail lábléc
-  setting_protocol: Protokol
+  setting_protocol: Protokoll
   setting_per_page_options: Objektum / oldal opciók
   setting_user_format: Felhasználók megjelenítésének formája
-  setting_activity_days_default: Napok megjelenítése a project aktivitásnál
+  setting_activity_days_default: Napok megjelenítése a projekt aktivitásnál
   setting_display_subprojects_issues: Alapértelmezettként mutassa az alprojektek feladatait is a projekteken
   setting_start_of_week: A hét első napja
 
@@ -486,7 +487,7 @@
   label_not_equals: nem egyenlő
   label_in_less_than: kevesebb, mint
   label_in_more_than: több, mint
-  label_in: in
+  label_in: intervallumban
   label_today: ma
   label_yesterday: tegnap
   label_this_week: aktuális hét
@@ -510,8 +511,8 @@
   label_added: hozzáadva
   label_modified: módosítva
   label_deleted: törölve
-  label_latest_revision: Legutolsó revízió
-  label_latest_revision_plural: Legutolsó revíziók
+  label_latest_revision: Legutóbbi revízió
+  label_latest_revision_plural: Legutóbbi revíziók
   label_view_revisions: Revíziók megtekintése
   label_max_size: Maximális méret
   label_roadmap: Életút
@@ -530,7 +531,7 @@
   label_index_by_date: Dátum szerint indexelve
   label_current_version: Jelenlegi verzió
   label_preview: Előnézet
-  label_feed_plural: Visszajelzések
+  label_feed_plural: Hírfolyamok
   label_changes_details: Változások részletei
   label_issue_tracking: Feladat követés
   label_spent_time: Ráfordított idő
@@ -571,7 +572,7 @@
   label_message_new: Új üzenet
   label_message_posted: Üzenet hozzáadva
   label_reply_plural: Válaszok
-  label_send_information: Fiók infomációk küldése a felhasználónak
+  label_send_information: Fiók információk küldése a felhasználónak
   label_year: Év
   label_month: Hónap
   label_week: Hét
@@ -586,7 +587,7 @@
   label_updated_time: "Utolsó módosítás %{value}"
   label_jump_to_a_project: Ugrás projekthez...
   label_file_plural: Fájlok
-  label_changeset_plural: Changesets
+  label_changeset_plural: Változáskészletek
   label_default_columns: Alapértelmezett oszlopok
   label_no_change_option: (Nincs változás)
   label_bulk_edit_selected_issues: A kiválasztott feladatok kötegelt szerkesztése
@@ -657,15 +658,15 @@
 
   text_select_mail_notifications: Válasszon eseményeket, amelyekről e-mail értesítést kell küldeni.
   text_regexp_info: pl. ^[A-Z0-9]+$
-  text_project_destroy_confirmation: Biztosan törölni szeretné a projektet és vele együtt minden kapcsolódó adatot ?
-  text_subprojects_destroy_warning: "Az alprojekt(ek): %{value} szintén törlésre kerülnek."
+  text_project_destroy_confirmation: Biztosan törölni szeretné a projektet és vele együtt minden kapcsolódó adatot?
+  text_subprojects_destroy_warning: "Az alprojektek: %{value} szintén törlésre kerülnek."
   text_workflow_edit: Válasszon egy szerepkört, és egy feladat típust a workflow szerkesztéséhez
-  text_are_you_sure: Biztos benne ?
+  text_are_you_sure: Biztos benne?
   text_tip_issue_begin_day: a feladat ezen a napon kezdődik
   text_tip_issue_end_day: a feladat ezen a napon ér véget
   text_tip_issue_begin_end_day: a feladat ezen a napon kezdődik és ér véget
   text_caracters_maximum: "maximum %{count} karakter."
-  text_caracters_minimum: "Legkevesebb %{count} karakter hosszúnek kell lennie."
+  text_caracters_minimum: "Legalább %{count} karakter hosszúnak kell lennie."
   text_length_between: "Legalább %{min} és legfeljebb %{max} hosszú karakter."
   text_tracker_no_workflow: Nincs workflow definiálva ehhez a feladat típushoz
   text_unallowed_characters: Tiltott karakterek
@@ -673,15 +674,15 @@
   text_issues_ref_in_commit_messages: Hivatkozás feladatokra, feladatok javítása a commit üzenetekben
   text_issue_added: "%{author} új feladatot hozott létre %{id} sorszámmal."
   text_issue_updated: "%{author} módosította a %{id} sorszámú feladatot."
-  text_wiki_destroy_confirmation: Biztosan törölni szeretné ezt a wiki-t minden tartalmával együtt ?
+  text_wiki_destroy_confirmation: Biztosan törölni szeretné ezt a wiki-t minden tartalmával együtt?
   text_issue_category_destroy_question: "Néhány feladat (%{count}) hozzá van rendelve ehhez a kategóriához. Mit szeretne tenni?"
   text_issue_category_destroy_assignments: Kategória hozzárendelés megszüntetése
   text_issue_category_reassign_to: Feladatok újra hozzárendelése másik kategóriához
   text_user_mail_option: "A nem kiválasztott projektekről csak akkor kap értesítést, ha figyelést kér rá, vagy részt vesz benne (pl. Ön a létrehozó, vagy a hozzárendelő)"
   text_no_configuration_data: "Szerepkörök, feladat típusok, feladat státuszok, és workflow adatok még nincsenek konfigurálva.\nErősen ajánlott, az alapértelmezett konfiguráció betöltése, és utána módosíthatja azt."
   text_load_default_configuration: Alapértelmezett konfiguráció betöltése
-  text_status_changed_by_changeset: "Applied in changeset %{value}."
-  text_issues_destroy_confirmation: 'Biztos benne, hogy törölni szeretné a kijelölt feladato(ka)t ?'
+  text_status_changed_by_changeset: "A változáskészletben alkalmazva %{value}."
+  text_issues_destroy_confirmation: 'Biztos benne, hogy törölni szeretné a kijelölt feladatokat?'
   text_select_project_modules: 'Válassza ki az engedélyezett modulokat ehhez a projekthez:'
   text_default_administrator_account_changed: Alapértelmezett adminisztrátor fiók megváltoztatva
   text_file_repository_writable: Fájl tároló írható
@@ -716,7 +717,7 @@
   enumeration_issue_priorities: Feladat prioritások
   enumeration_doc_categories: Dokumentum kategóriák
   enumeration_activities: Tevékenységek (idő rögzítés)
-  mail_body_reminder: "%{count} neked kiosztott feladat határidős az elkövetkező %{days} napban:"
+  mail_body_reminder: "%{count} Önnek kiosztott feladat határidős az elkövetkező %{days} napban:"
   mail_subject_reminder: "%{count} feladat határidős az elkövetkező %{days} napban"
   text_user_wrote: "%{value} írta:"
   text_user_wrote_in: "%{value} írta (%{link}):"
@@ -728,7 +729,7 @@
   label_generate_key: Kulcs generálása
   setting_mail_handler_api_enabled: Web Service engedélyezése a beérkezett levelekhez
   setting_mail_handler_api_key: API kulcs
-  text_email_delivery_not_configured: "Az E-mail küldés nincs konfigurálva, és az értesítések ki vannak kapcsolva.\nÁllítsd be az SMTP szervert a config/configuration.yml fájlban és indítsd újra az alkalmazást, hogy érvénybe lépjen."
+  text_email_delivery_not_configured: "Az e-mail küldés nincs konfigurálva, és az értesítések ki vannak kapcsolva.\nÁllítsa be az SMTP szervert a config/configuration.yml fájlban és indítsa újra az alkalmazást, hogy érvénybe lépjen."
   field_parent_title: Szülő oldal
   label_issue_watchers: Megfigyelők
   button_quote: Hozzászólás / Idézet
@@ -754,7 +755,7 @@
   permission_select_project_modules: Projekt modulok kezelése
   permission_edit_wiki_pages: Wiki oldalak szerkesztése
   permission_add_issue_watchers: Megfigyelők felvétele
-  permission_view_gantt: Gannt diagramm megtekintése
+  permission_view_gantt: Gantt diagram megtekintése
   permission_manage_issue_relations: Feladat kapcsolatok kezelése
   permission_delete_wiki_pages: Wiki oldalak törlése
   permission_manage_boards: Fórumok kezelése
@@ -773,7 +774,7 @@
   permission_manage_repository: Tárolók kezelése
   permission_commit_access: Commit hozzáférés
   permission_browse_repository: Tároló böngészése
-  permission_view_documents: Dokumetumok megtekintése
+  permission_view_documents: Dokumentumok megtekintése
   permission_edit_project: Projekt szerkesztése
   permission_add_issue_notes: Jegyzet rögzítése
   permission_save_queries: Kérések mentése
@@ -783,12 +784,12 @@
   permission_edit_own_issue_notes: Saját jegyzetek szerkesztése
   setting_gravatar_enabled: Felhasználói fényképek engedélyezése
   label_example: Példa
-  text_repository_usernames_mapping: "Állítsd be a felhasználó összerendeléseket a Redmine, és a tároló logban található felhasználók között.\nAz azonos felhasználó nevek összerendelése automatikusan megtörténik."
+  text_repository_usernames_mapping: "Állítsa be a felhasználó-összerendeléseket a Redmine és a tároló logjában található felhasználók között.\nAz azonos felhasználónevek összerendelése automatikusan megtörténik."
   permission_edit_own_messages: Saját üzenetek szerkesztése
   permission_delete_own_messages: Saját üzenetek törlése
   label_user_activity: "%{value} tevékenységei"
   label_updated_time_by: "Módosította %{author} %{age}"
-  text_diff_truncated: '... A diff fájl vége nem jelenik meg, mert hosszab, mint a megjeleníthető sorok száma.'
+  text_diff_truncated: '... A diff fájl vége nem jelenik meg, mert hosszabb, mint a megjeleníthető sorok száma.'
   setting_diff_max_lines_displayed: A megjelenítendő sorok száma (maximum) a diff fájloknál
   text_plugin_assets_writable: Plugin eszközök könyvtár írható
   warning_attachments_not_saved: "%{count} fájl mentése nem sikerült."
@@ -803,7 +804,7 @@
   label_descending: Csökkenő
   label_sort: Rendezés
   label_ascending: Növekvő
-  label_date_from_to: "%{start} -tól %{end} -ig"
+  label_date_from_to: "%{start}-tól %{end}-ig"
   label_greater_or_equal: ">="
   label_less_or_equal: "<="
   text_wiki_page_destroy_question: Ennek az oldalnak %{descendants} gyermek-, és leszármazott oldala van. Mit szeretne tenni?
@@ -856,7 +857,7 @@
   setting_issue_done_ratio: Feladat készültségi szint számolása a következő alapján
   setting_issue_done_ratio_issue_status: Feladat státusz alapján
   error_issue_done_ratios_not_updated: A feladat készültségi szintek nem lettek frissítve.
-  error_workflow_copy_target: Kérem válasszon cél feladat típus(oka)t és szerepkör(öke)t.
+  error_workflow_copy_target: Kérem válasszon cél feladattípust (típusokat) és szerepkört (szerepköröket).
   setting_issue_done_ratio_issue_field: A feladat mező alapján
   label_copy_same_as_target: A céllal egyező
   label_copy_target: Cél
@@ -881,9 +882,9 @@
   label_subproject_new: Új alprojekt
   text_own_membership_delete_confirmation: |-
     Arra készül, hogy eltávolítja egyes vagy minden jogosultságát! Ezt követően lehetséges, hogy nem fogja tudni szerkeszteni ezt a projektet!
-    Biztosan folyatni szeretné?
+    Biztosan folytatni szeretné?
   label_close_versions: Kész verziók lezárása
-  label_board_sticky: Sticky
+  label_board_sticky: Rögzített
   setting_cache_formatted_text: Formázott szöveg gyorsítótárazása (Cache)
   permission_export_wiki_pages: Wiki oldalak exportálása
   permission_manage_project_activities: Projekt tevékenységek kezelése
@@ -892,14 +893,14 @@
   permission_manage_subtasks: Alfeladatok kezelése
   label_profile: Profil
   error_unable_to_connect: Nem lehet csatlakozni (%{value})
-  error_can_not_remove_role: Ez a szerepkör használatban van és ezért nem törölhető-
+  error_can_not_remove_role: Ez a szerepkör használatban van és ezért nem törölhető.
   field_parent_issue: Szülő feladat
   error_unable_delete_issue_status: Nem lehet törölni a feladat állapotát (%{value})
   label_subtask_plural: Alfeladatok
-  error_can_not_delete_tracker_html: Ebbe a kategóriába feladatok tartoznak és ezért nem törölhető.<p>The following projects have issues with this tracker:<br>%{projects}</p>
+  error_can_not_delete_tracker_html: Ebbe a kategóriába feladatok tartoznak és ezért nem törölhető.<p>A következő projektek rendelkeznek ezzel a feladattípussal:<br>%{projects}</p>
   label_project_copy_notifications: Küldjön e-mail értesítéseket projektmásolás közben.
   field_principal: Felelős
-  notice_failed_to_save_members: "Nem sikerült menteni a tago(ka)t: %{errors}."
+  notice_failed_to_save_members: "Nem sikerült menteni a tagokat: %{errors}."
   text_zoom_out: Kicsinyít
   text_zoom_in: Nagyít
   notice_unable_delete_time_entry: Az időrögzítés nem törölhető
@@ -910,16 +911,16 @@
   field_text: Szöveg mező
   setting_default_notification_option: Alapértelmezett értesítési beállítások
   label_user_mail_option_only_my_events: Csak az általam megfigyelt dolgokról vagy amiben részt veszek
-  label_user_mail_option_none: Semilyen eseményről
+  label_user_mail_option_none: Semmilyen eseményről
   field_member_of_group: Hozzárendelt csoport
   field_assigned_to_role: Hozzárendelt szerepkör
-  notice_not_authorized_archived_project: A projekt, amihez hozzá szeretnél férni archiválva lett.
+  notice_not_authorized_archived_project: A projekt, amihez hozzá szeretne férni, archiválva lett.
   label_principal_search: "Felhasználó vagy csoport keresése:"
   label_user_search: "Felhasználó keresése:"
   field_visible: Látható
-  setting_emails_header: Emailek fejléce
+  setting_emails_header: E-mailek fejléce
   setting_commit_logtime_activity_id: A rögzített időhöz tartozó tevékenység
-  text_time_logged_by_changeset: Alkalmazva a %{value} changeset-ben.
+  text_time_logged_by_changeset: Alkalmazva a(z) %{value} változáskészletben.
   setting_commit_logtime_enabled: Időrögzítés engedélyezése
   notice_gantt_chart_truncated: A diagram le lett vágva, mert elérte a maximálisan megjeleníthető elemek számát (%{max})
   setting_gantt_items_limit: A gantt diagrammon megjeleníthető maximális elemek száma
@@ -932,8 +933,8 @@
   button_collapse_all: Mindet összecsuk
   label_additional_workflow_transitions_for_assignee: További átmenetek engedélyezettek, ha a felhasználó a hozzárendelt
   label_additional_workflow_transitions_for_author: További átmenetek engedélyezettek, ha a felhasználó a szerző
-  label_bulk_edit_selected_time_entries: A kiválasztott idő bejegyzések csoportos szerkesztése
-  text_time_entries_destroy_confirmation: Biztos benne, hogy törölni szeretné a kiválasztott idő bejegyzés(eke)t?
+  label_bulk_edit_selected_time_entries: A kiválasztott időbejegyzések csoportos szerkesztése
+  text_time_entries_destroy_confirmation: Biztos benne, hogy törölni szeretné a kiválasztott időbejegyzéseket?
   label_role_anonymous: Anonim
   label_role_non_member: Nem tag
   label_issue_note_added: Jegyzet hozzáadva
@@ -966,7 +967,7 @@
   description_query_sort_criteria_direction: Rendezés iránya
   description_project_scope: Keresés hatóköre
   description_filter: Szűrő
-  description_user_mail_notification: E-mail-értesítek beállításai
+  description_user_mail_notification: E-mail-értesítések beállításai
   description_message_content: Hozzászólás tartalma
   description_available_columns: Kiválasztható oszlopok
   description_issue_category_reassign: Válasszon feladatkategóriát
@@ -990,9 +991,9 @@
   label_x_issues:
     zero:  0 feladat
     one:   1 feladat
-    other: "%{count} feladatok"
+    other: "%{count} feladat"
   label_repository_new: Új tárolók
-  field_repository_is_default: Main repository
+  field_repository_is_default: Fő tároló
   label_copy_attachments: Csatolmányok másolása
   label_item_position: "%{position}/%{count}"
   label_completed_versions: Kész verziók
@@ -1000,7 +1001,7 @@
   field_multiple: Több is kiválasztható
   setting_commit_cross_project_ref: Engedélyezett más projekt feladatainak hivatkozása és megoldása
   text_issue_conflict_resolution_add_notes: Megjegyzésem hozzáadása a többi változás mentése nélkül
-  text_issue_conflict_resolution_overwrite: Módosításaim mentése (a másik tranzakció megjegyzései megmaradnak, de egyéb mezők felülíródhat)
+  text_issue_conflict_resolution_overwrite: Módosításaim mentése (a másik tranzakció megjegyzései megmaradnak, de egyéb mezők felülíródhatnak)
   notice_issue_update_conflict: A feladatot másik felhasználó is módosította, amíg Ön szerkesztette.
   text_issue_conflict_resolution_cancel: "Módosításaim elvetése, és frissítés: %{link}"
   permission_manage_related_issues: Kapcsolódó feladatok kezelése
@@ -1058,7 +1059,7 @@
   label_in_the_next_days: a következő
   label_in_the_past_days: az elmúlt
   label_attribute_of_user: "Felhasználó/%{name}"
-  text_turning_multiple_off: Ha megszünteti a többes kiválasztás lehetőségét, el lesznek távolítva értéket, hogy csak egy maradjon.
+  text_turning_multiple_off: Ha megszünteti a többes kiválasztás lehetőségét, el lesznek távolítva az értékek, hogy csak egy maradjon.
   label_attribute_of_issue: "Feladat/%{name}"
   permission_add_documents: Dokumentumok hozzáadása
   permission_edit_documents: Dokumentumok szerkesztése
@@ -1094,7 +1095,7 @@
   label_check_for_updates: Frissítések keresése
   label_latest_compatible_version: Legutóbbi kompatibilis verzió
   label_unknown_plugin: Ismeretlen bővítmény
-  label_radio_buttons: rádiógomok
+  label_radio_buttons: rádiógombok
   label_group_anonymous: Névtelen felhasználók
   label_group_non_member: Nem résztvevő felhasználók
   label_add_projects: Projektek hozzáadása
@@ -1114,7 +1115,7 @@
   field_address: E-mail
   setting_max_additional_emails: Másodlagos e-mail címek maximális száma
   label_email_address_plural: E-mail címek
-  label_email_address_add: Email cím hozzáadása
+  label_email_address_add: E-mail cím hozzáadása
   label_enable_notifications: Értesítések engedélyezése
   label_disable_notifications: Értesítések letiltása
   setting_search_results_per_page: Találati eredmények száma oldalanként
@@ -1123,7 +1124,7 @@
   error_password_expired: "A jelszava lejárt, vagy az adminisztrátor kérte a megváltoztatását."
   field_time_entries_visibility: Időráfordítások láthatósága
   setting_password_max_age: Jelszó érvényességi ideje
-  label_parent_task_attributes: Szülőfeladatok tulajdonságai/
+  label_parent_task_attributes: Szülőfeladatok tulajdonságai
   label_parent_task_attributes_derived: Alfeladatokból számítva
   label_parent_task_attributes_independent: Alfeladatoktól függetlenül
   label_time_entries_visibility_all: Minden időráfordítás
@@ -1136,7 +1137,7 @@
   notice_import_finished: "%{count} elem importálva"
   notice_import_finished_with_errors: "Az összes %{total} elemből %{count} importálása nem sikerült"
   error_invalid_file_encoding: "A fájl %{encoding} kódolása érvénytelen"
-  error_invalid_csv_file_or_settings: "Ez a fájl nem CSV, vagy nem a lenti beállítások megfelelő"
+  error_invalid_csv_file_or_settings: "Ez a fájl nem CSV, vagy nem felel meg a lenti beállításoknak"
   error_can_not_read_import_file: "Hiba történt az importálandó fájl beolvasásakor"
   permission_import_issues: Feladatok importálása
   label_import_issues: Feladatok importálása
@@ -1178,7 +1179,7 @@
   mail_body_settings_updated: "A következő beállítások módosultak:"
   field_remote_ip: IP-cím
   label_wiki_page_new: Új wiki oldal
-  label_relations: Relations
+  label_relations: Kapcsolatok
   button_filter: Szűrés
   mail_body_password_updated: A jelszava megváltozott.
   label_no_preview: Nincs előnézet
@@ -1195,7 +1196,7 @@
   setting_timespan_format: Időráfordítások formátuma
   label_table_of_contents: Tartalomjegyzék
   setting_commit_logs_formatting: Commitüzenetek formázása
-  setting_mail_handler_enable_regex: Enable regular expressions
+  setting_mail_handler_enable_regex: Reguláris kifejezések engedélyezése
   error_move_of_child_not_possible: "%{child} alfeladat nem helyezhető át az új projektbe: %{errors}"
   error_cannot_reassign_time_entries_to_an_issue_about_to_be_deleted: "Nem lehet törlendő feladathoz rendelni időráfordítást"
   setting_timelog_required_fields: Időráfordítás kötelező mezői
@@ -1217,7 +1218,7 @@
   error_exceeds_maximum_hours_per_day: "Nem lehet %{max_hours} óránál többet rögzíteni ugyanarra a napra. (Már %{logged_hours} óra rögzítve van.)"
   setting_time_entry_list_defaults: Időráfordítási lista alapértelmezései
   setting_timelog_accept_0_hours: 0 órás időráfordítás elfogadása
-  setting_timelog_max_hours_per_day: Naponként én felhasználónként elfogadható órák maximális száma
+  setting_timelog_max_hours_per_day: Naponként és felhasználónként elfogadható órák maximális száma
   label_x_revisions: "%{count} revízió"
   error_can_not_delete_auth_source: "Ez a bejelentkezési mód használatban van, így nem törölhető."
   button_actions: Műveletek
@@ -1233,7 +1234,7 @@
   label_ldaps_verify_peer: LDAPS
   label_ldaps_warning: Javasolt a biztonságos LDAPS használata a kiszolgáló tanúsítványának ellenőrzésével.
   label_nothing_to_preview: Nincs megjelenítendő tartalom
-  error_token_expired: "Ez a jelszóvál/error_spent_on_future_datetoztatási link elévült."
+  error_token_expired: "Ez a jelszóváltoztatási link elévült."
   error_spent_on_future_date: "Nem lehet jövőbeli dátumra rögzíteni"
   setting_timelog_accept_future_dates: Jövőbeli időráfordítás elfogadása
   error_not_allowed_to_log_time_for_other_users: "Nem rögzítheti más felhasználó időráfordítását"
@@ -1242,15 +1243,14 @@
   label_next_week: jövő hét
   label_next_month: jövő hónap
   text_role_no_workflow: Nincs munkafolyamat definiálva ehhez a szerepkörhöz
-  text_status_no_workflow: Ezt a státuszt semelyik munkafolymat feladattípusa sem használja.
+  text_status_no_workflow: Ezt a státuszt semelyik munkafolyamat feladattípusa sem használja.
   setting_show_status_changes_in_mail_subject: Státuszváltozás jelzése az e-mail tárgyában
   setting_mail_handler_preferred_body_part: MIME multipart e-mailek preferált része
-  setting_show_status_changes_/in_mail_subject: Státuszváltozás jelzése az e-mail tárgyában
   label_inherited_from_parent_project: "A szülőprojektből öröklődött"
   label_inherited_from_group: "%{name} csoportból öröklődött"
   label_trackers_description: Feladattípusok leírása
   label_open_trackers_description: Minden feladattípus leírásának megjelenítése
-  label_preferred_body_part_text: Text
+  label_preferred_body_part_text: Szöveg
   label_preferred_body_part_html: HTML
   field_parent_issue_subject: Szülőfeladat tárgya
   permission_edit_own_issues: Saját feladatok szerkesztése
@@ -1261,10 +1261,10 @@
   permission_import_time_entries: Időráfordítások importálása
   label_import_notifications: E-mail-értesítések küldése importálás közben
   text_gs_available: ImageMagick PDF-támogatása elérhető (nem kötelező)
-  field_recently_used_projects: Legutóbb használt projektek maximális számla a projektválasztóban
+  field_recently_used_projects: Legutóbb használt projektek maximális száma a projektválasztóban
   label_optgroup_bookmarks: Kedvencek
   label_optgroup_recents: Legutóbb használt
-  button_project_bookmark: Kendvencként jelölés
+  button_project_bookmark: Kedvencnek jelölés
   button_project_bookmark_delete: Törlés a kedvencekből
   field_history_default_tab: Feladattörténet alapértelmezett füle
   label_issue_history_properties: Tulajdonságok változásai
@@ -1277,7 +1277,7 @@
   label_password_char_class_lowercase: kisbetű
   label_password_char_class_digits: számjegy
   label_password_char_class_special_chars: különleges karakter
-  text_characters_must_contain: "Megkövetelet karakterek: %{character_classes}."
+  text_characters_must_contain: "Megkövetelt karakterek: %{character_classes}."
   label_starts_with: kezdete
   label_ends_with: vége
   label_issue_fixed_version_updated: Célverzió módosítva
@@ -1287,265 +1287,211 @@
   label_display_type_board: panelként
   label_my_bookmarks: Kedvencek
   label_import_time_entries: Időráfordítások importálása
-  field_toolbar_language_options: Code highlighting toolbar languages
-  label_user_mail_notify_about_high_priority_issues_html: Also notify me about issues
-    with a priority of <em>%{prio}</em> or higher
-  label_assign_to_me: Assign to me
-  notice_issue_not_closable_by_open_tasks: This issue cannot be closed because it has
-    at least one open subtask.
-  notice_issue_not_closable_by_blocking_issue: This issue cannot be closed because it
-    is blocked by at least one open issue.
-  notice_issue_not_reopenable_by_closed_parent_issue: This issue cannot be reopened
-    because its parent issue is closed.
-  error_bulk_download_size_too_big: These attachments cannot be bulk downloaded because
-    the total file size exceeds the maximum allowed size (%{max_size})
-  setting_bulk_download_max_size: Maximum total size for bulk download
-  label_download_all_attachments: Download all files
-  error_attachments_too_many: This file cannot be uploaded because it exceeds the maximum
-    number of files that can be attached simultaneously (%{max_number_of_files})
-  setting_email_domains_allowed: Allowed email domains
-  setting_email_domains_denied: Disallowed email domains
-  field_passwd_changed_on: Password last changed
-  label_relations_mapping: Relations mapping
-  label_import_users: Import users
-  label_days_to_html: "%{days} days up to %{date}"
-  setting_twofa: Two-factor authentication
-  label_optional: optional
-  label_required_lower: required
-  button_disable: Disable
-  twofa__totp__name: Authenticator app
-  twofa__totp__text_pairing_info_html: Scan this QR code or enter the plain text key
-    into a TOTP app (e.g. <a href="https://support.google.com/accounts/answer/1066447">Google
+  field_toolbar_language_options: Szintaxiskiemelő eszköztár nyelvei
+  label_user_mail_notify_about_high_priority_issues_html: Értesítsen engem a <em>%{prio}</em> vagy magasabb prioritású feladatokról is
+  label_assign_to_me: Rendelje hozzám
+  notice_issue_not_closable_by_open_tasks: Ez a feladat nem zárható le, mert legalább egy nyitott alfeladata van.
+  notice_issue_not_closable_by_blocking_issue: Ez a feladat nem zárható le, mert legalább egy nyitott feladat blokkolja.
+  notice_issue_not_reopenable_by_closed_parent_issue: Ez a feladat nem nyitható meg újra, mert a szülőfeladata lezárt.
+  error_bulk_download_size_too_big: Ezek a csatolmányok nem tölthetők le egyszerre, mert a teljes fájlméret meghaladja a megengedett méretet (%{max_size})
+  setting_bulk_download_max_size: Tömeges letöltés maximális mérete
+  label_download_all_attachments: Összes fájl letöltése
+  error_attachments_too_many: Ez a fájl nem tölthető fel, mert egyszerre csatolható fájlok maximális számát meghaladaná (%{max_number_of_files})
+  setting_email_domains_allowed: Engedélyezett e-mail domainek
+  setting_email_domains_denied: Tiltott e-mail domainek
+  field_passwd_changed_on: Jelszó utolsó megváltoztatása
+  label_relations_mapping: Kapcsolatok leképzése
+  label_import_users: Felhasználók importálása
+  label_days_to_html: "%{days} nap %{date} dátumig"
+  setting_twofa: Kétfaktoros hitelesítés
+  label_optional: nem kötelező
+  label_required_lower: kötelező
+  button_disable: Letilt
+  twofa__totp__name: Hitelesítő alkalmazás
+  twofa__totp__text_pairing_info_html: Szkennelje be ezt a QR-kódot, vagy írja be a szöveges kulcsot egy TOTP alkalmazásba (pl. <a href="https://support.google.com/accounts/answer/1066447">Google
     Authenticator</a>, <a href="https://authy.com/download/">Authy</a>, <a href="https://guide.duo.com/third-party-accounts">Duo
-    Mobile</a>) and enter the code in the field below to activate two-factor authentication.
-  twofa__totp__label_plain_text_key: Plain text key
-  twofa__totp__label_activate: Enable authenticator app
-  twofa_currently_active: 'Currently active: %{twofa_scheme_name}'
-  twofa_not_active: Not activated
-  twofa_label_code: Code
-  twofa_hint_disabled_html: Setting <strong>%{label}</strong> will deactivate and unpair
-    two-factor authentication devices for all users.
-  twofa_hint_required_html: Setting <strong>%{label}</strong> will require all users
-    to set up two-factor authentication at their next login.
-  twofa_label_setup: Enable two-factor authentication
-  twofa_label_deactivation_confirmation: Disable two-factor authentication
-  twofa_notice_select: 'Please select the two-factor scheme you would like to use:'
-  twofa_warning_require: The administrator requires you to enable two-factor authentication.
-  twofa_activated: Two-factor authentication successfully enabled. It is recommended
-    to <a data-method="post" href="%{bc_path}">generate backup codes</a> for your account.
-  twofa_deactivated: Two-factor authentication disabled.
-  twofa_mail_body_security_notification_paired: Two-factor authentication successfully
-    enabled using %{field}.
-  twofa_mail_body_security_notification_unpaired: Two-factor authentication disabled
-    for your account.
-  twofa_mail_body_backup_codes_generated: New two-factor authentication backup codes
-    generated.
-  twofa_mail_body_backup_code_used: A two-factor authentication backup code has been
-    used.
-  twofa_invalid_code: Code is invalid or outdated.
-  twofa_label_enter_otp: Please enter your two-factor authentication code.
+    Mobile</a>), majd adja meg az alább megjelenő kódot a kétfaktoros hitelesítés aktiválásához.
+  twofa__totp__label_plain_text_key: Szöveges kulcs
+  twofa__totp__label_activate: Hitelesítő alkalmazás engedélyezése
+  twofa_currently_active: 'Jelenleg aktív: %{twofa_scheme_name}'
+  twofa_not_active: Nincs aktiválva
+  twofa_label_code: Kód
+  twofa_hint_disabled_html: A <strong>%{label}</strong> beállítás letiltja és leválasztja a kétfaktoros hitelesítő eszközöket minden felhasználótól.
+  twofa_hint_required_html: A <strong>%{label}</strong> beállítás megköveteli minden felhasználótól, hogy a következő bejelentkezéskor állítsák be a kétfaktoros hitelesítést.
+  twofa_label_setup: Kétfaktoros hitelesítés engedélyezése
+  twofa_label_deactivation_confirmation: Kétfaktoros hitelesítés letiltása
+  twofa_notice_select: 'Kérem válassza ki a használni kívánt kétfaktoros hitelesítési módot:'
+  twofa_warning_require: Az adminisztrátor megköveteli a kétfaktoros hitelesítés bekapcsolását.
+  twofa_activated: A kétfaktoros hitelesítés sikeresen aktiválva. Javasolt <a data-method="post" href="%{bc_path}">biztonsági kódokat generálni</a> a fiókjához.
+  twofa_deactivated: A kétfaktoros hitelesítés letiltva.
+  twofa_mail_body_security_notification_paired: A kétfaktoros hitelesítés sikeresen aktiválva %{field} használatával.
+  twofa_mail_body_security_notification_unpaired: A kétfaktoros hitelesítés letiltva a fiókon.
+  twofa_mail_body_backup_codes_generated: Új kétfaktoros hitelesítési biztonsági kódok generálva.
+  twofa_mail_body_backup_code_used: Egy kétfaktoros hitelesítési biztonsági kód fel lett használva.
+  twofa_invalid_code: A kód érvénytelen vagy lejárt.
+  twofa_label_enter_otp: Kérem adja meg a kétfaktoros hitelesítési kódját.
   twofa_too_many_tries: Túl sok próbálkozás.
-  twofa_resend_code: Resend code
-  twofa_code_sent: An authentication code has been sent to you.
-  twofa_generate_backup_codes: Generate backup codes
-  twofa_text_generate_backup_codes_confirmation: This will invalidate all existing backup
-    codes and generate new ones. Would you like to continue?
-  twofa_notice_backup_codes_generated: Your backup codes have been generated.
-  twofa_warning_backup_codes_generated_invalidated: New backup codes have been generated.
-    Your existing codes from %{time} are now invalid.
-  twofa_label_backup_codes: Two-factor authentication backup codes
-  twofa_text_backup_codes_hint: Use these codes instead of a one-time password should
-    you not have access to your second factor. Each code can only be used once. It is
-    recommended to print and store them in a safe place.
-  twofa_text_backup_codes_created_at: Backup codes generated %{datetime}.
-  twofa_backup_codes_already_shown: Backup codes cannot be shown again, please <a data-method="post"
-    href="%{bc_path}">generate new backup codes</a> if required.
-  error_can_not_execute_macro_html: Error executing the <strong>%{name}</strong> macro
-    (%{error})
-  error_macro_does_not_accept_block: This macro does not accept a block of text
-  error_childpages_macro_no_argument: With no argument, this macro can be called from
-    wiki pages only
-  error_circular_inclusion: Circular inclusion detected
+  twofa_resend_code: Kód újraküldése
+  twofa_code_sent: Hitelesítési kódot küldtünk Önnek.
+  twofa_generate_backup_codes: Biztonsági kódok generálása
+  twofa_text_generate_backup_codes_confirmation: Ez érvényteleníti az összes meglévő biztonsági kódot és újakat generál. Kívánja folytatni?
+  twofa_notice_backup_codes_generated: A biztonsági kódok sikeresen generálva.
+  twofa_warning_backup_codes_generated_invalidated: Új biztonsági kódok generálva. A %{time}-kori kódok mostantól érvénytelenek.
+  twofa_label_backup_codes: Kétfaktoros hitelesítési biztonsági kódok
+  twofa_text_backup_codes_hint: Használja ezeket a kódokat egyszeri jelszó helyett, ha nem érhető el a második faktora. Minden kód csak egyszer használható. Javasolt kinyomtatni és biztonságos helyen tárolni.
+  twofa_text_backup_codes_created_at: "Biztonsági kódok generálva: %{datetime}."
+  twofa_backup_codes_already_shown: A biztonsági kódok nem jeleníthetők meg újra, kérem <a data-method="post"
+    href="%{bc_path}">generáljon új biztonsági kódokat</a>, ha szükséges.
+  error_can_not_execute_macro_html: Hiba a <strong>%{name}</strong> makró végrehajtásakor (%{error})
+  error_macro_does_not_accept_block: Ez a makró nem fogad el szöveges blokkot
+  error_childpages_macro_no_argument: Argumentum nélkül ez a makró csak wiki oldalakról hívható
+  error_circular_inclusion: Körkörös beágyazás észlelve
   error_page_not_found: Az oldal nem található
   error_filename_required: Fájlnév hiányzik
-  error_invalid_size_parameter: Invalid size parameter
-  error_attachment_not_found: Attachment %{name} not found
-  permission_delete_project: Delete the project
-  field_twofa_scheme: Two-factor authentication scheme
-  text_user_destroy_confirmation: Are you sure you want to delete this user and remove
-    all references to them? This cannot be undone. Often, locking a user instead of
-    deleting them is the better solution. To confirm, please enter their login (%{login})
-    below.
-  text_project_destroy_enter_identifier: To confirm, please enter the project's identifier
-    (%{identifier}) below.
-  button_add_subtask: Add subtask
-  notice_invalid_watcher: 'Invalid watcher: User will not receive any notifications
-    because they do not have access to view this object.'
-  button_fetch_changesets: Fetch commits
-  permission_view_message_watchers: View message watchers list
-  permission_add_message_watchers: Add message watchers
-  permission_delete_message_watchers: Delete message watchers
-  label_message_watchers: Watchers
-  button_copy_link: Copy link
-  error_invalid_authenticity_token: Invalid form authenticity token.
-  error_query_statement_invalid: An error occurred while executing the query and has
-    been logged. Please report this error to your Redmine administrator.
-  permission_view_wiki_page_watchers: View wiki page watchers list
-  permission_add_wiki_page_watchers: Add wiki page watchers
-  permission_delete_wiki_page_watchers: Delete wiki page watchers
-  label_wiki_page_watchers: Figyelők
-  label_attachment_description: File leírás
-  error_no_data_in_file: The file does not contain any data
-  field_twofa_required: Require two factor authentication
-  twofa_hint_optional_html: Setting <strong>%{label}</strong> will let users set up
-    two-factor authentication at will, unless it is required by one of their groups.
-  twofa_text_group_required: This setting is only effective when the global two factor
-    authentication setting is set to 'optional'. Currently, two factor authentication
-    is required for all users.
-  twofa_text_group_disabled: This setting is only effective when the global two factor
-    authentication setting is set to 'optional'. Currently, two factor authentication
-    is disabled.
-  field_default_issue_query: Default issue query
+  error_invalid_size_parameter: Érvénytelen méret paraméter
+  error_attachment_not_found: "%{name} csatolmány nem található"
+  permission_delete_project: Projekt törlése
+  field_twofa_scheme: Kétfaktoros hitelesítési séma
+  text_user_destroy_confirmation: Biztosan törölni szeretné ezt a felhasználót és eltávolítani az összes hivatkozást? Ez nem vonható vissza. Sokszor jobb megoldás a felhasználó zárolása törlés helyett. A megerősítéshez írja be a bejelentkezési nevét (%{login}) alább.
+  text_project_destroy_enter_identifier: A megerősítéshez írja be a projekt azonosítóját (%{identifier}) alább.
+  button_add_subtask: Alfeladat hozzáadása
+  notice_invalid_watcher: 'Érvénytelen megfigyelő: A felhasználó nem kap értesítéseket, mert nincs hozzáférése az objektum megtekintéséhez.'
+  button_fetch_changesets: Commitok lekérése
+  permission_view_message_watchers: Üzenet megfigyelők listájának megtekintése
+  permission_add_message_watchers: Üzenet megfigyelők hozzáadása
+  permission_delete_message_watchers: Üzenet megfigyelők törlése
+  label_message_watchers: Megfigyelők
+  button_copy_link: Link másolása
+  error_invalid_authenticity_token: Érvénytelen űrlap hitelesítési token.
+  error_query_statement_invalid: Hiba történt a lekérdezés végrehajtásakor és naplózásra került. Kérem jelezze ezt a hibát a Redmine adminisztrátorának.
+  permission_view_wiki_page_watchers: Wiki oldal megfigyelők listájának megtekintése
+  permission_add_wiki_page_watchers: Wiki oldal megfigyelők hozzáadása
+  permission_delete_wiki_page_watchers: Wiki oldal megfigyelők törlése
+  label_wiki_page_watchers: Megfigyelők
+  label_attachment_description: Fájl leírása
+  error_no_data_in_file: A fájl nem tartalmaz adatot
+  field_twofa_required: Kétfaktoros hitelesítés megkövetelése
+  twofa_hint_optional_html: A <strong>%{label}</strong> beállítás lehetővé teszi a felhasználóknak a kétfaktoros hitelesítés tetszőleges beállítását, hacsak valamelyik csoportjuk nem követeli meg.
+  twofa_text_group_required: Ez a beállítás csak akkor érvényes, ha a globális kétfaktoros hitelesítési beállítás 'nem kötelező'-re van állítva. Jelenleg minden felhasználónak kötelező a kétfaktoros hitelesítés.
+  twofa_text_group_disabled: Ez a beállítás csak akkor érvényes, ha a globális kétfaktoros hitelesítési beállítás 'nem kötelező'-re van állítva. Jelenleg a kétfaktoros hitelesítés le van tiltva.
+  field_default_issue_query: Alapértelmezett feladat lekérdezés
   label_default_queries:
-    for_all_projects: For all projects
-    for_current_project: For current project
-    for_all_users: For all users
-    for_this_user: For this user
-  text_allowed_queries_to_select: Public (to any users) queries only selectable
-  text_all_migrations_have_been_run: All database migrations have been run
-  button_save_object: Save %{object_name}
-  button_edit_object: Edit %{object_name}
-  button_delete_object: Delete %{object_name}
-  text_setting_config_change: You can configure the behaviour in config/configuration.yml.
-    Please restart the application after editing it.
-  label_bulk_edit: Bulk edit
-  button_create_and_follow: Create and follow
-  label_subtask: Subtask
+    for_all_projects: Minden projekthez
+    for_current_project: Aktuális projekthez
+    for_all_users: Minden felhasználóhoz
+    for_this_user: Ehhez a felhasználóhoz
+  text_allowed_queries_to_select: Csak nyilvános (minden felhasználó számára elérhető) lekérdezések választhatók
+  text_all_migrations_have_been_run: Minden adatbázis migráció lefutott
+  button_save_object: "%{object_name} mentése"
+  button_edit_object: "%{object_name} szerkesztése"
+  button_delete_object: "%{object_name} törlése"
+  text_setting_config_change: A működést a config/configuration.yml fájlban konfigurálhatja. Szerkesztés után indítsa újra az alkalmazást.
+  label_bulk_edit: Tömeges szerkesztés
+  button_create_and_follow: Létrehozás és követés
+  label_subtask: Alfeladat
   label_default_query: Alapértelmezett lekérdezés
   field_default_project_query: Alapértelmezett projekt lekérdezés
-  label_required_administrators: required for administrators
-  twofa_hint_required_administrators_html: Setting <strong>%{label}</strong> behaves
-    like optional, but will require all users with administration rights to set up two-factor
-    authentication at their next login.
-  label_auto_watch_on: Auto watch
-  label_auto_watch_on_issue_contributed_to: Issues I contributed to
-  text_project_close_confirmation: Are you sure you want to close the '%{value}' project
-    to make it read-only?
-  text_project_reopen_confirmation: Are you sure you want to reopen the '%{value}' project?
-  text_project_archive_confirmation: Are you sure you want to archive the '%{value}'
-    project?
-  mail_destroy_project_failed: Project %{value} could not be deleted.
-  mail_destroy_project_successful: Project %{value} was deleted successfully.
-  mail_destroy_project_with_subprojects_successful: Project %{value} and its subprojects
-    were deleted successfully.
-  project_status_scheduled_for_deletion: scheduled for deletion
-  text_projects_bulk_destroy_confirmation: Are you sure you want to delete the selected
-    projects and related data?
+  label_required_administrators: adminisztrátoroknak kötelező
+  twofa_hint_required_administrators_html: A <strong>%{label}</strong> beállítás az opcionálishoz hasonlóan viselkedik, de megköveteli az adminisztrátori jogokkal rendelkező felhasználóktól, hogy a következő bejelentkezéskor állítsák be a kétfaktoros hitelesítést.
+  label_auto_watch_on: Automatikus figyelés
+  label_auto_watch_on_issue_contributed_to: Hozzájárult feladatok
+  text_project_close_confirmation: Biztosan le szeretné zárni a '%{value}' projektet, hogy csak olvashatóvá tegye?
+  text_project_reopen_confirmation: Biztosan meg szeretné nyitni újra a '%{value}' projektet?
+  text_project_archive_confirmation: Biztosan archiválni szeretné a '%{value}' projektet?
+  mail_destroy_project_failed: A %{value} projekt nem törölhető.
+  mail_destroy_project_successful: A %{value} projekt sikeresen törölve.
+  mail_destroy_project_with_subprojects_successful: A %{value} projekt és alprojektjei sikeresen törölve.
+  project_status_scheduled_for_deletion: törlésre ütemezve
+  text_projects_bulk_destroy_confirmation: Biztosan törölni szeretné a kiválasztott projekteket és a kapcsolódó adatokat?
   text_projects_bulk_destroy_head: |
-    You are about to permanently delete the following projects, including possible subprojects and any related data.
-    Please review the information below and confirm that this is indeed what you want to do.
-    This action cannot be undone.
-  text_projects_bulk_destroy_confirm: To confirm, please enter "%{yes}" in the box below.
-  text_subprojects_bulk_destroy: 'including its subproject(s): %{value}'
-  field_current_password: Current password
-  sudo_mode_new_info_html: "<strong>What's happening?</strong> You need to reconfirm
-    your password before taking any administrative actions, this ensures your account
-    stays protected."
-  label_edited: Edited
-  label_time_by_author: "%{time} by %{author}"
-  field_default_time_entry_activity: Default spent time activity
-  field_is_member_of_group: Member of group
-  text_users_bulk_destroy_head: You are about to delete the following users and remove
-    all references to them. This cannot be undone. Often, locking users instead of deleting
-    them is the better solution.
-  text_users_bulk_destroy_confirm: To confirm, please enter "%{yes}" below.
-  permission_select_project_publicity: Set project public or private
-  label_auto_watch_on_issue_created: Issues I created
-  field_any_searchable: Any searchable text
-  label_contains_any_of: contains any of
-  button_apply_issues_filter: Apply issues filter
-  label_view_previous_annotation: View annotation prior to this change
-  label_has_been: has been
-  label_has_never_been: has never been
-  label_changed_from: changed from
-  label_issue_statuses_description: Issue statuses description
-  label_open_issue_statuses_description: View all issue statuses description
-  text_select_apply_issue_status: Select issue status
-  field_name_or_email_or_login: Name, email or login
-  text_default_active_job_queue_changed: Default queue adapter which is well suited
-    only for dev/test changed
+    A következő projekteket készül véglegesen törölni, beleértve az esetleges alprojekteket és minden kapcsolódó adatot.
+    Kérem ellenőrizze az alábbi információkat és erősítse meg, hogy valóban ezt szeretné tenni.
+    Ez a művelet nem vonható vissza.
+  text_projects_bulk_destroy_confirm: A megerősítéshez írja be a "%{yes}" szöveget az alábbi mezőbe.
+  text_subprojects_bulk_destroy: 'beleértve az alprojektjeit: %{value}'
+  field_current_password: Jelenlegi jelszó
+  sudo_mode_new_info_html: "<strong>Mi történik?</strong> Mielőtt adminisztrátori műveleteket hajtana végre, meg kell erősítenie jelszavát, hogy fiókja védve maradjon."
+  label_edited: Szerkesztve
+  label_time_by_author: "%{time} - %{author}"
+  field_default_time_entry_activity: Alapértelmezett időrögzítési tevékenység
+  field_is_member_of_group: Csoport tagja
+  text_users_bulk_destroy_head: A következő felhasználókat készül törölni és az összes hivatkozásukat eltávolítani. Ez nem vonható vissza. Sokszor jobb megoldás a felhasználók zárolása törlés helyett.
+  text_users_bulk_destroy_confirm: A megerősítéshez írja be a "%{yes}" szöveget alább.
+  permission_select_project_publicity: Projekt nyilvánossá vagy priváttá tétele
+  label_auto_watch_on_issue_created: Általam létrehozott feladatok
+  field_any_searchable: Bármely kereshető szöveg
+  label_contains_any_of: tartalmazza valamelyiket
+  button_apply_issues_filter: Feladatszűrő alkalmazása
+  label_view_previous_annotation: Annotáció megtekintése e változás előtti állapotban
+  label_has_been: volt
+  label_has_never_been: soha nem volt
+  label_changed_from: megváltozott erről
+  label_issue_statuses_description: Feladatállapotok leírása
+  label_open_issue_statuses_description: Az összes feladatállapot leírásának megtekintése
+  text_select_apply_issue_status: Feladatállapot kiválasztása
+  field_name_or_email_or_login: Név, e-mail vagy bejelentkezési név
+  text_default_active_job_queue_changed: Az alapértelmezett várósor adapter, amely csak fejlesztési/tesztelési célra megfelelő, megváltozott
   label_option_auto_lang: auto
-  label_issue_attachment_added: Attachment added
-  field_estimated_remaining_hours: Estimated remaining time
-  field_last_activity_date: Last activity
-  setting_issue_done_ratio_interval: Done ratio options interval
-  setting_copy_attachments_on_issue_copy: Copy attachments on copy
-  field_thousands_delimiter: Thousands delimiter
-  label_involved_principals: Author / Previous assignee
+  label_issue_attachment_added: Csatolmány hozzáadva
+  field_estimated_remaining_hours: Becsült fennmaradó idő
+  field_last_activity_date: Utolsó aktivitás
+  setting_issue_done_ratio_interval: Készültségi szint lépései
+  setting_copy_attachments_on_issue_copy: Csatolmányok másolása feladat másolásakor
+  field_thousands_delimiter: Ezres elválasztó
+  label_involved_principals: Szerző / Korábbi felelős
   label_attachment_summary:
     zero: "%{filename}"
-    one: "%{filename} and 1 file"
-    other: "%{filename} and %{count} files"
-  setting_wiki_tablesort_enabled: JavaScript based table sorting in wiki content
-  label_progressbar: Progress bar
-  error_spent_on_closed_issue: Cannot log time on a closed issue
-  setting_timelog_accept_closed_issues: Accept time logs on closed issues
-  setting_related_issues_default_columns: Related and sub issues list defaults
-  setting_display_related_issues_table_headers: Show table headers
-  error_can_not_remove_role_reason_members_html: "<p>The following projects have members
-    with this role:<br>%{projects}</p>"
-  setting_reactions_enabled: Enable reactions
+    one: "%{filename} és 1 fájl"
+    other: "%{filename} és %{count} fájl"
+  setting_wiki_tablesort_enabled: JavaScript alapú táblázat rendezés a wiki tartalomban
+  label_progressbar: Folyamatjelző sáv
+  error_spent_on_closed_issue: Lezárt feladathoz nem lehet időt rögzíteni
+  setting_timelog_accept_closed_issues: Időráfordítás elfogadása lezárt feladatoknál
+  setting_related_issues_default_columns: Kapcsolódó és alfeladatok lista alapértelmezései
+  setting_display_related_issues_table_headers: Táblafejlécek megjelenítése
+  error_can_not_remove_role_reason_members_html: "<p>A következő projekteknek vannak tagjai ezzel a szerepkörrel:<br>%{projects}</p>"
+  setting_reactions_enabled: Reakciók engedélyezése
   reaction_text_x_other_users:
-    one: 1 other
-    other: "%{count} others"
-  text_setting_gravatar_default_initials_html: Users' initials are sent to <a href="https://www.gravatar.com">https://www.gravatar.com</a>
-    to generate their avatars.
-  permission_view_project: View projects
-  permission_search_project: Search projects
-  permission_view_members: View project members
-  label_oauth_permission_admin: Administrate this Redmine
-  label_oauth_admin_access: Administration
-  label_oauth_application_plural: Applications
-  label_oauth_authorized_application_plural: Authorized applications
-  text_oauth_admin_permission: Full administrative access. When authorized by an Administrator,
-    this application will be able to read and write all data and impersonate other users.
-  text_oauth_admin_permission_info: This application requests full administrative access.
-    If you are an Administrator (or become one in the future), it will be able to read
-    and write all data and impersonate other users on your behalf. If you want to avoid
-    this, authorize it as a user without Administrator privileges instead.
-  text_oauth_copy_secret_now: Copy the secret to a safe place now, it will not be shown
-    again.
-  text_oauth_implicit_permissions: View your name, login and primary email address
-  text_oauth_info_scopes: Select the scopes this application may request. The application
-    will not be allowed to do more than what is selected here. It will also always be
-    limited by the roles and project memberships of the user who authorized it.
-  label_position: Position
-  label_message: Message
-  twofa_already_setup: Two-factor authentication already set up
-  permission_use_webhooks: Use webhooks
-  label_webhook_plural: Webhooks
-  label_webhook_new: New webhook
-  label_webhook_edit: Edit webhook
-  label_webhook_events: Events
-  webhook_url_info: Redmine will send a POST request to this URL whenever one of the
-    selected events occurs in one of the selected projects.
-  webhook_secret_info_html: If provided, Redmine will use this to create a hash signature
-    that is sent with each delivery as the value of the X-Redmine-Signature-256 header.
-  setting_webhooks_enabled: Enable webhooks
-  label_integrations: Integrations
-  label_alert_note: Note
-  label_alert_tip: Tip
-  label_alert_warning: Warning
-  label_alert_caution: Caution
-  label_alert_important: Important
-  field_ratio_interval: Ratio interval
-  webhook_event_created: "%{object_name} created"
-  webhook_event_updated: "%{object_name} updated"
-  webhook_event_deleted: "%{object_name} deleted"
-  label_auto_watch_on_issue_assigned_to_me: Issues assigned to me
-  label_relation_remove: Remove relation
-  label_subtask_remove: Remove subtask
-  button_remove: Remove
-  label_open_in_full_view: Open in full view
-  text_pandoc_available: Pandoc available (optional)
-  label_user_mail_option_only_my_watches: Only for things I watch
+    one: 1 másik
+    other: "%{count} másik"
+  text_setting_gravatar_default_initials_html: A felhasználók monogramját <a href="https://www.gravatar.com">https://www.gravatar.com</a> részére küldjük el avatárjuk generálásához.
+  permission_view_project: Projektek megtekintése
+  permission_search_project: Projektek keresése
+  permission_view_members: Projekt tagok megtekintése
+  label_oauth_permission_admin: Redmine adminisztrálása
+  label_oauth_admin_access: Adminisztráció
+  label_oauth_application_plural: Alkalmazások
+  label_oauth_authorized_application_plural: Engedélyezett alkalmazások
+  text_oauth_admin_permission: Teljes adminisztrátori hozzáférés. Ha egy adminisztrátor engedélyezi, ez az alkalmazás képes lesz olvasni és írni az összes adatot, és más felhasználókat megszemélyesíteni.
+  text_oauth_admin_permission_info: Ez az alkalmazás teljes adminisztrátori hozzáférést kér. Ha Ön adminisztrátor (vagy azzá válik), képes lesz az Ön nevében olvasni és írni az összes adatot, és más felhasználókat megszemélyesíteni. Ha ezt el szeretné kerülni, adminisztrátori jogosultság nélküli felhasználóként engedélyezze.
+  text_oauth_copy_secret_now: Mentse el most a titkos kulcsot, mert többé nem lesz megjelenítve.
+  text_oauth_implicit_permissions: Megtekintheti az Ön nevét, bejelentkezési nevét és elsődleges e-mail címét
+  text_oauth_info_scopes: Válassza ki azokat a hatóköröket, amelyeket ez az alkalmazás kérhet. Az alkalmazás nem tehet többet, mint ami itt ki van választva. Ezen felül mindig korlátozva lesz az azt engedélyező felhasználó szerepkörei és projekt tagságai által.
+  label_position: Pozíció
+  label_message: Üzenet
+  twofa_already_setup: A kétfaktoros hitelesítés már be van állítva
+  permission_use_webhooks: Webhookok használata
+  label_webhook_plural: Webhookok
+  label_webhook_new: Új webhook
+  label_webhook_edit: Webhook szerkesztése
+  label_webhook_events: Események
+  webhook_url_info: A Redmine POST kérést küld erre az URL-re, amikor az egyik kiválasztott esemény bekövetkezik az egyik kiválasztott projektben.
+  webhook_secret_info_html: Ha meg van adva, a Redmine ezt használja egy hash aláírás létrehozásához, amelyet minden kézbesítéssel az X-Redmine-Signature-256 fejléc értékeként küld el.
+  setting_webhooks_enabled: Webhookok engedélyezése
+  label_integrations: Integrációk
+  label_alert_note: Megjegyzés
+  label_alert_tip: Tipp
+  label_alert_warning: Figyelmeztetés
+  label_alert_caution: Óvatosság
+  label_alert_important: Fontos
+  field_ratio_interval: Arány lépése
+  webhook_event_created: "%{object_name} létrehozva"
+  webhook_event_updated: "%{object_name} frissítve"
+  webhook_event_deleted: "%{object_name} törölve"
+  label_auto_watch_on_issue_assigned_to_me: Hozzám rendelt feladatok
+  label_relation_remove: Kapcsolat eltávolítása
+  label_subtask_remove: Alfeladat eltávolítása
+  button_remove: Eltávolítás
+  label_open_in_full_view: Megnyitás teljes nézetben
+  text_pandoc_available: Pandoc elérhető (nem kötelező)
+  label_user_mail_option_only_my_watches: Csak a figyelt dolgaimról
