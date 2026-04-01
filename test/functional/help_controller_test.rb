@@ -66,13 +66,30 @@ class HelpControllerTest < Redmine::ControllerTest
     assert_select 'h1', :text => "Wiki Syntax Schnellreferenz (CommonMark Markdown (GitHub Flavored))"
   end
 
+  def test_get_help_wiki_syntax_should_use_lowercase_region_locale_directory
+    user = User.find(2)
+    user.language = 'ta-IN'
+    user.save!
+    @request.session[:user_id] = 2
+
+    # The Tamil CommonMark help is stored under the lowercase ta-in directory, not ta-IN.
+    with_settings :text_formatting => 'common_mark' do
+      get :show_wiki_syntax
+    end
+    assert_response :success
+
+    assert_select 'h1', :text => "விக்கி தொடரியல் விரைவு குறிப்பு (CommonMark Markdown (GitHub Flavored))"
+  end
+
   def test_get_help_wiki_syntax_should_fallback_to_english
     user = User.find(2)
     user.language = 'ro'
     user.save!
     @request.session[:user_id] = 2
 
-    get :show_wiki_syntax
+    with_settings :text_formatting => 'common_mark' do
+      get :show_wiki_syntax
+    end
     assert_response :success
 
     assert_select 'h1', :text => "Wiki Syntax Quick Reference (CommonMark Markdown (GitHub Flavored))"
