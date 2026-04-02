@@ -96,6 +96,8 @@ class ProjectTest < ActiveSupport::TestCase
                "ab-12" => true,
                "ab_12" => true,
                "12" => false,
+               "autocomplete" => false,
+               'bulk_destroy' => false,
                "new" => false}
 
     to_test.each do |identifier, valid|

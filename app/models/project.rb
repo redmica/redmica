@@ -86,7 +86,9 @@ class Project < ApplicationRecord
   validates_format_of :identifier, :with => /\A(?!\d+$)[a-z0-9\-_]*\z/,
                       :if => proc {|p| p.identifier_changed?}
   # reserved words
-  validates_exclusion_of :identifier, :in => %w(new)
+  validates_exclusion_of :identifier,
+                         :in => %w(new autocomplete bulk_destroy),
+                         :if => -> { new_record? || will_save_change_to_identifier? }
   validate :validate_parent
 
   after_update :update_versions_from_hierarchy_change,
