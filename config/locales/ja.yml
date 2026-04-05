@@ -1499,5 +1499,5 @@ ja:
   label_relation_remove: 関連を解除
   label_subtask_remove: 子チケットを解除
   button_remove: 解除
-  label_open_in_full_view: Open in full view
-  label_user_mail_option_only_my_watches: Only for things I watch
+  label_open_in_full_view: 全画面で表示
+  label_user_mail_option_only_my_watches: ウォッチ中のもの
