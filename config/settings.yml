@@ -197,7 +197,7 @@ close_duplicate_issues:
 issue_group_assignment:
   default: 0
 default_issue_start_date_to_creation_date:
-  default: 1
+  default: 0
 notified_events:
   serialized: true
   default:
