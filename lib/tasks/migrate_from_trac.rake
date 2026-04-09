@@ -21,6 +21,8 @@ require 'pp'
 namespace :redmine do
   desc 'Trac migration script'
   task :migrate_from_trac => :environment do
+    # TODO: Remove this unsupported Trac migration task in a later version.
+    abort "This task is no longer maintained and cannot be used. It will be removed in a future version of Redmine."
 
     module TracMigrate
         TICKET_MAP = []

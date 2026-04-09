@@ -22,6 +22,8 @@ require 'pp'
 
 namespace :redmine do
 task :migrate_from_mantis => :environment do
+  # TODO: Remove this unsupported Mantis migration task in a later version.
+  abort "This task is no longer maintained and cannot be used. It will be removed in a future version of Redmine."
 
   module MantisMigrate
 
