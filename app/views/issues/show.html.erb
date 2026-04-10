@@ -22,9 +22,12 @@
           </li>
           <% if @issue_position && @issue_count %>
             <li class="page position">
-              <%= link_to_if @query_path,
-                             l(:label_item_position, :position => @issue_position, :count => @issue_count),
-                             @query_path %>
+              <% position_label = l(:label_item_position, :position => @issue_position, :count => @issue_count) %>
+              <% if @query_path %>
+                <%= link_to position_label, @query_path %>
+              <% else %>
+                <span><%= position_label %></span>
+              <% end %>
             </li>
           <% end %>
           <li class="<%= @next_issue_id ? 'next page' : 'next' %>">
