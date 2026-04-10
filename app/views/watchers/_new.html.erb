@@ -34,7 +34,8 @@ title =
                  :object_id => (watchables.present? ? watchables.map(&:id) : nil),
                  :project_id => @project
                )
-             )}'
+             )}',
+          {checkboxSelector: 'input[name=\"watcher[user_ids][]\"]'}
          )"
        ) %>
   <div id="users_for_watcher">

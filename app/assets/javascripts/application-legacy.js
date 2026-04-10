@@ -796,22 +796,85 @@ function multipleAutocompleteField(fieldId, url, options) {
   });
 }
 
-function observeSearchfield(fieldId, targetId, url) {
+function observeSearchfield(fieldId, targetId, url, options) {
   $('#'+fieldId).each(function() {
     var $this = $(this);
     $this.addClass('autocomplete');
     $this.attr('data-value-was', $this.val());
+    var checkedValues = {};
+    var cbSelector = options && options.checkboxSelector;
+    var $form = cbSelector ? $this.closest('form') : null;
+    function checkboxName() {
+      if (!cbSelector) return null;
+      return $form.find(cbSelector).first().attr('name');
+    }
+
+    function saveChecked() {
+      if (!cbSelector) return;
+      $form.find(cbSelector).not('.hidden-checked-value').each(function() {
+        if ($(this).prop('checked')) {
+          checkedValues[$(this).val()] = true;
+        } else {
+          delete checkedValues[$(this).val()];
+        }
+      });
+    }
+
+    function restoreChecked() {
+      if (!cbSelector) return;
+      // Restore checkboxes that are visible in the current page
+      $form.find(cbSelector).not('.hidden-checked-value').each(function() {
+        if (checkedValues[$(this).val()]) {
+          $(this).prop('checked', true);
+        }
+      });
+      // Sync hidden inputs for checked values not visible as checkboxes
+      $form.find('input.hidden-checked-value').remove();
+      var cbName = checkboxName();
+      if (!cbName) return;
+      $.each(checkedValues, function(val) {
+        if ($form.find(cbSelector + '[value="' + val + '"]').length === 0) {
+          $form.append(
+            $('<input type="hidden" class="hidden-checked-value">').attr('name', cbName).val(val)
+          );
+        }
+      });
+    }
+
+    if (cbSelector) {
+      // Track checkbox changes via delegation
+      $form.on('change', cbSelector, function() {
+        if ($(this).prop('checked')) {
+          checkedValues[$(this).val()] = true;
+        } else {
+          delete checkedValues[$(this).val()];
+        }
+        restoreChecked();
+      });
+      // Handle pagination (remote links replacing content)
+      $form.on('ajax:before', 'a[data-remote]', function() {
+        saveChecked();
+      });
+      $form.on('ajax:complete', 'a[data-remote]', function() {
+        restoreChecked();
+      });
+    }
+
     var check = function() {
       var val = $this.val();
       if ($this.attr('data-value-was') != val){
         $this.attr('data-value-was', val);
+        saveChecked();
         $.ajax({
           url: url,
           type: 'get',
           data: {q: $this.val()},
           success: function(data){ if(targetId) $('#'+targetId).html(data); },
           beforeSend: function(){ $this.addClass('ajax-loading'); },
-          complete: function(){ $this.removeClass('ajax-loading'); }
+          complete: function(){
+            $this.removeClass('ajax-loading');
+            restoreChecked();
+          }
         });
       }
     };
