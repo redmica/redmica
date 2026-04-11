@@ -189,6 +189,34 @@ class TimeEntryQueryTest < ActiveSupport::TestCase
     assert_equal 7.0, query.results_scope.sum(:hours)
   end
 
+  def test_hours_filter_with_float_string
+    project = Project.find(1)
+
+    TimeEntry.delete_all
+    t1 = TimeEntry.generate!(:project => project, :hours => 0.25, :user_id => 2)
+    t2 = TimeEntry.generate!(:project => project, :hours => 0.50, :user_id => 2)
+    t3 = TimeEntry.generate!(:project => project, :hours => 0.75, :user_id => 2)
+    t4 = TimeEntry.generate!(:project => project, :hours => 1.00, :user_id => 2)
+
+    query = TimeEntryQuery.new(:project => project, :name => '_')
+    query.add_filter('hours', '>=', ['0.75'])
+    assert_equal [t3.id, t4.id].sort, query.results_scope.pluck(:id).sort
+  end
+
+  def test_hours_filter_with_hhmm_string
+    project = Project.find(1)
+
+    TimeEntry.delete_all
+    t1 = TimeEntry.generate!(:project => project, :hours => 0.25, :user_id => 2)
+    t2 = TimeEntry.generate!(:project => project, :hours => 0.50, :user_id => 2)
+    t3 = TimeEntry.generate!(:project => project, :hours => 0.75, :user_id => 2)
+    t4 = TimeEntry.generate!(:project => project, :hours => 1.00, :user_id => 2)
+
+    query = TimeEntryQuery.new(:project => project, :name => '_')
+    query.add_filter('hours', '>=', ['0:45'])
+    assert_equal [t3.id, t4.id].sort, query.results_scope.pluck(:id).sort
+  end
+
   def test_results_scope_should_be_in_the_same_order_when_paginating
     4.times {TimeEntry.generate!}
     q = TimeEntryQuery.new

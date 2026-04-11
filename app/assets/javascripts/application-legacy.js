@@ -296,6 +296,7 @@ function buildFilterRow(field, operator, values) {
     break;
   case "integer":
   case "float":
+  case "hour":
   case "tree":
     tr.find('.values').append(
       '<span style="display:none;"><input type="text" name="v['+field+'][]" id="values_'+fieldId+'_1" size="14" class="value" /></span>' +

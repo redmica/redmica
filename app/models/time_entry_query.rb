@@ -120,7 +120,7 @@ class TimeEntryQuery < Query
     ) if project.nil? || !project.leaf?
 
     add_available_filter "comments", :type => :text
-    add_available_filter "hours", :type => :float
+    add_available_filter "hours", :type => :hour
 
     add_custom_fields_filters(time_entry_custom_fields)
     add_associations_custom_fields_filters :project
@@ -251,6 +251,10 @@ class TimeEntryQuery < Query
     else
       sql_for_field("parent_id", operator, value, Issue.table_name, "parent_id")
     end
+  end
+
+  def sql_for_hours_field(field, operator, value)
+    sql_for_field("hours", operator, value.map(&:to_hours), TimeEntry.table_name, "hours")
   end
 
   def sql_for_activity_id_field(field, operator, value)

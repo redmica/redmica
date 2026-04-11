@@ -343,6 +343,7 @@ class Query < ApplicationRecord
     :search => [ "~", "*~", "!~" ],
     :integer => [ "=", ">=", "<=", "><", "!*", "*" ],
     :float => [ "=", ">=", "<=", "><", "!*", "*" ],
+    :hour => [ "=", ">=", "<=", "><", "!*", "*" ],
     :relation => ["=", "!", "=p", "=!p", "!p", "*o", "!o", "!*", "*"],
     :tree => ["=", "~", "!*", "*"]
   }
@@ -502,6 +503,10 @@ class Query < ApplicationRecord
           end
         when :float
           if values_for(field).detect {|v| v.present? && !/\A[+-]?\d+(\.\d*)?\z/.match?(v)}
+            add_filter_error(field, :invalid)
+          end
+        when :hour
+          if values_for(field).detect {|v| v.present? && v.to_s.to_hours.nil? }
             add_filter_error(field, :invalid)
           end
         when :date, :date_past
@@ -1254,7 +1259,7 @@ class Query < ApplicationRecord
           else
             sql = "1=0"
           end
-        when :float
+        when :float, :hour
           if is_custom_filter
             sql =
               "(#{db_table}.#{db_field} <> '' AND " \
