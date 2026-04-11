@@ -38,9 +38,14 @@
   <%= javascript_tag("$('#api-access-key').hide();") %>
   <p>
   <% if @user.api_token %>
-  <%= l(:label_api_access_key_created_on, distance_of_time_in_words(Time.now, @user.api_token.created_on)) %>
+    <%= l(:label_api_access_key_created_on, distance_of_time_in_words(Time.now, @user.api_token.created_on)) %><br />
+    <% if @user.api_token.updated_on > @user.api_token.created_on %>
+      <%= l(:label_api_access_key_last_used_on, distance_of_time_in_words(Time.now, @user.api_token.updated_on)) %>
+    <% else %>
+      <%= l(:label_api_access_key_never_used) %>
+    <% end %>
   <% else %>
-  <%= l(:label_missing_api_access_key) %>
+    <%= l(:label_missing_api_access_key) %>
   <% end %>
   (<%= link_to l(:button_reset), my_api_key_path, :method => :post %>)
   </p>

@@ -806,6 +806,8 @@ ja:
   label_api_access_key: APIアクセスキー
   label_missing_api_access_key: APIアクセスキーが見つかりません
   label_api_access_key_created_on: "APIアクセスキーは%{value}前に作成されました"
+  label_api_access_key_last_used_on: "最終使用：%{value}前"
+  label_api_access_key_never_used: 未使用
   label_subtask_plural: 子チケット
   label_project_copy_notifications: コピーしたチケットのメール通知を送信する
   label_principal_search: "ユーザーまたはグループの検索:"

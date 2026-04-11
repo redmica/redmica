@@ -434,6 +434,8 @@ de:
   label_any_issues_not_in_project: irgendein Ticket nicht im Projekt
   label_api_access_key: API-Zugriffsschlüssel
   label_api_access_key_created_on: Der API-Zugriffsschlüssel wurde vor %{value} erstellt
+  label_api_access_key_last_used_on: "Zuletzt verwendet: vor %{value}"
+  label_api_access_key_never_used: Nie verwendet
   label_applied_status: Zugewiesener Status
   label_ascending: Aufsteigend
   label_ask: Nachfragen

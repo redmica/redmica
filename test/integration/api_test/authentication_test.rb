@@ -161,4 +161,40 @@ class Redmine::ApiTest::AuthenticationTest < Redmine::ApiTest::Base
     assert_response :success
     assert_select 'h2', :text => "#{user.initials} #{user.name}"
   end
+
+  def test_api_key_usage_via_header_should_update_updated_on
+    user = User.generate!
+    token = Token.create!(:user => user, :action => 'api', :updated_on => 2.minutes.ago)
+    updated = token.updated_on
+    get '/users/current.xml', :headers => {'X-Redmine-API-Key' => token.value}
+    assert_response :ok
+    assert token.reload.updated_on > updated
+  end
+
+  def test_api_key_usage_via_parameter_should_update_updated_on
+    user = User.generate!
+    token = Token.create!(:user => user, :action => 'api', :updated_on => 2.minutes.ago)
+    updated = token.updated_on
+    get "/users/current.xml?key=#{token.value}"
+    assert_response :ok
+    assert token.reload.updated_on > updated
+  end
+
+  def test_api_key_usage_via_basic_auth_should_update_updated_on
+    user = User.generate!
+    token = Token.create!(:user => user, :action => 'api', :updated_on => 2.minutes.ago)
+    updated = token.updated_on
+    get '/users/current.xml', :headers => credentials(token.value, 'X')
+    assert_response :ok
+    assert token.reload.updated_on > updated
+  end
+
+  def test_failed_api_auth_should_not_update_updated_on
+    user = User.generate!
+    token = Token.create!(:user => user, :action => 'api', :updated_on => 2.minutes.ago)
+    updated = token.updated_on
+    get '/users/current.xml', :headers => {'X-Redmine-API-Key' => 'wrong_key'}
+    assert_response :unauthorized
+    assert_equal updated.to_i, token.reload.updated_on.to_i
+  end
 end

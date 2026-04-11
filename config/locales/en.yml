@@ -1035,6 +1035,8 @@ en:
   label_api_access_key: API access key
   label_missing_api_access_key: Missing an API access key
   label_api_access_key_created_on: "API access key created %{value} ago"
+  label_api_access_key_last_used_on: "Last used: %{value} ago"
+  label_api_access_key_never_used: Never used
   label_profile: Profile
   label_subtask: Subtask
   label_subtask_plural: Subtasks
