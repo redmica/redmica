@@ -918,9 +918,11 @@ class Issue < ApplicationRecord
   # Returns the journals that are visible to user with their index
   # Used to display the issue history
   def visible_journals_with_index(user=User.current)
+    preloads = [:details, :updated_by]
+    preloads << (Setting.gravatar_enabled? ? {user: :email_address} : :user)
+
     result = journals.
-      preload(:details).
-      preload(:user => :email_address).
+      preload(*preloads).
       reorder(:created_on, :id).
       to_a
 
