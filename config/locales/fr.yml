@@ -921,8 +921,6 @@ fr:
   label_api_access_key: Clé d'accès API
   label_missing_api_access_key: Clé d'accès API manquante
   label_api_access_key_created_on: Clé d'accès API créée il y a %{value}
-  label_api_access_key_last_used_on: "Dernier usage : il y a %{value}"
-  label_api_access_key_never_used: Jamais utilisée
   label_profile: Profil
   label_subtask_plural: Sous-tâches
   label_project_copy_notifications: Envoyer les notifications durant la copie du projet
@@ -1025,6 +1023,8 @@ fr:
   label_trackers_description: Description des trackers
   label_open_trackers_description: Afficher la description des trackers
   label_progressbar: Barre de progression
+  label_last_used_on: "Dernier usage : il y a %{value}"
+  label_never_used: Jamais utilisée
 
   button_login: Connexion
   button_submit: Soumettre

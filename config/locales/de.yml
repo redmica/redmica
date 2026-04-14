@@ -434,8 +434,6 @@ de:
   label_any_issues_not_in_project: irgendein Ticket nicht im Projekt
   label_api_access_key: API-Zugriffsschlüssel
   label_api_access_key_created_on: Der API-Zugriffsschlüssel wurde vor %{value} erstellt
-  label_api_access_key_last_used_on: "Zuletzt verwendet: vor %{value}"
-  label_api_access_key_never_used: Nie verwendet
   label_applied_status: Zugewiesener Status
   label_ascending: Aufsteigend
   label_ask: Nachfragen
@@ -850,6 +848,8 @@ de:
   label_webhook_new: Neuer Webhook
   label_webhook_edit: Webhook bearbeiten
   label_webhook_events: Ereignisse
+  label_last_used_on: "Zuletzt verwendet: vor %{value}"
+  label_never_used: Nie verwendet
 
   webhook_url_info: Redmine sendet einen POST-Request an diese URL, wenn eines der gewählten Ereignisse in einem der ausgewählten Projekte eintritt.
   webhook_secret_info_html: Wenn gesetzt, wird Redmine mit jedem Request eine Hash-Signatur im X-Redmine-Signature-256 header übermitteln, die zur Authentifizierung des Requests herangezogen werden kann.
