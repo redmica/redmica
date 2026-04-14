@@ -1501,3 +1501,5 @@ bg:
   reaction_text_x_other_users:
     one: 1 друг
     other: "%{count} други"
+  label_last_used_on: 'Last used: %{value} ago'
+  label_never_used: Never used

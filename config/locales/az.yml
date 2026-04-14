@@ -1651,3 +1651,5 @@ az:
   label_open_in_full_view: Open in full view
   text_pandoc_available: Pandoc available (optional)
   label_user_mail_option_only_my_watches: Only for things I watch
+  label_last_used_on: 'Last used: %{value} ago'
+  label_never_used: Never used

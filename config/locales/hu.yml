@@ -1495,3 +1495,5 @@
   label_open_in_full_view: Megnyitás teljes nézetben
   text_pandoc_available: Pandoc elérhető (nem kötelező)
   label_user_mail_option_only_my_watches: Csak a figyelt dolgaimról
+  label_last_used_on: 'Last used: %{value} ago'
+  label_never_used: Never used
