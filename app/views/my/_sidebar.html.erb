@@ -11,9 +11,14 @@
 
 <p>
 <% if @user.atom_token %>
-<%= l(:label_feeds_access_key_created_on, distance_of_time_in_words(Time.now, @user.atom_token.created_on)) %>
+  <%= l(:label_feeds_access_key_created_on, distance_of_time_in_words(Time.now, @user.atom_token.created_on)) %><br />
+  <% if @user.atom_token.updated_on > @user.atom_token.created_on %>
+    <%= l(:label_last_used_on, distance_of_time_in_words(Time.now, @user.atom_token.updated_on)) %>
+  <% else %>
+    <%= l(:label_never_used) %>
+  <% end %>
 <% else %>
-<%= l(:label_missing_feeds_access_key) %>
+  <%= l(:label_missing_feeds_access_key) %>
 <% end %>
 (<%= link_to l(:button_reset), my_atom_key_path, :method => :post %>)
 </p>
