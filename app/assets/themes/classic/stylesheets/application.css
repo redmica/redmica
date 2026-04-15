@@ -19,17 +19,18 @@
 
 body{ color:#303030; background:#e8eaec; }
 
-#top-menu { font-size: 80%; block-size: 2em; padding-block-start: 0.5em; background-color: #578bb8; }
+#top-menu { font-size: 0.75rem; block-size: 1.4rem; padding-block: 0.5rem 0; background-color: #578bb8; }
 #top-menu a { font-weight: bold; }
-#header { background: #467aa7; block-size:5.8em; padding-block: 10px 0; padding-inline: 0; }
+#header { background: #467aa7;  }
 #header h1 { margin-inline-start: 6px; }
 #quick-search { margin-inline-end: 6px; }
-#main-menu { background-color: #578bb8; inset-inline-start: 0; border-block-start: 1px solid #fff; inline-size: 100%; }
-#main-menu li { margin: 0; padding: 0; }
-#main-menu li a { background-color: #578bb8; border-inline-end: 1px solid #fff; font-size: 90%; padding-block: 4px; padding-inline: 8px; font-weight: bold; }
+#main-menu { padding-block: 0; margin: 0; background-color: #578bb8; inset-inline-start: 0; border-block-start: 1px solid #fff; inline-size: auto; }
+#main-menu ul {min-block-size: fit-content;}
+#main-menu li { margin: 0; padding: 0;}
+#main-menu li a { color: #fff; background-color: #578bb8; border-inline-end: 1px solid #fff; font-size: 90%; padding-block: 4px; padding-inline: 8px; font-weight: bold; }
 #main-menu li a:hover { background-color: #80b0da; color: #ffffff; }
-#main-menu li a.selected, #main-menu li a.selected:hover { background-color: #80b0da; color: #ffffff; }
-#main-menu li a.new-object { background-color:#80b0da; }
+#main-menu li a.selected, #main-menu li a.selected:hover { background-color: #80b0da; color: #ffffff; box-shadow: none;}
+#main-menu li a.new-object { color: #fff;background-color:#80b0da; }
 
 #main-menu .menu-children {
   border-inline-end: 1px solid #80b0da;
