@@ -33,10 +33,9 @@ body, #wrapper { background-color:#EEEEEE; }
 h2, h3, h4, .wiki h1, .wiki h2, .wiki h3 {border-block-end: 0px;}
 
 /* Menu */
-#main-menu li a { background-color: #507AAA; font-weight: bold;}
-#main-menu li a:hover { background: #507AAA; text-decoration: underline; }
-#main-menu li a.selected, #main-menu li a.selected:hover { background-color:#EEEEEE; }
-#main-menu li a.new-object { background-color:#507AAA; text-decoration: none; }
+#main-menu li a { font-weight: bold;}
+#main-menu li a:hover { text-decoration: underline; }
+#main-menu li a.new-object, #main-menu li a.new-object:hover { color: white; background-color:#507AAA; text-decoration: none; }
 
 #main-menu .menu-children {
   border-block-end: 1px solid #507AAA;
