@@ -76,82 +76,177 @@ pre, code {font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;}
 }
 
 #top-menu {
-  background: #3E5B76; /* no match in Open Color, using hex code */
-  color: var(--oc-white);
-  font-size: 0.8em;
-  padding-block: 2px;
-  padding-inline: 16px 14px;
+  background: #234761; /* no match in Open Color, using hex code */
+  color: var(--oc-gray-2);
+  font-size: 0.75rem;
+  padding-block: 3px;
+  padding-inline: 20px;
 }
 #top-menu ul {margin: 0;  padding: 0;}
 #top-menu li {
   float:inline-start;
   list-style-type:none;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0 12px;
   padding: 0;
   white-space:nowrap;
 }
-#top-menu a {color: var(--oc-white); margin-inline-end: 8px; font-weight: bold;}
-#top-menu #loggedas { float: inline-end; margin-inline-end: 0.5em; color: var(--oc-white); }
+#top-menu a {
+  color: var(--oc-gray-1);
+  margin-inline-end: 0;
+  text-decoration: none;
+  transition: color 0.18s ease, opacity 0.18s ease;
+}
+#top-menu a:hover {
+  color: var(--oc-white);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+#top-menu #loggedas {
+  float: inline-end;
+  margin-inline-end: 20px;
+  color: var(--oc-gray-5);
+}
+#top-menu #loggedas a {
+  color: var(--oc-white);
+  font-weight: bold;
+}
 
 #account {float:inline-end;}
+#account li:last-of-type {margin-inline-end: 0;}
+
 
 #header {
-  min-block-size: 8.7ex;
   margin: 0;
-  background: linear-gradient(180deg, #628DB6 30%, #356D92); /* no match in Open Color, using hex code */
-  color: var(--oc-gray-0);
-  padding-block: 4px 20px;
-  padding-inline: 20px;
+  background: #3A78A3; /* no match in Open Color, using hex code */
+  color: var(--oc-white);
+  padding-block: 0.25rem 0;
+  padding-inline: 1.25rem;
   position: relative;
 }
+body.has-main-menu #header {
+  padding-block-end: 2rem;
+}
 #header a {color: var(--oc-gray-0);}
-#header h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.4375rem; font-weight: normal;}
-#header h1 .breadcrumbs { display:block; font-size: 0.8rem; font-weight: normal; line-height: 100%;}
+#header a:hover {color: var(--oc-white);}
+#header h1 {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.375rem;
+  font-weight: normal;
+  line-height: 1.15;
+  margin-inline: 0;
+  padding: 0;
+  /* `#header h1` and `#quick-search` should have the same min-block-size to align vertically */
+  min-block-size: 2.75rem;
+}
+#header h1 .breadcrumbs {
+  display:block;
+  margin-block-end: 1px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+}
+#header h1 .current-project {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-#quick-search {float:inline-end;}
-#quick-search #q {inline-size: 130px;
+#quick-search {
+  float:inline-end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 2.75rem;
+}
+#quick-search #q {
+  inline-size: 130px;
   block-size: 24px;
   box-sizing: border-box;
   vertical-align: middle;
   border: 1px solid var(--oc-gray-4);
   border-radius: 3px;
 }
-#quick-search form {float:inline-start; margin-inline-end:3px;}
+#quick-search form {float:none; margin-inline-end:0;}
 #quick-search form input {margin-block: 0;}
-#quick-search form label {vertical-align:middle;}
+#quick-search form label {
+  display: inline-block;
+  margin-inline-end: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
 #quick-search #project-jump {float:inline-start;}
 
 #main-menu {
   position: absolute;
   inset-block-end: 0px;
-  inset-inline-start: 14px;
-  margin-inline-end: -500px;
-  inline-size: 100%;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  margin-inline-end: 0;
+  padding-block: 2px;
+  padding-inline: 20px;
+  inline-size: auto;
+  background: var(--oc-indigo-0);
 }
-#main-menu ul {margin: 0;  padding: 0; inline-size: 100%; white-space: nowrap;}
+#main-menu ul {
+  margin: 0;
+  padding: 0;
+  inline-size: 100%;
+  min-block-size: 28px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
 #main-menu li {
   float:none;
   list-style-type:none;
   margin-block: 0px;
-  margin-inline: 0px 2px;
+  margin-inline: 0;
   white-space:nowrap;
   display:inline-block;
 }
+#main-menu li:has(a#new-object) {padding-inline-end: 8px;}
 #main-menu li a {
-  display: block;
-  color: var(--oc-white);
+  display: inline-block;
+  color: var(--oc-gray-8);
   text-decoration: none;
-  font-size: 93%;
+  font-size: 0.8125rem;
   margin: 0;
-  padding-block: 4px;
-  padding-inline: 10px;
-  border-start-start-radius: 3px;
-  border-start-end-radius: 3px;
+  padding-block: 7px 5px;
+  padding-inline: 11px;
+  background: transparent;
+  font-weight: normal;
+  line-height: 1.2;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
-#main-menu li a:hover {background: rgba(var(--oc-white-rgb), 0.4); color: var(--oc-white); }
+#main-menu li a:hover {
+  background: var(--oc-indigo-1);
+  color: var(--oc-gray-9);
+}
 #main-menu li:hover ul.menu-children, #main-menu li ul.menu-children.visible {display: block;}
-#main-menu li a.selected, #main-menu li a.selected:hover {background: var(--oc-white); color: var(--oc-gray-7); font-weight: bold;}
-#main-menu li a.new-object {background-color: rgba(var(--oc-white-rgb), 0.4); }
+#main-menu li a.selected, #main-menu li a.selected:hover {
+  background: var(--oc-white);
+  color: var(--oc-gray-9);
+  font-weight: bold;
+  box-shadow: inset 0 -2px 0 var(--oc-indigo-5);
+}
+#main-menu li a.new-object {
+  background-color: var(--oc-indigo-1);
+  border: 1px solid var(--oc-blue-7);
+  color: var(--oc-gray-9);
+  padding-block: 3px;
+  padding-inline: 9px;
+  margin-block: 1px;
+  border-radius: 3px;
+}
+#main-menu li a.new-object:hover {
+  background-color: var(--oc-indigo-2);
+  color: var(--oc-gray-9);
+}
 
 #main-menu .menu-children {
   display: none;
@@ -165,10 +260,21 @@ pre, code {font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;}
   box-shadow: 0 2px 4px rgba(var(--oc-gray-9-rgb), 0.1);
 }
 #main-menu .menu-children li {float: inline-start; clear: both; inline-size: 100%;}
-#main-menu .menu-children li a {color: var(--oc-gray-7); background-color:var(--oc-white); font-weight:normal; border-radius: 0;}
+#main-menu .menu-children li a {
+  display: block;
+  color: var(--oc-gray-7);
+  background-color:var(--oc-white);
+  padding-block: 4px;
+  padding-inline: 10px;
+  font-weight:normal;
+  border-radius: 0;
+}
 #main-menu .menu-children li a:hover {color: var(--oc-white); background-color: var(--oc-blue-7);}
 
 #main-menu .tabs-buttons {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
   inset-inline-end: 6px;
   background-color: transparent;
   border-block-end-color: transparent;
@@ -1664,7 +1770,7 @@ div.tabs-buttons {
   inline-size: 54px;
   block-size: 24px;
   background: white;
-  inset-block-end: 0;
+  inset-block-end: 0px;
   border-block-end: 1px solid var(--oc-gray-5);
 }
 
