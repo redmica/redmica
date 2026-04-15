@@ -35,6 +35,7 @@ class Redmine::WikiFormatting::InlineAttachmentsScrubberTest < Redmine::HelperTe
 
   def test_should_resolve_attached_images
     to_test = [
+      "test.avif",
       "test.bmp",
       "test.gif",
       "test.jpg",

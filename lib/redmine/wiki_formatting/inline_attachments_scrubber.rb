@@ -51,7 +51,7 @@ module Redmine
 
         src = node['src']
 
-        if src =~ %r{\A(?<filename>[^/"]+?\.(?:bmp|gif|jpg|jpeg|jpe|png|webp))\z}i
+        if src =~ %r{\A(?<filename>[^/"]+?\.(?:avif|bmp|gif|jpg|jpeg|jpe|png|webp))\z}i
           filename = $~[:filename]
           if found = find_attachment(CGI.unescape(filename))
             image_url = @view.download_named_attachment_url(found, found.filename, :only_path => @only_path)

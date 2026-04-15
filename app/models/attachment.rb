@@ -227,7 +227,7 @@ class Attachment < ApplicationRecord
   end
 
   def image?
-    !!(self.filename =~ /\.(bmp|gif|jpg|jpe|jpeg|png|webp)$/i)
+    !!(self.filename =~ /\.(avif|bmp|gif|jpg|jpe|jpeg|png|webp)$/i)
   end
 
   def thumbnailable?

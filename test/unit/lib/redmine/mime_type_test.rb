@@ -24,6 +24,7 @@ class Redmine::MimeTypeTest < ActiveSupport::TestCase
     to_test = {
       'test.txt' => 'text/plain',
       'test.c' => 'text/x-c',
+      'test.avif' => 'image/avif',
       'TEST.JPG' => 'image/jpeg',
     }
     to_test.each do |name, expected|
@@ -79,6 +80,7 @@ class Redmine::MimeTypeTest < ActiveSupport::TestCase
 
   def test_by_type
     image_types = Redmine::MimeType.by_type('image')
+    assert_includes image_types, 'image/avif'
     assert_includes image_types, 'image/png'
     assert_includes image_types, 'image/webp'
   end

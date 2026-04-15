@@ -30,7 +30,7 @@ module Redmine
       ('gswin64c' if Redmine::Platform.mswin?) ||
       'gs'
     ).freeze
-    ALLOWED_TYPES = %w(image/bmp image/gif image/jpeg image/png image/webp application/pdf)
+    ALLOWED_TYPES = %w(image/avif image/bmp image/gif image/jpeg image/png image/webp application/pdf)
 
     # Generates a thumbnail for the source image to target
     # TODO: Remove the deprecated _is_pdf parameter in Redmine 7.0
