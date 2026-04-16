@@ -256,3 +256,5 @@
   svg: file-type-xls
 - name: file-type-ppt
   svg: file-type-ppt
+- name: maximize
+  svg: maximize

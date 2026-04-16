@@ -1,5 +1,5 @@
 <p class="pdf-full-view-link">
-  <%= link_to l(:label_open_in_full_view, :default => l(:button_download)), path %>
+  <%= link_to sprite_icon('maximize', l(:label_open_in_full_view)), path, :class => 'icon icon-maximize' %>
 </p>
 <div class="filecontent pdf">
   <object data="<%= path %>" type="application/pdf">
