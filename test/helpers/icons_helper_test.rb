@@ -225,6 +225,12 @@ class IconsHelperTest < Redmine::HelperTest
     assert_equal 'application-pdf', icon_for_mime_type('application/pdf')
     assert_equal 'text-plain', icon_for_mime_type('text/markdown')
     assert_equal 'text-plain', icon_for_mime_type('text/plain')
+    assert_equal 'file-type-docx',
+                 icon_for_mime_type('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    assert_equal 'file-type-xls',
+                 icon_for_mime_type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    assert_equal 'file-type-ppt',
+                 icon_for_mime_type('application/vnd.openxmlformats-officedocument.presentationml.presentation')
   end
 
   def test_icon_for_mime_type_should_return_icon_for_top_level_types

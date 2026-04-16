@@ -139,6 +139,16 @@ module IconsHelper
         when 'text'
           %w(markdown plain x-textile).include?(subtype) ? 'text-plain' : nil
         when 'video' then 'movie'
+        else
+          # MIME type mapping
+          {
+            # Microsoft Office Open XML documents
+            # Do not add legacy Office formats (.doc, .xls, .ppt) here because
+            # Redmine does not provide attachment preview for these formats.
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'file-type-ppt',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'file-type-xls',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'file-type-docx'
+          }[mime.to_s]
         end
     end
     icon_name || 'file'
