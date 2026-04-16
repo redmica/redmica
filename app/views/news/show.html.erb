@@ -70,7 +70,7 @@
     <%= textarea 'comment', 'comments', :cols => 80, :rows => 15, :class => 'wiki-edit',
                   :data => {
                     :auto_complete => true
-                  }.merge(list_autofill_data_attributes)
+                  }.merge(wiki_textarea_stimulus_attributes)
     %>
     <%= wikitoolbar_for 'comment_comments', preview_news_path(:project_id => @project, :id => @news) %>
 </div>

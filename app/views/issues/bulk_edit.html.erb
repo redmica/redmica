@@ -222,8 +222,8 @@
 <legend><%= l(:field_notes) %></legend>
 <%= textarea_tag 'notes', @notes, :cols => 60, :rows => 10, :class => 'wiki-edit',
                   :data => {
-                      :auto_complete => true
-                  }.merge(list_autofill_data_attributes)
+                    :auto_complete => true
+                  }.merge(wiki_textarea_stimulus_attributes)
 %>
 <%= wikitoolbar_for 'notes' %>
 

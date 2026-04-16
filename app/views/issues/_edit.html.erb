@@ -32,8 +32,8 @@
       <fieldset id="add_notes"><legend><%= l(:field_notes) %></legend>
       <%= f.textarea :notes, :cols => 60, :rows => 10, :class => 'wiki-edit',
             :data => {
-                :auto_complete => true
-            }.merge(list_autofill_data_attributes),
+              :auto_complete => true
+            }.merge(wiki_textarea_stimulus_attributes),
             :no_label => true %>
       <%= wikitoolbar_for 'issue_notes', preview_issue_path(:project_id => @project, :issue_id => @issue) %>
 

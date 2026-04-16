@@ -2258,22 +2258,22 @@ class ApplicationHelperTest < Redmine::HelperTest
     }
   end
 
-  def test_list_autofill_data_attributes
+  def test_wiki_textarea_stimulus_attributes
     with_settings :text_formatting => 'textile' do
       expected = {
-        controller: "list-autofill",
-        action: "keydown->list-autofill#handleEnter",
-        list_autofill_target: "input",
-        list_autofill_text_formatting_param: "textile"
+        controller: "list-autofill table-paste",
+        action: "beforeinput->list-autofill#handleBeforeInput paste->table-paste#handlePaste",
+        list_autofill_text_formatting_param: "textile",
+        table_paste_text_formatting_param: "textile"
       }
 
-      assert_equal expected, list_autofill_data_attributes
+      assert_equal expected, wiki_textarea_stimulus_attributes
     end
   end
 
-  def test_list_autofill_data_attributes_with_blank_text_formatting
+  def test_wiki_textarea_stimulus_attributes_with_blank_text_formatting
     with_settings :text_formatting => '' do
-      assert_equal({}, list_autofill_data_attributes)
+      assert_equal({}, wiki_textarea_stimulus_attributes)
     end
   end
 end
