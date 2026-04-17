@@ -4,7 +4,7 @@ module RedMica
   module VERSION
     MAJOR = 4
     MINOR = 0
-    TINY  = 4
+    TINY  = 5
 
     BRANCH = 'stable'
 

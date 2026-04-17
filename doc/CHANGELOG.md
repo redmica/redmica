@@ -1,5 +1,24 @@
 # Changelog
 
+## RedMica 4.0.5 - 2026-04-17
+
+### Documentation
+
+* Defect redmine-43920: German and Tamil CommonMark wiki help pages lack the Alerts section
+* Patch redmine-43896: Remove obsolete db:migrate:upgrade_plugin_migrations step from doc/UPGRADING
+* Patch redmine-43897: Use `bin/rails` instead of `rake` in documentation
+* Patch redmine-43929: German translation for Alerts section on CommonMark wiki help page
+* Patch redmine-43930: Add blockquote formatting in CommonMark wiki help pages
+
+### Projects
+
+* Defect redmine-43910: Projects with the identifiers "autocomplete" or "bulk_destroy" cannot perform some operations
+
+### Translations
+
+* Defect redmine-43921: Tamil CommonMark help page incorrectly translates CSS property names
+* Patch redmine-43922: Japanese translation update for `recent_pages` macro help on `project` and `include_subprojects` options
+
 ## RedMica 4.0.4 - 2026-03-23
 
 ### Code cleanup/refactoring
