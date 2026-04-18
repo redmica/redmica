@@ -21,7 +21,7 @@ require 'redmine/scm/adapters/subversion_adapter'
 
 class Repository::Subversion < Repository
   validates_presence_of :url
-  validates_format_of :url, :with => %r{\A(http|https|svn(\+[^\s:\/\\]+)?|file):\/\/.+}i
+  validates_format_of :url, :with => %r{\A(http|https|svn(\+[^\s:\/\\]+)?|file):\/\/.+\z}i
 
   def self.scm_adapter_class
     Redmine::Scm::Adapters::SubversionAdapter

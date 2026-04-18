@@ -35,14 +35,19 @@ class RepositorySubversionTest < ActiveSupport::TestCase
 
   def test_invalid_url
     set_language_if_valid 'en'
-    ['invalid', 'http://', 'svn://', 'svn+ssh://', 'file://'].each do |url|
+    invalid_urls = [
+      'invalid', 'http://', 'svn://', 'svn+ssh://', 'file://',
+      "http://valid\nfoo",
+      "svn://valid\r\nbar"
+    ]
+    invalid_urls.each do |url|
       repo =
         Repository::Subversion.new(
           :project      => @project,
           :identifier   => 'test',
           :url => url
         )
-      assert !repo.save
+      assert !repo.save, "expected #{url.inspect} to be rejected"
       assert_equal ["is invalid"], repo.errors[:url]
     end
   end
