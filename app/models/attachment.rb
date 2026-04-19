@@ -87,7 +87,7 @@ class Attachment < ApplicationRecord
   # stored under storage_path, which is expected to have appropriately
   # restrictive permissions.
   def self.markdownized_previews_storage_path
-    File.join(storage_path, 'markdownized_previews')
+    File.join(storage_path, 'derived_cache', 'markdownized_previews')
   end
 
   before_create :files_to_final_location
