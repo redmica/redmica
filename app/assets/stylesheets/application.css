@@ -218,18 +218,18 @@ body.has-main-menu #header {
   margin: 0;
   padding-block: 7px 5px;
   padding-inline: 11px;
-  background: transparent;
+  background-color: transparent;
   font-weight: normal;
   line-height: 1.2;
   transition: background-color 0.18s ease, color 0.18s ease;
 }
 #main-menu li a:hover {
-  background: var(--oc-indigo-1);
+  background-color: var(--oc-indigo-1);
   color: var(--oc-gray-9);
 }
 #main-menu li:hover ul.menu-children, #main-menu li ul.menu-children.visible {display: block;}
 #main-menu li a.selected, #main-menu li a.selected:hover {
-  background: var(--oc-white);
+  background-color: var(--oc-white);
   color: var(--oc-gray-9);
   font-weight: bold;
   box-shadow: inset 0 -2px 0 var(--oc-indigo-5);
