@@ -79,7 +79,7 @@ module IconsHelper
     sprite_icon(icon_name, **)
   end
 
-  def scm_change_icon(action, name, **options)
+  def scm_change_icon(action, name, **)
     icon_name = case action
                 when 'A'
                   "add"
@@ -88,7 +88,7 @@ module IconsHelper
                 else
                   "circle-dot-filled"
                 end
-    sprite_icon(icon_name, name, size: 14)
+    sprite_icon(icon_name, name, size: 14, **)
   end
 
   def notice_icon(type, **)

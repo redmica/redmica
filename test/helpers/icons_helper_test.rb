@@ -245,4 +245,10 @@ class IconsHelperTest < Redmine::HelperTest
   def test_icon_for_mime_type_should_return_generic_file_icon_for_unknown_mime_types
     assert_equal 'file', icon_for_mime_type('unknown-type')
   end
+
+  def test_scm_change_icon_should_set_default_size
+    expected = %r{<svg class="s14 icon-svg" aria-hidden="true"><use href="/assets/icons-\w+.svg#icon--add"></use></svg><span class="icon-label hidden">Added</span>}
+
+    assert_match expected, scm_change_icon('A', 'Added', icon_only: true)
+  end
 end
