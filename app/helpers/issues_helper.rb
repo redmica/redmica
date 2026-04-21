@@ -295,7 +295,7 @@ module IssuesHelper
 
   # Returns a link for adding a new subtask to the given issue
   def link_to_new_subtask(issue)
-    link_to(l(:button_add), url_for_new_subtask(issue))
+    link_to(sprite_icon('add', l(:button_add)), url_for_new_subtask(issue), :class => 'icon icon-add')
   end
 
   def url_for_new_subtask(issue)

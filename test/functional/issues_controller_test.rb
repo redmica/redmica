@@ -2274,6 +2274,9 @@ class IssuesControllerTest < Redmine::ControllerTest
         assert_select 'textarea[name=?]', 'issue[notes]'
       end
     end
+    # Add links for subtasks and related issues
+    assert_select 'div#issue_tree div.contextual a.icon.icon-add', :text => /Add/
+    assert_select 'div#relations div.contextual a.icon.icon-link-add', :text => /Add/
   end
 
   def test_show_should_display_attachment_icons_by_mime_type

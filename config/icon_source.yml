@@ -258,3 +258,5 @@
   svg: file-type-ppt
 - name: maximize
   svg: maximize
+- name: link-add
+  svg: link-plus

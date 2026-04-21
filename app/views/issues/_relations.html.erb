@@ -1,6 +1,6 @@
 <div class="contextual">
 <% if User.current.allowed_to?(:manage_issue_relations, @project) %>
-  <%= toggle_link l(:button_add), 'new-relation-form', {:focus => 'relation_issue_to_id'} %>
+  <%= toggle_link sprite_icon('link-add', l(:button_add)), 'new-relation-form', {:focus => 'relation_issue_to_id', :class => 'icon icon-link-add'} %>
 <% end %>
 </div>
 

@@ -368,11 +368,12 @@ module ApplicationHelper
   end
 
   def toggle_link(name, id, options={})
+    html_options = options.slice(:class)
     onclick = "$('##{id}').toggle(); "
     onclick << (options[:focus] ? "$('##{options[:focus]}:visible').focus(); " : "this.blur(); ")
     onclick << "$(window).scrollTop($('##{options[:focus]}').position().top); " if options[:scroll]
     onclick << "return false;"
-    link_to(name, "#", :onclick => onclick)
+    link_to(name, "#", html_options.merge(:onclick => onclick))
   end
 
   def link_to_previous_month(year, month, options={})
