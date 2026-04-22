@@ -46,7 +46,7 @@ gem "rest-client", "~> 2.1"
 
 # Optional gem for LDAP authentication
 group :ldap do
-  gem 'net-ldap', '~> 0.17.0'
+  gem 'net-ldap', '~> 0.20.0'
 end
 
 # Optional gem for exporting the gantt to a PNG file
