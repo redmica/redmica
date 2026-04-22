@@ -56,8 +56,8 @@ class WorkflowTransition < WorkflowRule
                           new(
                             :old_status_id => old_status_id,
                             :new_status_id => new_status_id,
-                            :tracker_id => tracker.id,
-                            :role_id => role.id
+                            :tracker => tracker,
+                            :role => role
                           )
                     records_by_status_and_scope[key] ||= []
                     records_by_status_and_scope[key] << w
