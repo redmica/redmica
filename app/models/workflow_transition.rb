@@ -25,20 +25,21 @@ class WorkflowTransition < WorkflowRule
     roles = Array.wrap roles
 
     transaction do
-      records = WorkflowTransition.where(:tracker_id => trackers.map(&:id), :role_id => roles.map(&:id)).to_a
+      records_by_status_and_scope =
+        WorkflowTransition.where(:tracker_id => trackers.map(&:id), :role_id => roles.map(&:id))
+                          .to_a
+                          .group_by {|r| [r.old_status_id, r.new_status_id, r.tracker_id, r.role_id]}
 
       transitions.each do |old_status_id, transitions_by_new_status|
         transitions_by_new_status.each do |new_status_id, transition_by_rule|
+          old_status_id = old_status_id.to_i
+          new_status_id = new_status_id.to_i
+
           transition_by_rule.each do |rule, transition|
             trackers.each do |tracker|
               roles.each do |role|
-                w = records.select do |r|
-                  r.old_status_id == old_status_id.to_i &&
-                  r.new_status_id == new_status_id.to_i &&
-                  r.tracker_id == tracker.id &&
-                  r.role_id == role.id &&
-                  !r.destroyed?
-                end
+                key = [old_status_id, new_status_id, tracker.id, role.id]
+                w = records_by_status_and_scope[key].to_a.reject(&:destroyed?)
                 if rule == 'always'
                   w = w.select {|r| !r.author && !r.assignee}
                 else
@@ -58,7 +59,8 @@ class WorkflowTransition < WorkflowRule
                             :tracker_id => tracker.id,
                             :role_id => role.id
                           )
-                    records << w
+                    records_by_status_and_scope[key] ||= []
+                    records_by_status_and_scope[key] << w
                   end
                   w.author = true if rule == "author"
                   w.assignee = true if rule == "assignee"
