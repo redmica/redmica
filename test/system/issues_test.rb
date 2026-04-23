@@ -548,8 +548,8 @@ class IssuesSystemTest < ApplicationSystemTestCase
         click_link 'Apply'
       end
       # Check that Totals are not present in the reloaded page
-      assert !page.has_css?('p.query-totals')
-      assert !page.has_css?('span.total-for-estimated-hours')
+      assert page.has_no_css?('p.query-totals')
+      assert page.has_no_css?('span.total-for-estimated-hours')
     end
   end
 
@@ -603,7 +603,7 @@ class IssuesSystemTest < ApplicationSystemTestCase
       click_link('Feature')
     end
 
-    assert !page.has_css?('#trackers_description')
+    assert page.has_no_css?('#trackers_description')
     assert_equal "2", page.find('select#issue_tracker_id').value
   end
 
