@@ -265,6 +265,34 @@ class Repository < ApplicationRecord
     @latest_changeset ||= changesets.first
   end
 
+  def previous_changeset(changeset)
+    changesets.
+      reorder(nil).
+      where(
+        [
+          "(#{Changeset.table_name}.committed_on < ? OR " \
+          "(#{Changeset.table_name}.committed_on = ? AND #{Changeset.table_name}.id < ?))",
+          changeset.committed_on, changeset.committed_on, changeset.id
+        ]
+      ).
+      order(committed_on: :desc, id: :desc).
+      first
+  end
+
+  def next_changeset(changeset)
+    changesets.
+      reorder(nil).
+      where(
+        [
+          "(#{Changeset.table_name}.committed_on > ? OR " \
+          "(#{Changeset.table_name}.committed_on = ? AND #{Changeset.table_name}.id > ?))",
+          changeset.committed_on, changeset.committed_on, changeset.id
+        ]
+      ).
+      order(committed_on: :asc, id: :asc).
+      first
+  end
+
   # Returns the latest changesets for +path+
   # Default behaviour is to search in cached changesets
   def latest_changesets(path, rev, limit=10)

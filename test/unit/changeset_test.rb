@@ -468,6 +468,30 @@ class ChangesetTest < ActiveSupport::TestCase
     assert_equal Changeset.find_by_revision('2'), changeset.previous
   end
 
+  def test_previous_uses_same_order_as_changeset_list
+    repository =
+      Repository::Subversion.create!(
+        :project => Project.find(3),
+        :url => 'svn://localhost/test/previous-order'
+      )
+    newer_changeset =
+      Changeset.create!(
+        :repository => repository,
+        :committed_on => Time.utc(2025, 4, 8, 10, 0, 0),
+        :comments => 'Newer changeset',
+        :revision => 'previous-order-newer'
+      )
+    older_changeset =
+      Changeset.create!(
+        :repository => repository,
+        :committed_on => Time.utc(2025, 4, 7, 10, 0, 0),
+        :comments => 'Older changeset',
+        :revision => 'previous-order-older'
+      )
+
+    assert_equal older_changeset, newer_changeset.previous
+  end
+
   def test_previous_nil
     changeset = Changeset.find_by_revision('1')
     assert_nil changeset.previous
@@ -476,6 +500,30 @@ class ChangesetTest < ActiveSupport::TestCase
   def test_next
     changeset = Changeset.find_by_revision('2')
     assert_equal Changeset.find_by_revision('3'), changeset.next
+  end
+
+  def test_next_uses_same_order_as_changeset_list
+    repository =
+      Repository::Subversion.create!(
+        :project => Project.find(3),
+        :url => 'svn://localhost/test/next-order'
+      )
+    newer_changeset =
+      Changeset.create!(
+        :repository => repository,
+        :committed_on => Time.utc(2025, 4, 8, 10, 0, 0),
+        :comments => 'Newer changeset',
+        :revision => 'next-order-newer'
+      )
+    older_changeset =
+      Changeset.create!(
+        :repository => repository,
+        :committed_on => Time.utc(2025, 4, 7, 10, 0, 0),
+        :comments => 'Older changeset',
+        :revision => 'next-order-older'
+      )
+
+    assert_equal newer_changeset, older_changeset.next
   end
 
   def test_next_nil

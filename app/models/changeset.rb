@@ -191,12 +191,12 @@ class Changeset < ApplicationRecord
 
   # Returns the previous changeset
   def previous
-    @previous ||= Changeset.where(["id < ? AND repository_id = ?", id, repository_id]).order(id: :desc).first
+    @previous ||= repository&.previous_changeset(self)
   end
 
   # Returns the next changeset
   def next
-    @next ||= Changeset.where(["id > ? AND repository_id = ?", id, repository_id]).order(:id).first
+    @next ||= repository&.next_changeset(self)
   end
 
   # Creates a new Change from it's common parameters

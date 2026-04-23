@@ -128,6 +128,20 @@ class Repository::Mercurial < Repository
       to_a
   end
 
+  def previous_changeset(changeset)
+    changesets.
+      where("#{Changeset.table_name}.id < ?", changeset.id).
+      reorder(id: :desc).
+      first
+  end
+
+  def next_changeset(changeset)
+    changesets.
+      where("#{Changeset.table_name}.id > ?", changeset.id).
+      reorder(id: :asc).
+      first
+  end
+
   def is_short_id_in_db?
     return @is_short_id_in_db unless @is_short_id_in_db.nil?
 
