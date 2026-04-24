@@ -1171,8 +1171,9 @@ class WikiControllerTest < Redmine::ControllerTest
 
         assert_equal page.content.text, entry[:content]
         # DOS timestamp should match the user's displayed local time.
-        assert_equal [local_time.year, local_time.month, local_time.day, local_time.hour, local_time.min, local_time.sec],
-                     [entry[:time].year, entry[:time].month, entry[:time].day, entry[:time].hour, entry[:time].min, entry[:time].sec]
+        assert_equal [local_time.year, local_time.month, local_time.day, local_time.hour, local_time.min],
+                     [entry[:dos_time].year, entry[:dos_time].month, entry[:dos_time].day, entry[:dos_time].hour, entry[:dos_time].min]
+        assert_equal local_time.sec / 2, entry[:dos_time].sec / 2
         # UT extra field should store the corresponding absolute UTC time.
         assert_equal local_time.utc.to_i, entry[:utc_time].utc.to_i
       end
@@ -1393,7 +1394,7 @@ class WikiControllerTest < Redmine::ControllerTest
       while (entry = io.get_next_entry)
         entries[entry.name] = {
           :content => io.read,
-          :time => entry.time,
+          :dos_time => entry.instance_variable_get(:@time),
           :utc_time => entry.extra[:universaltime]&.mtime
         }
       end
