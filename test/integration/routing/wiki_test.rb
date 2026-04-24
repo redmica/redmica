@@ -26,6 +26,7 @@ class RoutingWikiTest < Redmine::RoutingTest
     should_route 'GET /projects/foo/wiki/date_index' => 'wiki#date_index', :project_id => 'foo'
     should_route 'GET /projects/foo/wiki/export' => 'wiki#export', :project_id => 'foo'
     should_route 'GET /projects/foo/wiki/export.pdf' => 'wiki#export', :project_id => 'foo', :format => 'pdf'
+    should_route 'GET /projects/foo/wiki/export.zip' => 'wiki#export', :project_id => 'foo', :format => 'zip'
   end
 
   def test_wiki_pages

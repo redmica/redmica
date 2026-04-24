@@ -1146,6 +1146,56 @@ class WikiControllerTest < Redmine::ControllerTest
     assert @response.body.starts_with?('%PDF')
   end
 
+  def test_export_to_zip
+    with_settings :text_formatting => 'textile' do
+      user = User.find(2)
+      user.pref.update!(:time_zone => 'Tokyo')
+
+      @request.session[:user_id] = user.id
+      get :export, :params => {:project_id => 'ecookbook', :format => 'zip'}
+
+      assert_response :success
+      assert_equal 'application/zip', @response.media_type
+      assert_equal "attachment; filename=\"ecookbook-wiki.zip\"; filename*=UTF-8''ecookbook-wiki.zip",
+                   @response.headers['Content-Disposition']
+
+      pages = Project.find(1).wiki.pages.includes(:content).to_a.index_by(&:title)
+      zip_entries = zip_entries_from_response
+
+      assert_equal pages.keys.sort.map {|title| "#{title}.txt"}, zip_entries.keys.sort
+
+      zip_entries.each do |name, entry|
+        title = name.delete_suffix('.txt')
+        page = pages.fetch(title)
+        local_time = user.convert_time_to_user_timezone(page.updated_on)
+
+        assert_equal page.content.text, entry[:content]
+        # DOS timestamp should match the user's displayed local time.
+        assert_equal [local_time.year, local_time.month, local_time.day, local_time.hour, local_time.min, local_time.sec],
+                     [entry[:time].year, entry[:time].month, entry[:time].day, entry[:time].hour, entry[:time].min, entry[:time].sec]
+        # UT extra field should store the corresponding absolute UTC time.
+        assert_equal local_time.utc.to_i, entry[:utc_time].utc.to_i
+      end
+    end
+  end
+
+  def test_export_to_zip_should_sanitize_non_portable_entry_name_characters
+    with_settings :text_formatting => 'textile' do
+      page = Project.find(1).wiki.pages.new(:title => 'Foo*')
+      page.content = WikiContent.new(:text => 'sanitized')
+      assert_save page
+
+      @request.session[:user_id] = 2
+      get :export, :params => {:project_id => 'ecookbook', :format => 'zip'}
+
+      assert_response :success
+
+      zip_entries = zip_entries_from_response
+      assert_equal 'sanitized', zip_entries['Foo_.txt'][:content]
+      assert_not_includes zip_entries.keys, 'Foo*.txt'
+    end
+  end
+
   def test_export_without_permission_should_be_denied
     @request.session[:user_id] = 2
     Role.find_by_name('Manager').remove_permission! :export_wiki_pages
@@ -1332,5 +1382,23 @@ class WikiControllerTest < Redmine::ControllerTest
     get :show, :params => {:project_id => 'ecookbook', :id => 'CookBook_documentation'}
     assert_response :success
     assert_select 'head>meta[name="robots"]', false
+  end
+
+  private
+
+  def zip_entries_from_response
+    entries = {}
+
+    Zip::InputStream.open(StringIO.new(@response.body)) do |io|
+      while (entry = io.get_next_entry)
+        entries[entry.name] = {
+          :content => io.read,
+          :time => entry.time,
+          :utc_time => entry.extra[:universaltime]&.mtime
+        }
+      end
+    end
+
+    entries.transform_keys {|name| name.dup.force_encoding('UTF-8')}
   end
 end

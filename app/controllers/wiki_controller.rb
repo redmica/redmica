@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+require 'zip'
+
 # The WikiController follows the Rails REST controller pattern but with
 # a few differences
 #
@@ -320,6 +322,14 @@ class WikiController < ApplicationController
       format.pdf do
         send_file_headers! :type => 'application/pdf', :filename => "#{@project.identifier}.pdf"
       end
+      format.zip do
+        file_name = "#{@project.identifier}-wiki.zip"
+        send_data(
+          wiki_pages_to_zip(@pages),
+          :type => Redmine::MimeType.of(file_name),
+          :filename => filename_for_content_disposition(file_name)
+        )
+      end
     end
   end
 
@@ -399,5 +409,48 @@ class WikiController < ApplicationController
                 includes(:wiki => :project).
                 includes(:parent).
                 to_a
+  end
+
+  def wiki_pages_to_zip(pages)
+    Zip.unicode_names = true
+    archived_file_names = []
+    buffer = Zip::OutputStream.write_buffer do |zos|
+      pages.each do |page|
+        filename = archived_wiki_page_filename(page, archived_file_names)
+        entry = Zip::Entry.new('', filename)
+        if page.updated_on.present?
+          local_time = User.current.convert_time_to_user_timezone(page.updated_on)
+          # DOS timestamp stores user's displayed local time
+          entry.time = Zip::DOSTime.new(
+            local_time.year, local_time.month, local_time.day,
+            local_time.hour, local_time.min, local_time.sec
+          )
+          # UT extra field stores time in UTC
+          entry.extra[:universaltime].mtime = local_time.utc
+        end
+        zos.put_next_entry(entry)
+        zos << page.content.text.to_s
+      end
+    end
+    buffer.string
+  ensure
+    buffer&.close
+  end
+
+  def archived_wiki_page_filename(page, archived_file_names)
+    extension = '.txt'
+    # Keep this character set aligned with Attachment#sanitize_filename.
+    # Unlike attachments, do not drop path-like components from wiki titles.
+    sanitized_title = page.title.tr('\\', '_').gsub(/[\/?%*:|"'<>\n\r]+/, '_')
+    filename = "#{sanitized_title}#{extension}"
+    dup_count = 0
+
+    while archived_file_names.include?(filename)
+      dup_count += 1
+      filename = "#{sanitized_title}(#{dup_count})#{extension}"
+    end
+
+    archived_file_names << filename
+    filename
   end
 end
