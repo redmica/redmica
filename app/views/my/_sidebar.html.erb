@@ -12,7 +12,7 @@
 <p>
 <% if @user.atom_token %>
   <%= l(:label_feeds_access_key_created_on, distance_of_time_in_words(Time.now, @user.atom_token.created_on)) %><br />
-  <% if @user.atom_token.updated_on > @user.atom_token.created_on %>
+  <% if @user.atom_token.used? %>
     <%= l(:label_last_used_on, distance_of_time_in_words(Time.now, @user.atom_token.updated_on)) %>
   <% else %>
     <%= l(:label_never_used) %>
@@ -44,7 +44,7 @@
   <p>
   <% if @user.api_token %>
     <%= l(:label_api_access_key_created_on, distance_of_time_in_words(Time.now, @user.api_token.created_on)) %><br />
-    <% if @user.api_token.updated_on > @user.api_token.created_on %>
+    <% if @user.api_token.used? %>
       <%= l(:label_last_used_on, distance_of_time_in_words(Time.now, @user.api_token.updated_on)) %>
     <% else %>
       <%= l(:label_never_used) %>

@@ -579,6 +579,54 @@ class MyControllerTest < Redmine::ControllerTest
     assert_select 'a[href="/my/account/destroy"]'
   end
 
+  def test_my_account_should_show_never_used_api_key
+    user = User.find(2)
+    Token.create!(:user => user, :action => 'api')
+
+    get :account
+    assert_response :success
+    assert_select 'p', :text => /API access key created/ do
+      assert_select 'br'
+      assert_match /Never used/, response.body
+    end
+  end
+
+  def test_my_account_should_show_last_used_api_key
+    user = User.find(2)
+    token = Token.create!(:user => user, :action => 'api', :created_on => 2.days.ago, :updated_on => 1.day.ago)
+
+    get :account
+    assert_response :success
+    assert_select 'p', :text => /API access key created/ do
+      assert_select 'br'
+      assert_match /Last used: 1 day ago/, response.body
+    end
+  end
+
+  def test_my_account_should_show_never_used_feeds_key
+    user = User.find(2)
+    Token.create!(:user => user, :action => 'feeds')
+
+    get :account
+    assert_response :success
+    assert_select 'p', :text => /Atom access key created/ do
+      assert_select 'br'
+      assert_match /Never used/, response.body
+    end
+  end
+
+  def test_my_account_should_show_last_used_feeds_key
+    user = User.find(2)
+    token = Token.create!(:user => user, :action => 'feeds', :created_on => 2.days.ago, :updated_on => 1.day.ago)
+
+    get :account
+    assert_response :success
+    assert_select 'p', :text => /Atom access key created/ do
+      assert_select 'br'
+      assert_match /Last used: 1 day ago/, response.body
+    end
+  end
+
   def test_get_destroy_should_display_the_destroy_confirmation
     get :destroy
     assert_response :success

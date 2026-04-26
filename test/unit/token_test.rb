@@ -158,4 +158,21 @@ class TokenTest < ActiveSupport::TestCase
     Token.find_active_user('feeds', token.value)
     assert token.reload.updated_on > updated
   end
+
+  def test_used_should_return_false_when_updated_on_is_nil
+    token = Token.new(:created_on => Time.now)
+    token.updated_on = nil
+    assert_not token.used?
+  end
+
+  def test_used_should_return_false_when_updated_on_is_equal_to_created_on
+    now = Time.now
+    token = Token.new(:created_on => now, :updated_on => now)
+    assert_not token.used?
+  end
+
+  def test_used_should_return_true_when_updated_on_is_greater_than_created_on
+    token = Token.new(:created_on => 2.days.ago, :updated_on => 1.day.ago)
+    assert token.used?
+  end
 end

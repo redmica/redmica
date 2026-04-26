@@ -131,6 +131,10 @@ class Token < ApplicationRecord
     token
   end
 
+  def used?
+    updated_on.present? && updated_on > created_on
+  end
+
   def self.generate_token_value
     Redmine::Utils.random_hex(20)
   end
