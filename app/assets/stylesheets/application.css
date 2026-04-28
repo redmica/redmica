@@ -394,14 +394,17 @@ a.user.user-mention {
 #sidebar a.selected {
   line-height: 1.7em;
   padding-block: 1px 2px;
-  padding-inline: 2px 3px;
-  margin-inline-start: -2px;
-  background-color: rgba(var(--oc-blue-9-rgb), 0.6);
-  color: var(--oc-white);
-  border-radius: 2px;
+  padding-inline: 6px 5px;
+  margin-inline-start: -6px;
+  background-color: var(--oc-indigo-1);
+  color: var(--oc-indigo-9);
+  box-shadow: inset 3px 0 0 var(--color-current-marker);
 }
-#sidebar a.selected:hover {text-decoration:none;}
-#sidebar a.selected svg.icon-svg { stroke: var(--oc-white) !important; }
+#sidebar a.selected:hover {
+  color: var(--oc-indigo-9);
+  text-decoration:none;
+}
+#sidebar a.selected svg.icon-svg { stroke: var(--oc-indigo-9) !important; }
 #sidebar .query.default {font-weight: bold;}
 #admin-menu a {line-height:1.7em;}
 

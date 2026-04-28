@@ -31,6 +31,9 @@ body{ color:#303030; background:#e8eaec; }
 #main-menu li a:hover { background-color: #80b0da; color: #ffffff; }
 #main-menu li a.selected, #main-menu li a.selected:hover { background-color: #80b0da; color: #ffffff; box-shadow: none;}
 #main-menu li a.new-object { color: #fff;background-color:#80b0da; }
+#sidebar a.selected,
+#sidebar a.selected:hover { background-color: #80b0da; color: #fff; box-shadow: none; border-radius: 3px; }
+#sidebar a.selected svg.icon-svg { stroke: #fff !important; }
 
 #main-menu .menu-children {
   border-inline-end: 1px solid #80b0da;
