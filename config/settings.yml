@@ -196,6 +196,8 @@ close_duplicate_issues:
   default: 1
 issue_group_assignment:
   default: 0
+assignee_dropdown_display_format:
+  default: users_then_groups
 default_issue_start_date_to_creation_date:
   default: 0
 notified_events:

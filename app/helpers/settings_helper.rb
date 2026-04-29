@@ -200,6 +200,15 @@ module SettingsHelper
     options.map {|label, value| [l(label), value.to_s]}
   end
 
+  def assignee_dropdown_display_format_options
+    options = [
+      [:label_assignee_dropdown_display_format_users_then_groups, 'users_then_groups'],
+      [:label_assignee_dropdown_display_format_groups_then_users, 'groups_then_users']
+    ]
+
+    options.map {|label, value| [l(label), value.to_s]}
+  end
+
   def parent_issue_dates_options
     options = [
       [:label_parent_task_attributes_derived, 'derived'],

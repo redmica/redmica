@@ -708,11 +708,19 @@ module ApplicationHelper
     if involved_principals_html.blank? && groups_html.blank?
       s << users_html
     else
-      [
-        [l(:label_involved_principals), involved_principals_html],
-        [l(:label_user_plural), users_html],
-        [l(:label_group_plural), groups_html]
-      ].each do |label, options_html|
+      principal_optgroups = case Setting.assignee_dropdown_display_format.to_s
+                            when 'groups_then_users'
+                              [
+                                [l(:label_group_plural), groups_html],
+                                [l(:label_user_plural), users_html]
+                              ]
+                            else
+                              [
+                                [l(:label_user_plural), users_html],
+                                [l(:label_group_plural), groups_html]
+                              ]
+                            end
+      ([[l(:label_involved_principals), involved_principals_html]] + principal_optgroups).each do |label, options_html|
         s << %(<optgroup label="#{h(label)}">#{options_html}</optgroup>) if options_html.present?
       end
     end

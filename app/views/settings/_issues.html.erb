@@ -11,7 +11,9 @@
 
 <p><%= setting_check_box :close_duplicate_issues %></p>
 
-<p><%= setting_check_box :issue_group_assignment %></p>
+<p><%= setting_check_box :issue_group_assignment, :data => {:enables => '#settings_assignee_dropdown_display_format'} %></p>
+
+<p><%= setting_select :assignee_dropdown_display_format, assignee_dropdown_display_format_options %></p>
 
 <p><%= setting_check_box :default_issue_start_date_to_creation_date %></p>
 

@@ -4335,6 +4335,25 @@ class IssuesControllerTest < Redmine::ControllerTest
     assert_equal group, issue.assigned_to
   end
 
+  def test_new_should_render_groups_before_users_in_assignee_select_when_configured
+    group = Group.find(11)
+    project = Project.find(1)
+    project.members << Member.new(:principal => group, :roles => [Role.givable.first])
+
+    with_settings :issue_group_assignment => '1', :assignee_dropdown_display_format => 'groups_then_users' do
+      @request.session[:user_id] = 2
+      get :new, :params => {:project_id => project.id}
+      assert_response :success
+    end
+
+    assert_select 'select[name=?]', 'issue[assigned_to_id]' do
+      assert_select %(optgroup:nth-of-type(1)[label="#{l(:label_group_plural)}"]) do
+        assert_select 'option[value=?]', group.id.to_s
+      end
+      assert_select %(optgroup:nth-of-type(2)[label="#{l(:label_user_plural)}"])
+    end
+  end
+
   def test_post_create_without_start_date_and_default_start_date_is_not_creation_date
     with_settings :default_issue_start_date_to_creation_date  => 0 do
       @request.session[:user_id] = 2

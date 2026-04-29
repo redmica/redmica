@@ -1937,6 +1937,25 @@ class ApplicationHelperTest < Redmine::HelperTest
     end
   end
 
+  def test_principals_options_for_select_with_users_and_groups_with_groups_then_users
+    User.current = nil
+    set_language_if_valid 'en'
+    principals = [User.find(2), Group.find(11), User.find(4), Group.find(10)]
+
+    with_settings :assignee_dropdown_display_format => 'groups_then_users' do
+      result = principals_options_for_select(principals)
+
+      assert_select_in result, 'optgroup:nth-of-type(1)[label="Groups"]' do
+        assert_select 'option[value="10"]', text: 'A Team'
+        assert_select 'option[value="11"]', text: 'B Team'
+      end
+      assert_select_in result, 'optgroup:nth-of-type(2)[label="Users"]' do
+        assert_select 'option[value="2"]', text: 'John Smith'
+        assert_select 'option[value="4"]', text: 'Robert Hill'
+      end
+    end
+  end
+
   def test_principals_options_for_select_with_empty_collection
     assert_equal '', principals_options_for_select([])
   end
