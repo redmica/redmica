@@ -1503,3 +1503,6 @@ ja:
   button_remove: 解除
   label_open_in_full_view: 全画面で表示
   label_user_mail_option_only_my_watches: ウォッチ中のもの
+  setting_assignee_dropdown_display_format: Assignee drop-down display format
+  label_assignee_dropdown_display_format_users_then_groups: Users then groups
+  label_assignee_dropdown_display_format_groups_then_users: Groups then users
