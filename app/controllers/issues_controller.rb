@@ -618,6 +618,8 @@ class IssuesController < ApplicationController
     end
     @issue.author ||= User.current
     @issue.start_date ||= User.current.today if Setting.default_issue_start_date_to_creation_date?
+    offset = Setting.default_issue_due_date_offset_in_days
+    @issue.due_date ||= User.current.today + offset if offset
 
     attrs = (params[:issue] || {}).deep_dup
     if action_name == 'new' && params[:was_default_status] == attrs[:status_id]

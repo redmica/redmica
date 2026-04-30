@@ -36,7 +36,11 @@ class SettingsController < ApplicationController
   def edit
     @notifiables = Redmine::Notifiable.all
     if request.post?
-      errors = Setting.set_all_from_params(params[:settings].to_unsafe_hash)
+      settings = params[:settings].to_unsafe_hash
+      if settings['default_issue_due_date_offset_enabled'] == '0'
+        settings['default_issue_due_date_offset'] = ''
+      end
+      errors = Setting.set_all_from_params(settings)
       if errors.blank?
         flash[:notice] = l(:notice_successful_update)
         redirect_to settings_path(:tab => params[:tab])

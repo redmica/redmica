@@ -17,6 +17,33 @@
 
 <p><%= setting_check_box :default_issue_start_date_to_creation_date %></p>
 
+<%
+  default_due_date_offset_enabled =
+    if params[:settings]
+      params[:settings][:default_issue_due_date_offset_enabled].to_s != '0'
+    else
+      Setting.default_issue_due_date_offset.present?
+    end
+%>
+<p>
+  <label for="settings_default_issue_due_date_offset_enabled">
+    <%= l(:label_enable_default_issue_due_date_offset) %>
+  </label>
+  <%= hidden_field_tag 'settings[default_issue_due_date_offset_enabled]', 0, :id => nil %>
+  <%= check_box_tag 'settings[default_issue_due_date_offset_enabled]', 1,
+                    default_due_date_offset_enabled,
+                    :id => 'settings_default_issue_due_date_offset_enabled',
+                    :data => {:enables => '#settings_default_issue_due_date_offset'} %>
+</p>
+<p>
+  <label>&nbsp;</label>
+  <%= setting_text_field :default_issue_due_date_offset,
+                         :label => false,
+                         :size => 6,
+                         :disabled => !default_due_date_offset_enabled %>
+  <%= l(:label_days_relative_to_today) %>
+</p>
+
 <p><%= setting_check_box :display_subprojects_issues %></p>
 
 <p><%= setting_select :issue_done_ratio, Issue::DONE_RATIO_OPTIONS.collect {|i| [l("setting_issue_done_ratio_#{i}"), i]} %></p>

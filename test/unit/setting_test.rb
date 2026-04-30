@@ -135,6 +135,22 @@ class SettingTest < ActiveSupport::TestCase
     end
   end
 
+  def test_default_issue_due_date_offset_should_validate_values
+    with_locale 'en' do
+      # Setting.set_all_from_params returns nil when there are no validation errors.
+      assert_nil Setting.set_all_from_params(:default_issue_due_date_offset => '')
+      assert_nil Setting.set_all_from_params(:default_issue_due_date_offset => '0')
+      assert_nil Setting.set_all_from_params(:default_issue_due_date_offset => '5')
+      assert_nil Setting.set_all_from_params(:default_issue_due_date_offset => '+5')
+
+      errors = Setting.set_all_from_params(:default_issue_due_date_offset => 'foo')
+      assert_includes errors, [:default_issue_due_date_offset, 'is not a number']
+
+      errors = Setting.set_all_from_params(:default_issue_due_date_offset => '-1')
+      assert_includes errors, [:default_issue_due_date_offset, 'must be greater than or equal to 0']
+    end
+  end
+
   def test_default_text_formatting_for_new_installations_is_common_mark
     assert_equal 'common_mark', Setting.text_formatting
   end

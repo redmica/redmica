@@ -141,6 +141,20 @@ class SettingsControllerTest < Redmine::ControllerTest
     )
   end
 
+  def test_post_edit_should_clear_default_due_date_offset_when_disabled
+    with_settings :default_issue_due_date_offset => '5' do
+      post :edit, :params => {
+        :tab => 'issues',
+        :settings => {
+          :default_issue_due_date_offset_enabled => '0',
+          :default_issue_due_date_offset => '7'
+        }
+      }
+      assert_redirected_to '/settings?tab=issues'
+      assert_equal '', Setting.default_issue_due_date_offset
+    end
+  end
+
   def test_post_edit_with_invalid_setting_should_not_error
     post :edit, :params => {
       :settings => {

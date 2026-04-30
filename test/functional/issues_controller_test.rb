@@ -3863,6 +3863,21 @@ class IssuesControllerTest < Redmine::ControllerTest
     end
   end
 
+  def test_get_new_with_default_due_date_offset
+    with_settings :default_issue_due_date_offset => '7' do
+      @request.session[:user_id] = 2
+      get(
+        :new,
+        :params => {
+          :project_id => 1,
+          :tracker_id => 1
+        }
+      )
+      assert_response :success
+      assert_select 'input[name=?][value=?]', 'issue[due_date]', (Date.today + 7.days).to_s
+    end
+  end
+
   def test_get_new_form_should_allow_attachment_upload
     @request.session[:user_id] = 2
     get(

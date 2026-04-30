@@ -291,6 +291,14 @@ class MailHandlerTest < ActiveSupport::TestCase
     end
   end
 
+  def test_add_issue_should_set_default_due_date
+    with_settings :default_issue_due_date_offset => '5' do
+      issue = submit_email('ticket_with_cc.eml', :issue => {:project => 'ecookbook'})
+      assert issue.is_a?(Issue)
+      assert_equal Date.today + 5, issue.due_date
+    end
+  end
+
   def test_add_issue_should_add_cc_as_watchers
     user = User.find_by_mail('dlopper@somenet.foo')
     issue = submit_email('ticket_with_cc.eml', :issue => {:project => 'ecookbook'})

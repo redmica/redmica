@@ -200,6 +200,8 @@ assignee_dropdown_display_format:
   default: users_then_groups
 default_issue_start_date_to_creation_date:
   default: 0
+default_issue_due_date_offset:
+  default: ''
 notified_events:
   serialized: true
   default:

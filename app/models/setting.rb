@@ -192,6 +192,22 @@ class Setting < ApplicationRecord
         messages << [:mail_from, l('activerecord.errors.messages.invalid')]
       end
     end
+    if settings.key?(:default_issue_due_date_offset)
+      value = settings[:default_issue_due_date_offset].to_s.strip
+      unless value.blank?
+        begin
+          offset = Integer(value, 10)
+          if offset < 0
+            messages << [
+              :default_issue_due_date_offset,
+              l('activerecord.errors.messages.greater_than_or_equal_to', :count => 0)
+            ]
+          end
+        rescue ArgumentError
+          messages << [:default_issue_due_date_offset, l('activerecord.errors.messages.not_a_number')]
+        end
+      end
+    end
     messages
   end
 
@@ -236,6 +252,20 @@ class Setting < ApplicationRecord
     # unpair all current 2FA pairings when switching off 2FA
     Redmine::Twofa.unpair_all! if params == '0' && self.twofa?
     params
+  end
+
+  def self.default_issue_due_date_offset_from_params(params)
+    params.to_s.strip
+  end
+
+  def self.default_issue_due_date_offset_in_days
+    value = default_issue_due_date_offset.to_s.strip
+    return nil if value.blank?
+
+    offset = Integer(value, 10)
+    offset if offset >= 0
+  rescue ArgumentError
+    nil
   end
 
   def self.twofa_required?
