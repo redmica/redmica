@@ -1005,7 +1005,7 @@ ja:
   description_wiki_subpages_reassign: 新しい親ページを選択してください
   description_selected_columns: 選択された項目
   error_scm_annotate_big_text_file: テキストファイルサイズの上限を超えているためアノテートできません。
-  setting_default_issue_start_date_to_creation_date: 現在の日付を新しいチケットの開始日とする
+  setting_default_issue_start_date_to_creation_date: 新規チケットの開始日を現在の日付とする
   button_edit_section: このセクションを編集
   description_all_columns: すべての項目
   button_export: エクスポート
@@ -1506,5 +1506,5 @@ ja:
   setting_assignee_dropdown_display_format: 担当者ドロップダウンの表示形式
   label_assignee_dropdown_display_format_users_then_groups: ユーザー → グループ
   label_assignee_dropdown_display_format_groups_then_users: グループ → ユーザー
-  label_enable_default_issue_due_date_offset: Enable default due date for new issues
-  label_days_relative_to_today: days relative to today
+  label_enable_default_issue_due_date_offset: 新規チケットの期日のデフォルト値を有効にする
+  label_days_relative_to_today: 日 (現在の日付からの相対値)
