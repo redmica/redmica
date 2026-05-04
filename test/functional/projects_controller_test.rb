@@ -1013,6 +1013,23 @@ class ProjectsControllerTest < Redmine::ControllerTest
     assert_select 'div#tab-content-members a.icon-link-break', :text => 'Remove'
   end
 
+  def test_settings_members_should_link_to_principals
+    user = User.generate!
+    user_member = User.add_to_project(user, Project.find(1))
+    group_member = User.add_to_project(Group.find(10), Project.find(1))
+    @request.session[:user_id] = 2
+    get(
+      :settings,
+      :params => {
+        :id => 'ecookbook',
+        :tab => 'members'
+      }
+    )
+    assert_response :success
+    assert_select "tr#member-#{user_member.id} td.name a[href=?]", "/users/#{user.id}", :text => user.name
+    assert_select "tr#member-#{group_member.id} td.name a[href=?]", '/groups/10', :text => 'A Team'
+  end
+
   def test_settings_should_show_tabs_depending_on_permission
     @request.session[:user_id] = 3
     project = Project.find(1)
