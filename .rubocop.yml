@@ -236,6 +236,9 @@ Style/EmptyStringInsideInterpolation:
 Style/FetchEnvVar:
   Enabled: false
 
+Style/EmptyClassDefinition:
+  Enabled: false
+
 Style/EmptyElse:
   EnforcedStyle: empty
 
