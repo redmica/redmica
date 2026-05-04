@@ -225,7 +225,7 @@ class AttachmentsTest < Redmine::IntegrationTest
     # make the attachment readable
     assert a = Attachment.find(3)
     FileUtils.mkdir_p File.dirname(a.diskfile)
-    (File.open(a.diskfile, 'wb') << 'test').close
+    File.write(a.diskfile, 'test', :mode => 'wb')
 
     # there is no 'download all' for WikiContentVersions
     with_settings :login_required => '0' do
@@ -245,7 +245,7 @@ class AttachmentsTest < Redmine::IntegrationTest
     # make the attachment readable
     assert a = Attachment.find(4)
     FileUtils.mkdir_p File.dirname(a.diskfile)
-    (File.open(a.diskfile, 'wb') << 'test').close
+    File.write(a.diskfile, 'test', :mode => 'wb')
 
     with_settings :login_required => '0' do
       get "/attachments/journals/3/download"

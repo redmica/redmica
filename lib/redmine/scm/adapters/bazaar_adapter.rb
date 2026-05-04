@@ -270,8 +270,7 @@ module Redmine
           @aro = false
           bcp = self.class.branch_conf_path(url)
           if bcp && File.exist?(bcp)
-            begin
-              f = File.open(bcp, "r")
+            File.open(bcp, "r") do |f|
               cnt = 0
               f.each_line do |line|
                 l = line.chomp.to_s
@@ -290,8 +289,6 @@ module Redmine
                   end
                 end
               end
-            ensure
-              f.close
             end
           end
           @aro
