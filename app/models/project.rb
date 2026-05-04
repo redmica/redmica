@@ -1245,9 +1245,9 @@ class Project < ApplicationRecord
   # Copies members from +project+
   def copy_members(project)
     # Copy users first, then groups to handle members with inherited and given roles
-    members_to_copy = []
-    members_to_copy += project.memberships.select {|m| m.principal.is_a?(User)}
-    members_to_copy += project.memberships.select {|m| !m.principal.is_a?(User)}
+    user_memberships, group_memberships =
+      project.memberships.partition {|m| m.principal.is_a?(User)}
+    members_to_copy = user_memberships + group_memberships
 
     members_to_copy.each do |member|
       new_member = Member.new
