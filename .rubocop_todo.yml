@@ -740,25 +740,16 @@ Style/DoubleNegation:
 # This cop supports safe autocorrection (--autocorrect).
 Style/EachWithObject:
   Exclude:
-    - 'app/controllers/repositories_controller.rb'
-    - 'app/helpers/queries_helper.rb'
     - 'app/models/issue.rb'
     - 'app/models/issue_import.rb'
-    - 'app/models/journal.rb'
     - 'app/models/mail_handler.rb'
     - 'app/models/project.rb'
-    - 'app/models/query.rb'
     - 'app/models/repository.rb'
     - 'app/models/setting.rb'
     - 'app/models/time_entry_import.rb'
     - 'app/models/workflow_permission.rb'
-    - 'lib/redmine/acts/positioned.rb'
-    - 'lib/redmine/configuration.rb'
-    - 'lib/redmine/i18n.rb'
     - 'lib/redmine/mime_type.rb'
     - 'lib/redmine/my_page.rb'
-    - 'lib/redmine/sort_criteria.rb'
-    - 'test/test_helper.rb'
 
 # This cop supports safe autocorrection (--autocorrect).
 Style/EmptyCaseCondition:
