@@ -104,7 +104,7 @@ class Issue < ApplicationRecord
   scope :assigned_to, (lambda do |arg|
     arg = Array(arg).uniq
     ids = arg.map {|p| p.is_a?(Principal) ? p.id : p}
-    ids += arg.select {|p| p.is_a?(User)}.map(&:group_ids).flatten.uniq
+    ids += arg.grep(User).map(&:group_ids).flatten.uniq
     ids.compact!
     ids.any? ? where(:assigned_to_id => ids) : none
   end)

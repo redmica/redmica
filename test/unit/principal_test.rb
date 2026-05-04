@@ -85,8 +85,8 @@ class PrincipalTest < ActiveSupport::TestCase
 
   def test_sorted_scope_should_sort_users_before_groups
     scope = Principal.where(:type => ['User', 'Group'])
-    users = scope.select {|p| p.is_a?(User)}.sort
-    groups = scope.select {|p| p.is_a?(Group)}.sort
+    users = scope.grep(User).sort
+    groups = scope.grep(Group).sort
 
     assert_equal (users + groups).map {|p| p.name.downcase},
                  scope.sorted.map {|p| p.name.downcase}

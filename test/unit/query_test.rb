@@ -2116,7 +2116,7 @@ class QueryTest < ActiveSupport::TestCase
 
   def test_custom_field_columns_should_be_inline
     q = IssueQuery.new
-    columns = q.available_columns.select {|column| column.is_a? QueryCustomFieldColumn}
+    columns = q.available_columns.grep(QueryCustomFieldColumn)
     assert columns.any?
     assert_nil columns.detect {|column| !column.inline?}
   end
@@ -2453,7 +2453,7 @@ class QueryTest < ActiveSupport::TestCase
     cf_pos1 = ProjectCustomField.generate!(:position => 1, :is_for_all => true, :field_format => 'float')
     cf_pos2 = ProjectCustomField.generate!(:position => 2, :is_for_all => true, :field_format => 'int')
     q = ProjectQuery.new
-    custom_field_columns = q.available_totalable_columns.select{|column| column.is_a?(QueryCustomFieldColumn)}
+    custom_field_columns = q.available_totalable_columns.grep(QueryCustomFieldColumn)
     assert_equal [cf_pos1, cf_pos2, cf_pos3, cf_pos4], custom_field_columns.collect(&:custom_field)
 
     IssueCustomField.delete_all
@@ -2462,7 +2462,7 @@ class QueryTest < ActiveSupport::TestCase
     cf_pos1 = IssueCustomField.generate!(:position => 1, :is_for_all => true, :field_format => 'float')
     cf_pos2 = IssueCustomField.generate!(:position => 2, :is_for_all => true, :field_format => 'int')
     q = IssueQuery.new
-    custom_field_columns = q.available_totalable_columns.select{|column| column.is_a?(QueryCustomFieldColumn)}
+    custom_field_columns = q.available_totalable_columns.grep(QueryCustomFieldColumn)
     assert_equal [cf_pos1, cf_pos2, cf_pos3, cf_pos4], custom_field_columns.collect(&:custom_field)
 
     ProjectCustomField.delete_all
@@ -2473,7 +2473,7 @@ class QueryTest < ActiveSupport::TestCase
     cf_pos1 = TimeEntryCustomField.generate!(:position => 1, :is_for_all => true, :field_format => 'float')
     cf_pos2 = TimeEntryCustomField.generate!(:position => 2, :is_for_all => true, :field_format => 'int')
     q = TimeEntryQuery.new
-    custom_field_columns = q.available_totalable_columns.select{|column| column.is_a?(QueryCustomFieldColumn)}
+    custom_field_columns = q.available_totalable_columns.grep(QueryCustomFieldColumn)
     assert_equal [cf_pos1, cf_pos2, cf_pos3, cf_pos4], custom_field_columns.collect(&:custom_field)
   end
 

@@ -759,7 +759,7 @@ class Mailer < ActionMailer::Base
   #   => ["foo@example.net", "bar@example.net"]
   def self.email_addresses(arg)
     arr = Array.wrap(arg)
-    mails = arr.reject {|a| a.is_a? Principal}
+    mails = arr.grep_v(Principal)
     users = arr - mails
     if users.any?
       mails += EmailAddress.

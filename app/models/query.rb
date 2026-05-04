@@ -628,7 +628,7 @@ class Query < ApplicationRecord
   end
 
   def users
-    principals.select {|p| p.is_a?(User)}
+    principals.grep(User)
   end
 
   def author_values
