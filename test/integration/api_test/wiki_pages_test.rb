@@ -216,9 +216,11 @@ class Redmine::ApiTest::WikiPagesTest < Redmine::ApiTest::Base
               :text => 'New content from API with Attachments',
               :comments => 'API create with Attachments',
               :uploads => [
-                :token => attachment.token,
-                :filename => 'testfile.txt',
-                :content_type => "text/plain"
+                {
+                  :token => attachment.token,
+                  :filename => 'testfile.txt',
+                  :content_type => 'text/plain'
+                }
               ]
             }
           },
