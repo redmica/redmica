@@ -287,6 +287,9 @@ Style/NegatedIfElseCondition:
 Style/NumericPredicate:
   Enabled: false
 
+Style/OneClassPerFile:
+  Enabled: false
+
 Style/PerlBackrefs:
   Enabled: false
 
@@ -301,6 +304,9 @@ Style/RedundantConstantBase:
     - 'config/environments/production.rb'
 
 Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantStructKeywordInit:
   Enabled: false
 
 Style/Semicolon:
