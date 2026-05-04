@@ -311,9 +311,8 @@ class Issue < ApplicationRecord
         "created_on", "updated_on", "status_id", "closed_on"
       )
     self.custom_field_values =
-      issue.custom_field_values.inject({}) do |h, v|
-        h[v.custom_field_id] = v.value
-        h
+      issue.custom_field_values.to_h do |v|
+        [v.custom_field_id, v.value]
       end
     if options[:keep_status]
       self.status = issue.status

@@ -556,7 +556,7 @@ class Query < ApplicationRecord
 
   # Returns a hash of localized labels for all filter operators
   def self.operators_labels
-    operators.inject({}) {|h, operator| h[operator.first] = l(*operator.last); h}
+    operators.transform_values {|label| l(*label)}
   end
 
   # Returns a representation of the available filters for JSON serialization
@@ -804,9 +804,8 @@ class Query < ApplicationRecord
 
   # Returns a Hash of columns and the key for sorting
   def sortable_columns
-    available_columns.inject({}) do |h, column|
-      h[column.name.to_s] = column.sortable
-      h
+    available_columns.to_h do |column|
+      [column.name.to_s, column.sortable]
     end
   end
 
@@ -1110,7 +1109,7 @@ class Query < ApplicationRecord
       r = yield base_group_scope
       c = group_by_column
       if c.is_a?(QueryCustomFieldColumn)
-        r = r.keys.inject({}) {|h, k| h[c.custom_field.cast_value(k)] = r[k]; h}
+        r = r.keys.to_h { |k| [c.custom_field.cast_value(k), r[k]] }
       end
     end
     r

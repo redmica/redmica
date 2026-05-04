@@ -213,7 +213,7 @@ class Journal < ApplicationRecord
   def self.preload_journals_details_custom_fields(journals)
     field_ids = journals.map(&:details).flatten.select {|d| d.property == 'cf'}.map(&:prop_key).uniq
     if field_ids.any?
-      fields_by_id = CustomField.where(:id => field_ids).inject({}) {|h, f| h[f.id] = f; h}
+      fields_by_id = CustomField.where(:id => field_ids).index_by { |f| f.id }
       journals.each do |journal|
         journal.details.each do |detail|
           if detail.property == 'cf'
@@ -228,13 +228,11 @@ class Journal < ApplicationRecord
   # Stores the values of the attributes and custom fields of the journalized object
   def start
     if journalized
-      @attributes_before_change = journalized.journalized_attribute_names.inject({}) do |h, attribute|
-        h[attribute] = journalized.send(attribute)
-        h
+      @attributes_before_change = journalized.journalized_attribute_names.index_with do |attribute|
+        journalized.send(attribute)
       end
-      @custom_values_before_change = journalized.custom_field_values.inject({}) do |h, c|
-        h[c.custom_field_id] = c.value
-        h
+      @custom_values_before_change = journalized.custom_field_values.to_h do |c|
+        [c.custom_field_id, c.value]
       end
     end
     self

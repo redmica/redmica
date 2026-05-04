@@ -154,9 +154,8 @@ module QueriesHelper
   def grouped_query_results(items, query, &)
     result_count_by_group = query.result_count_by_group
     previous_group, first = false, true
-    totals_by_group = query.totalable_columns.inject({}) do |h, column|
-      h[column] = query.total_by_group_for(column)
-      h
+    totals_by_group = query.totalable_columns.index_with do |column|
+      query.total_by_group_for(column)
     end
     items.each do |item|
       group_name = group_count = nil

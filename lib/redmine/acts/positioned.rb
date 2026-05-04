@@ -61,11 +61,8 @@ module Redmine
           build_position_scope {|c| send(destroyed? ? "#{c}_was" : "#{c}_before_last_save")}
         end
 
-        def build_position_scope
-          condition_hash = self.class.positioned_options[:scope].inject({}) do |h, column|
-            h[column] = yield(column)
-            h
-          end
+        def build_position_scope(&)
+          condition_hash = self.class.positioned_options[:scope].index_with(&)
           self.class.unscoped.where(condition_hash)
         end
 

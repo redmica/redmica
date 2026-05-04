@@ -76,7 +76,7 @@ class RepositoriesController < ApplicationController
     @users.sort!
     if request.post? && params[:committers].present?
       # Build a hash with repository usernames as keys and corresponding user ids as values
-      @repository.committer_ids = params[:committers].values.inject({}) {|h, c| h[c.first] = c.last; h}
+      @repository.committer_ids = params[:committers].values.to_h { |c| [c.first, c.last] }
       flash[:notice] = l(:notice_successful_update)
       redirect_to settings_project_path(@project, :tab => 'repositories')
     end

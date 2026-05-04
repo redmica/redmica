@@ -95,15 +95,13 @@ class ActiveSupport::TestCase
   end
 
   def with_settings(options, &)
-    saved_settings = options.keys.inject({}) do |h, k|
-      h[k] =
-        case Setting[k]
-        when Symbol, false, true, nil
-          Setting[k]
-        else
-          Setting[k].dup
-        end
-      h
+    saved_settings = options.keys.index_with do |k|
+      case Setting[k]
+      when Symbol, false, true, nil
+        Setting[k]
+      else
+        Setting[k].dup
+      end
     end
     options.each {|k, v| Setting[k] = v}
     yield

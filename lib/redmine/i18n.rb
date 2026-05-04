@@ -157,9 +157,8 @@ module Redmine
 
     def find_language(lang)
       @@languages_lookup ||=
-        valid_languages.inject({}) do |k, v|
-          k[v.to_s.downcase] = v
-          k
+        valid_languages.index_by do |v|
+          v.to_s.downcase
         end
       @@languages_lookup[lang.to_s.downcase]
     end

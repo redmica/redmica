@@ -462,9 +462,8 @@ class Repository < ApplicationRecord
     changes = Change.joins(:changeset).where("#{Changeset.table_name}.repository_id = ?", id).
                 select("committer, user_id, count(*) as count").group("committer, user_id")
     user_ids = changesets.filter_map(&:user_id).uniq
-    authors_names = User.where(:id => user_ids).inject({}) do |memo, user|
-      memo[user.id] = user.to_s
-      memo
+    authors_names = User.where(:id => user_ids).to_h do |user|
+      [user.id, user.to_s]
     end
     (commits + changes).inject({}) do |hash, element|
       mapped_name = element.committer
