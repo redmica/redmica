@@ -73,7 +73,7 @@ class Board < ApplicationRecord
            " WHERE board_id=:id AND parent_id IS NULL)," \
            " messages_count = (SELECT COUNT(*) FROM #{Message.table_name} WHERE board_id=:id)," \
            " last_message_id = (SELECT MAX(id) FROM #{Message.table_name} WHERE board_id=:id)",
-         :id => board_id]
+         {:id => board_id}]
       )
   end
 
