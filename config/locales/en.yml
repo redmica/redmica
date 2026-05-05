@@ -1175,6 +1175,7 @@ en:
   label_involved_principals: Author / Previous assignee
   label_assignee_dropdown_display_format_users_then_groups: Users then groups
   label_assignee_dropdown_display_format_groups_then_users: Groups then users
+  label_assignee_dropdown_display_format_users_by_group: Users by group
   label_progressbar: Progress bar
   label_oauth_permission_admin: Administrate this Redmine
   label_oauth_admin_access: Administration

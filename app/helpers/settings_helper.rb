@@ -203,7 +203,8 @@ module SettingsHelper
   def assignee_dropdown_display_format_options
     options = [
       [:label_assignee_dropdown_display_format_users_then_groups, 'users_then_groups'],
-      [:label_assignee_dropdown_display_format_groups_then_users, 'groups_then_users']
+      [:label_assignee_dropdown_display_format_groups_then_users, 'groups_then_users'],
+      [:label_assignee_dropdown_display_format_users_by_group, 'users_by_group']
     ]
 
     options.map {|label, value| [l(label), value.to_s]}

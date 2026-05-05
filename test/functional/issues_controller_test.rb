@@ -4369,6 +4369,37 @@ class IssuesControllerTest < Redmine::ControllerTest
     end
   end
 
+  def test_new_should_render_users_by_group_in_assignee_select_when_configured
+    project = Project.find(1)
+    group_a = Group.find(10)
+    group_b = Group.find(11)
+    project.members << Member.new(:principal => group_a, :roles => [Role.givable.first])
+    project.members << Member.new(:principal => group_b, :roles => [Role.givable.first])
+
+    with_settings :issue_group_assignment => '1', :assignee_dropdown_display_format => 'users_by_group' do
+      @request.session[:user_id] = 2
+      get :new, :params => {:project_id => project.id}
+      assert_response :success
+    end
+
+    assert_select 'select[name=?]', 'issue[assigned_to_id]' do
+      assert_select %(optgroup:nth-of-type(1)[label="#{l(:label_group_plural)}"]) do
+        assert_select 'option[value="10"]', text: 'A Team'
+        assert_select 'option[value="11"]', text: 'B Team'
+      end
+      assert_select 'optgroup:nth-of-type(2)[label="A Team"]' do
+        assert_select 'option[value="8"]', text: 'User Misc'
+      end
+      assert_select 'optgroup:nth-of-type(3)[label="B Team"]' do
+        assert_select 'option[value="8"]', text: 'User Misc'
+      end
+      assert_select %(optgroup:nth-of-type(4)[label="#{l(:label_user_plural)}"]) do
+        assert_select 'option[value="2"]', text: 'John Smith'
+        assert_select 'option[value="8"]', 0
+      end
+    end
+  end
+
   def test_post_create_without_start_date_and_default_start_date_is_not_creation_date
     with_settings :default_issue_start_date_to_creation_date  => 0 do
       @request.session[:user_id] = 2

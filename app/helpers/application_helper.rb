@@ -687,44 +687,72 @@ module ApplicationHelper
       s << content_tag('option', "<< #{l(:label_me)} >>", :value => User.current.id)
     end
 
-    involved_principals_html = +''
+    involved_principals = []
     # This optgroup is displayed only when editing a single issue
     if @issue.present? && !@issue.new_record?
-      involved_principals = [@issue.author, @issue.prior_assigned_to].uniq.compact
-      involved_principals_html = involved_principals.map do |p|
-        content_tag('option', p.name, value: p.id, disabled: !collection.include?(p))
-      end.join
+      involved_principals =
+        [@issue.author, @issue.prior_assigned_to].uniq.compact.map do |principal|
+          [principal, {:disabled => !collection.include?(principal)}]
+        end
     end
 
-    users_html = +''
-    groups_html = +''
-    collection.sort.each do |element|
-      if option_value_selected?(element, selected) || element.id.to_s == selected
-        selected_attribute = ' selected="selected"'
-      end
-      (element.is_a?(Group) ? groups_html : users_html) <<
-        %(<option value="#{element.id}"#{selected_attribute}>#{h element.name}</option>)
-    end
-    if involved_principals_html.blank? && groups_html.blank?
-      s << users_html
+    users, groups = collection.sort.partition {|principal| principal.is_a?(User)}
+    if involved_principals.blank? && groups.blank?
+      s << principals_option_tags(users, selected)
     else
-      principal_optgroups = case Setting.assignee_dropdown_display_format.to_s
-                            when 'groups_then_users'
-                              [
-                                [l(:label_group_plural), groups_html],
-                                [l(:label_user_plural), users_html]
-                              ]
-                            else
-                              [
-                                [l(:label_user_plural), users_html],
-                                [l(:label_group_plural), groups_html]
-                              ]
-                            end
-      ([[l(:label_involved_principals), involved_principals_html]] + principal_optgroups).each do |label, options_html|
+      optgroups = [[l(:label_involved_principals), involved_principals]]
+      optgroups.concat(
+        case Setting.assignee_dropdown_display_format.to_s
+        when 'groups_then_users'
+          [
+            [l(:label_group_plural), groups],
+            [l(:label_user_plural), users]
+          ]
+        when 'users_by_group'
+          principal_users_by_group_optgroups_for_select(users, groups)
+        else
+          # Default to 'users_then_groups'
+          [
+            [l(:label_user_plural), users],
+            [l(:label_group_plural), groups]
+          ]
+        end
+      )
+
+      optgroups.each do |label, principals|
+        options_html = principals_option_tags(principals, selected)
         s << %(<optgroup label="#{h(label)}">#{options_html}</optgroup>) if options_html.present?
       end
     end
     s.html_safe
+  end
+
+  # Renders option tags for users and groups, preserving per-option attributes.
+  def principals_option_tags(principals, selected)
+    principals.map do |principal, options|
+      options ||= {}
+      selected_attribute = %( selected="selected") if option_value_selected?(principal, selected) || principal.id.to_s == selected
+      disabled_attribute = %( disabled="disabled") if options[:disabled]
+
+      %(<option value="#{principal.id}"#{selected_attribute}#{disabled_attribute}>#{h principal.name}</option>)
+    end.join
+  end
+
+  # Builds optgroups that list groups first, then each group's users, then ungrouped users.
+  def principal_users_by_group_optgroups_for_select(users, groups)
+    users_by_group_optgroups =
+      groups.filter_map do |group|
+        group_user_ids = group.users.ids
+        group_users = users.select {|user| group_user_ids.include?(user.id)}
+        [group, group_users] if group_users.present?
+      end
+
+    users_by_group_ids = users_by_group_optgroups.flat_map {|_, principals| principals.map(&:id)}.uniq
+    ungrouped_users = users.reject {|user| users_by_group_ids.include?(user.id)}
+
+    [[l(:label_group_plural), groups]] +
+      users_by_group_optgroups.map {|group, principals| [group.name, principals]} +
+      [[l(:label_user_plural), ungrouped_users]]
   end
 
   def option_tag(name, text, value, selected=nil, options={})
