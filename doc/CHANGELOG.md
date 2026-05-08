@@ -1,5 +1,190 @@
 # Changelog
 
+## RedMica 4.1.0 - 2026-05-08
+
+### Accounts / authentication
+
+* Feature redmine-43808: Change default admin email to admin@dummy.invalid for clarity
+
+### Attachments
+
+* Feature redmine-22483: Show PDF attachments and repo entries instead of downloading them
+* Feature redmine-43943: AVIF images support
+* Feature redmine-8959: Preview support for Microsoft Office and LibreOffice Writer files
+
+### Calendar
+
+* Feature redmine-43728: Change calendar today indicator from yellow background to blue date circle
+
+### Code cleanup/refactoring
+
+* Defect redmine-43985: Flaky IssuesSystemTest caused by `!page.has_css?`
+* Defect redmine-44010: Too much INFO log of asset paths when starting Rails
+* Patch redmine-43429: Remove unused method addable_watcher_users from acts_as_watchable.rb
+* Patch redmine-43642: Remove unused style for `div.square`
+* Patch redmine-43643: Align the Textile processing approach with CommonMark by using Loofah
+* Patch redmine-43652: Remove unused style for `td.username img.gravatar`
+* Patch redmine-43677: Remove unused properties from `a.sort` selector
+* Patch redmine-43684: Remove unused styles for `span.add_attachment a`
+* Patch redmine-43685: Remove unused styles for `div.attachments p`
+* Patch redmine-43686: Remove unused styles for `#tab-content-modules`
+* Patch redmine-43745: Move parse_hires_images and parse_inline_attachments to scrubbers
+* Patch redmine-43802: Avoid using non-reserved domain names in examples and tests
+* Patch redmine-43823: Remove unused CSS rule: `body.controller-issues h2.inline-flex`
+
+### Documentation
+
+* Patch redmine-43800: Add local license files under doc/licenses for bundled third-party components
+* Patch redmine-43822: Use logical CSS property in CommonMark help examples for RTL support
+
+### Email notifications
+
+* Feature redmine-2716: User option to automatically add assignee to watchers
+* Feature redmine-37978: Add a mail notification option for watched objects only
+
+### Filters
+
+* Defect redmine-38055: Filter operator "doesn't contain" on custom fields ignores issues with no value
+
+### Gantt
+
+* Feature redmine-43678: Improve Gantt chart behavior in RTL environments
+
+### Gems support
+
+* Feature redmine-43981: Update net-ldap to 0.20
+* Patch redmine-43324: Update Rubyzip to 3.3
+* Patch redmine-43437: Update RuboCop to 1.86
+* Patch redmine-43438: Update RuboCop Rails to 2.34
+* Patch redmine-43466: Update sqlite3 gem to 2.9
+* Patch redmine-43594: Update Commonmarker gem to 2.6
+* Patch redmine-43648: Update activerecord-sqlserver-adapter to 8.1
+* Patch redmine-44032: Update Trilogy gem to 2.12
+
+### Hook requests
+
+* Patch redmine-43084: Add view_issues_edit_top hook to customize the issue editing form
+
+### I18n
+
+* Feature redmine-4507: Make first and last name field order follow Users display format setting
+
+### Importers
+
+* Defect redmine-41434: CSV import fails on CRLF files when first row has quoted field with newline
+* Feature redmine-43918: Deprecate broken Mantis and Trac migration rake tasks
+
+### Issues
+
+* Feature redmine-31518: Default due date for new issues with configurable offset from today
+* Feature redmine-43085: Scroll to notes section instead of top of edit form when quoting issue content
+* Feature redmine-43885: Align issue previous/next link styling with pagination buttons
+* Feature redmine-43895: Disable "Use current date as start date for new issues" by default for new installations
+* Feature redmine-43969: Add icons to Add links in Subtasks and Related issues sections of the issue view
+* Feature redmine-43996: Add setting to choose users/groups order in assignee dropdown
+* Feature redmine-44015: "Users by group" display option for assignee drop-down
+
+### Issues list
+
+* Feature redmine-43615: Right-align all time-tracking columns in Issues list
+
+### Performance
+
+* Defect redmine-43742: Missing #wrapper positioning may increase reflow cost
+* Defect redmine-43838: User mentions using the @login syntax cause performance issues when rendering content on instances with a large number of users.
+* Feature redmine-43957: Improve workflow update performance
+* Patch redmine-43607: Optimize Issue#recalculate_attributes_for to avoid unnecessary saves and cascading callbacks
+* Patch redmine-43619: Optimize Issue#recalculate_attributes_for by merging date queries
+* Patch redmine-43934: Optimize `Issue#visible_journals_with_index` preload to skip user email_address when Gravatar is disabled
+
+### Project settings
+
+* Feature redmine-44013: Add links to groups in the project Settings > Members tab
+
+### Projects
+
+* Feature redmine-37480: CSV export of project memberships
+* Feature redmine-43818: Show warning for closed projects on all project pages not only on Overview
+
+### REST API
+
+* Feature redmine-43938: Track last usage of API and Atom access keys
+
+### Rails support
+
+* Patch redmine-43428: Update Rails to 8.1
+
+### Roadmap
+
+* Feature redmine-39882: Highlight selected version on the Roadmap view
+
+### Ruby support
+
+* Feature redmine-43650: Ruby 4.0 support
+
+### SCM
+
+* Defect redmine-43964: `IconsHelper#scm_change_icon` ignores passed options
+* Defect redmine-43965: "Previous" and "Next" links in changeset view do not match the changeset list order
+* Patch redmine-42762: Improve Git/Mercurial revision graph on the repository page
+* Patch redmine-43966: Tighten SVN repository URL validation
+
+### Security
+
+* Patch redmine-43986: Improve the `config.filter_parameters` setting
+
+### Text formatting
+
+* Feature redmine-42444: Allow use of the CSS text-decoration property in text formatting
+* Feature redmine-43950: Add support for pasting spreadsheet tables as CommonMark/Textile tables in wiki textareas
+
+### Third-party libraries
+
+* Patch redmine-43845: Remove the Raphael.js dependency by switching to SVG API
+* Patch redmine-44038: Update Tabler Icons to v3.43.0
+
+### Time tracking
+
+* Feature redmine-15167: Hide unused Options section in spent time report
+* Feature redmine-43948: Allow 0:45h time span format input in the hours filter of TimeEntryQuery
+
+### Translations
+
+* Patch redmine-44005: Fix French translation of label_auto_watch_on_issue_created
+
+### UI
+
+* Defect redmine-25114: Context menu is mispositioned when `#content` is relatively positioned by themes
+* Defect redmine-43513: Misaligned RTL layout on the project Overview page
+* Defect redmine-43588: Right column in issue view uses splitcontentleft CSS class instead of splitcontentright
+* Defect redmine-43675: "Add filter" dropdown in query form appears on the wrong side in RTL layout
+* Defect redmine-43714: Arrow buttons for Available/Selected columns are misleading in the issues query form on RTL layouts
+* Defect redmine-43801: Copy button appears only on the last pre when multiple pre blocks exist
+* Defect redmine-43876: Text in select, input, and button is clipped due to fixed height when font size is increased
+* Defect redmine-43984: Current page background in pagination overflows its border
+* Feature redmine-34917: Use "Remove" instead of "Delete" for non-destructive unlink/removal action labels
+* Feature redmine-43381: Improve visibility of error message during file upload
+* Feature redmine-43515: Improve RTL layouts by removing rtl.css and integrating its overrides into application.css using CSS logical properties
+* Feature redmine-43563: Increase top padding of div#content to improve visual spacing and readability
+* Feature redmine-43575: Clean up box-like UI elements by adjusting borders and padding
+* Feature redmine-43658: Add "Color" to to the list of default gratavar options
+* Feature redmine-43700: Improve RTL layout support by replacing physical CSS properties with logical ones in core CSS files
+* Feature redmine-43797: Show file-type icons instead of paperclip icons in attachment lists
+* Feature redmine-43805: Update file-type icons for additional MIME types
+* Feature redmine-43824: Improve usability and visual appearance by increasing page-side spacing
+* Feature redmine-43825: Preserve checkbox selection in user search dialogs
+* Feature redmine-43836: Unify spacing around section separators on issue details page
+* Feature redmine-43937: Redesign the header with a navigation bar and lighter visual weight
+* Feature redmine-43988: Align sidebar selected link color with the main menu indicator
+
+### Webhooks
+
+* Feature redmine-29664: Webhook triggers in Redmine
+
+### Wiki
+
+* Feature redmine-43978: Export all Wiki pages as ZIP archive
+
 ## RedMica 4.0.5 - 2026-04-17
 
 ### Documentation
