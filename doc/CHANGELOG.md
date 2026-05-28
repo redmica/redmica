@@ -1,5 +1,36 @@
 # Changelog
 
+## RedMica 4.1.1 - 2026-05-28
+
+### Administration
+
+* Feature redmine-44062: Add an Environment heading to the admin information page
+
+### Attachments
+
+* Defect redmine-44029: Wide tables in attachment preview overflow the container border
+
+### Code cleanup/refactoring
+
+* Defect redmine-44072: OauthProviderSystemTest#test_application_creation_and_authorization fails randomly
+* Patch redmine-44073: TimeEntryTest#test_should_not_accept_closed_issue fails randomly depending on locale
+
+### I18n
+
+* Defect redmine-44058: Translation missing: setting_default_issue_due_date_offset
+
+### Importers
+
+* Defect redmine-44051: CSV import fails with `Unquoted fields do not allow new line <"\n"> in line 1` on latest trunk on Windows
+
+### Issues filter
+
+* Feature redmine-43968: Allow 0:45h time span format input in the estimated_hours and spent_time filter of IssueQuery
+
+### UI
+
+* Defect redmine-44069: Remove redundant underline from abbr elements
+
 ## RedMica 4.1.0 - 2026-05-08
 
 ### Accounts / authentication
