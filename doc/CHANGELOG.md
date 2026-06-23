@@ -1,5 +1,20 @@
 # Changelog
 
+## RedMica 4.1.2 - 2026-06-23
+
+### Attachments
+
+* Defect redmine-44186: Uploading files with excessively long extensions may fail
+
+### Issues
+
+* Defect redmine-44042: Watchers section in the sidebar is incorrectly updated when watching a subtasks or related issue via context menu
+
+### UI
+
+* Defect redmine-44127: Replace legacy group avatar icon with SVG
+* Defect redmine-44170: Toggling between board and list in projects query do not work properly
+
 ## RedMica 4.1.1 - 2026-05-28
 
 ### Administration
