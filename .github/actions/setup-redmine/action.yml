@@ -16,7 +16,7 @@ runs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install --yes --quiet ghostscript gsfonts locales subversion bzr cvs mercurial imagemagick
+        sudo apt-get install --yes --quiet ghostscript gsfonts locales subversion bzr cvs mercurial imagemagick pandoc
         sudo locale-gen en_US # for bazaar non ascii test
 
     - name: Allow imagemagick to read PDF files
