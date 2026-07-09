@@ -406,7 +406,7 @@ class IssueQuery < Query
   def issues(options={})
     order_option = [group_by_sort_order, (options[:order] || sort_clause)].flatten.reject(&:blank?)
     # The default order of IssueQuery is issues.id DESC(by IssueQuery#default_sort_criteria)
-    unless ["#{Issue.table_name}.id ASC", "#{Issue.table_name}.id DESC"].any?{|i| order_option.include?(i)}
+    unless order_option.intersect?(["#{Issue.table_name}.id ASC", "#{Issue.table_name}.id DESC"])
       order_option << "#{Issue.table_name}.id DESC"
     end
 
@@ -457,7 +457,7 @@ class IssueQuery < Query
   def issue_ids(options={})
     order_option = [group_by_sort_order, (options[:order] || sort_clause)].flatten.reject(&:blank?)
     # The default order of IssueQuery is issues.id DESC(by IssueQuery#default_sort_criteria)
-    unless ["#{Issue.table_name}.id ASC", "#{Issue.table_name}.id DESC"].any?{|i| order_option.include?(i)}
+    unless order_option.intersect?(["#{Issue.table_name}.id ASC", "#{Issue.table_name}.id DESC"])
       order_option << "#{Issue.table_name}.id DESC"
     end
 
