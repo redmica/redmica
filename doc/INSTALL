@@ -18,7 +18,8 @@ https://www.redmine.org/
 Optional:
 * SCM binaries (e.g. svn, git...), for repository browsing (must be
   available in PATH)
-* ImageMagick (to enable Gantt export to png images)
+* ImageMagick (to enable thumbnail generation and Gantt export to PNG images)
+* Ghostscript (to enable thumbnail generation for PDF attachments)
 * Pandoc, to enable previews for Microsoft Office (.docx, .xlsx, .pptx) and
   LibreOffice Writer (.odt) documents. Version 3.8.3 or later is recommended.
   Older versions of Pandoc supports only .docx and .odt documents.
