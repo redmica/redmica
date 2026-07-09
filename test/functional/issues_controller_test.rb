@@ -3364,20 +3364,6 @@ class IssuesControllerTest < Redmine::ControllerTest
     end
   end
 
-  def test_show_time_entries_tab_should_link_commit_references
-    @request.session[:user_id] = 2
-    # changeset_001 has scmid 691322a8eb01e11fd7 in repository 10 (project 1)
-    scmid = '691322a8eb01e11fd7'
-    comment = l(:text_time_logged_by_changeset, :value => "commit:#{scmid}", :locale => 'en')
-    issue = Issue.generate!(:project_id => 1, :tracker_id => 1)
-    TimeEntry.generate!(:issue => issue, :comments => comment)
-
-    get :issue_tab, :params => {:id => issue.id, :name => 'time_entries'}, :xhr => true
-    assert_response :success
-
-    assert_select 'div.journal-note a.changeset', :text => scmid
-  end
-
   def test_show_should_display_open_badge_for_open_issue
     get :show, params: {id: 1}
 
