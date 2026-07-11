@@ -86,5 +86,51 @@ module ContextMenus
       get :index, :params => {:ids => [8]}
       assert_response :forbidden
     end
+
+    def test_index_should_not_leak_lock_state_to_non_admin
+      # User 5 (Dave Lopper2) is locked in fixtures. The rendered menu must
+      # not show an "Unlock" link to non-admins, revealing lock status.
+      assert User.find(5).locked?
+
+      @request.session[:user_id] = 4
+      get :index, :params => {:ids => [5]}
+
+      assert_response :forbidden
+      assert_select 'a.icon-unlock', :text => /Unlock/i,   :count => 0
+      assert_select 'a',             :text => /Activate/i, :count => 0
+    end
+
+    def test_index_should_not_leak_registered_state
+      # Registered (not-yet-activated) users must not surface an "Activate"
+      # link, revealing their pending-activation state.
+      User.find(5).update_columns(:status => User::STATUS_REGISTERED)
+
+      @request.session[:user_id] = 4
+      get :index, :params => {:ids => [5]}
+
+      assert_response :forbidden
+      assert_select 'a', :text => /Activate/i, :count => 0
+    end
+
+    def test_index_should_not_expose_existence_oracle
+      @request.session[:user_id] = 4
+
+      get :index, :params => {:ids => [8]}
+      assert_response :forbidden
+
+      get :index, :params => {:ids => [999_999]}
+      assert_response :forbidden
+    end
+
+    def test_index_should_not_render_admin_links_for_non_admin
+      # The menu must not expose /users/:id/edit and DELETE /users/:id for
+      # any caller, confirming the target id exists.
+      @request.session[:user_id] = 4
+      get :index, :params => {:ids => [8]}
+
+      assert_response :forbidden
+      assert_select 'a.icon-edit', :count => 0
+      assert_select 'a.icon-del',  :count => 0
+    end
   end
 end

@@ -116,5 +116,23 @@ module ContextMenus
 
       assert_select 'a.disabled', :text => 'Bulk edit'
     end
+
+    def test_index_should_not_leak_activity_names_from_invisible_project
+      # time_entry 5 belongs to project 5 (private). User 4 is not a member;
+      # the menu must not render and no activity names from the private
+      # project may leak via the response body.
+      entry = TimeEntry.find(5)
+      assert_equal 5, entry.project_id
+      assert_not entry.visible?(User.find(4))
+
+      @request.session[:user_id] = 4
+      get(:index, :params => {:ids => [5]})
+
+      assert_response :not_found
+
+      Project.find(5).activities.each do |activity|
+        assert_not_includes @response.body, activity.name
+      end
+    end
   end
 end

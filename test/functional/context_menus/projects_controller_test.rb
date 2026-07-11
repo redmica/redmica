@@ -46,5 +46,45 @@ module ContextMenus
 
       assert_response :forbidden
     end
+
+    def test_index_should_not_leak_identifier_to_non_admin
+      # Project 5 is private; user 4 is not a member, so Project.visible would
+      # exclude it. Without authorization the action would render and the
+      # project's identifier ("private-child") would surface in link hrefs.
+      private_project = Project.find(5)
+      assert_equal false, private_project.is_public
+      assert_not User.find(4).member_of?(private_project)
+
+      @request.session[:user_id] = 4
+      get(:index, :params => {:ids => [5]})
+
+      assert_response :forbidden
+      assert_not_includes @response.body, private_project.identifier
+    end
+
+    def test_index_should_not_expose_existence_oracle
+      # Existing private id and missing id must both return 403 — same
+      # status, no enumeration oracle.
+      @request.session[:user_id] = 4
+
+      get(:index, :params => {:ids => [5]})
+      assert_response :forbidden
+
+      get(:index, :params => {:ids => [999_999]})
+      assert_response :forbidden
+    end
+
+    def test_index_should_not_leak_archived_state
+      # The response must not distinguish active ("Archive" button) from
+      # archived ("Unarchive" button) projects the user cannot see.
+      Project.find(5).archive
+
+      @request.session[:user_id] = 4
+      get(:index, :params => {:ids => [5]})
+
+      assert_response :forbidden
+      assert_select 'a.icon-unlock', :text => /Unarchive/i, :count => 0
+      assert_select 'a.icon-lock',   :text => /Archive/i,   :count => 0
+    end
   end
 end
