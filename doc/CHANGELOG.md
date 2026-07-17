@@ -1,5 +1,32 @@
 # Changelog
 
+## RedMica 4.1.3 - 2026-07-17
+
+### Attachments
+
+* Defect redmine-44225: Add and configure pandoc on GitHub Actions
+
+### Code cleanup/refactoring
+
+* Defect redmine-44243: Fix RuboCop Style/ArrayIntersect offenses
+
+### Documentation
+
+* Patch redmine-44232: Document Ghostscript as an optional dependency in doc/INSTALL
+
+### Email notifications
+
+* Defect redmine-44173: Password reset security notification does not include IP address
+
+### Performance
+
+* Feature redmine-44194: Cache user mention autocomplete responses to reduce redundant requests
+* Patch redmine-44190: Improve @mention performance by limiting initial suggestions
+
+### SCM
+
+* Defect redmine-44223: Setup Subversion and Mercurial on GitHub Actions
+
 ## RedMica 4.1.2 - 2026-06-23
 
 ### Attachments
