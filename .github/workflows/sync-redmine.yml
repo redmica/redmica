@@ -31,20 +31,20 @@ jobs:
 
       - name: Create GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.APP_ID }}
+          client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Checkout RedMica
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ env.REDMICA_BRANCH }}
           path: redmica
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Checkout Redmine
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: redmine/redmine
           fetch-depth: 0
