@@ -218,6 +218,8 @@ bg:
   error_workflow_copy_source: Моля изберете source тракер или роля
   error_workflow_copy_target: Моля изберете тракер(и) и роля (роли).
   error_unable_delete_issue_status: Невъзможност за изтриване на състояние на задача (%{value})
+  error_issue_status_in_use_by_issues: Това състояние се използва от някои задачи
+  error_issue_status_default_for_trackers: Това състояние се използва като подразбиращо се от някои тракери
   error_unable_to_connect: Невъзможност за свързване с (%{value})
   error_attachments_too_many: Този файл не може да бъде качен, понеже с него се надхвърля максималният брой файлове, които могат да бъдат качени заедно (%{max_number_of_files})
   error_attachment_too_big: Този файл не може да бъде качен, понеже надхвърля максималната възможна големина (%{max_size})
@@ -1503,5 +1505,3 @@ bg:
   reaction_text_x_other_users:
     one: 1 друг
     other: "%{count} други"
-  error_issue_status_in_use_by_issues: This status is used by some issues
-  error_issue_status_default_for_trackers: This status is used as the default status by some trackers
