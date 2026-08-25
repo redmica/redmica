@@ -1,5 +1,59 @@
 # Changelog
 
+## RedMica 4.1.4 - 2026-08-25
+
+### Accounts / authentication
+
+* Defect redmine-44343: Deleting a user who has authorized an OAuth2 application fails with ActiveRecord::InvalidForeignKey
+
+### Administration
+
+* Defect redmine-44273: Applications item is not highlighted in the administration menu
+* Feature redmine-44268: Prevent browsers from autofilling the administrator's own password into the user account form
+
+### Attachments
+
+* Defect redmine-44228: Uploading an attachment with a NUL byte in the filename causes an Internal Server Error
+* Defect redmine-44335: PDF preview of .ai attachments triggers an automatic download
+
+### Code cleanup/refactoring
+
+* Patch redmine-44265: WebhookTest occasionally hangs
+* Patch redmine-44330: Convert CRLF line endings to LF in three test fixture files
+
+### Gantt
+
+* Defect redmine-44234: Gantt issue relation lines break when collapsing objects
+
+### Issues
+
+* Feature redmine-44261: Restrict user mentions to project members to prevent unintended notifications to non-members
+
+### Performance
+
+* Defect redmine-44348: Formatting a text is much slower in 7.0.0 when its container has many attachments
+
+### REST API
+
+* Feature redmine-44353: Add project to wiki page list API response
+
+### Rails support
+
+* Patch redmine-44303: Update Rails to 8.1.3.1
+
+### SCM
+
+* Defect redmine-44354: GitAdapterTest#test_diff_path_invalid fails with Git 2.55.0
+
+### Translations
+
+* Defect redmine-44277: Translation missing: text_users_remove_from_group_confirmation
+
+### UI
+
+* Defect redmine-44221: "Selected Columns" checkbox does not enable or disable the column lists on the new Gantt query form
+* Defect redmine-44318: Tab bar wraps to a semi-visible second row when the tabs are wider than 2000px
+
 ## RedMica 4.1.3 - 2026-07-17
 
 ### Attachments
