@@ -25,10 +25,6 @@
 
 * Defect redmine-44234: Gantt issue relation lines break when collapsing objects
 
-### Issues
-
-* Feature redmine-44261: Restrict user mentions to project members to prevent unintended notifications to non-members
-
 ### Performance
 
 * Defect redmine-44348: Formatting a text is much slower in 7.0.0 when its container has many attachments
