@@ -1,5 +1,50 @@
 # Changelog
 
+## RedMica 4.1.6 - 2026-10-01
+
+### Administration
+
+* Patch redmine-44559: User bulk lock/unlock does not run callbacks
+
+### Code cleanup/refactoring
+
+* Defect redmine-44527: Stubs of initialize_ldap_con in UserTest have no effect
+
+### Gems support
+
+* Defect redmine-44428: JSON API requests fail with JSON gem 3.0.0
+
+### Issues
+
+* Defect redmine-44560: Issue creation fails when the default assignee is no longer assignable
+
+### LDAP
+
+* Defect redmine-44526: 500 error when the LDAP server is unreachable on macOS 26.7
+
+### Plugin API
+
+* Defect redmine-37686: Plugin migrations are skipped or fail due to stale cached versions when a plugin is migrated more than once in the same process
+
+### Rails support
+
+* Patch redmine-44523: Update Rails to 8.1.4
+
+### SCM
+
+* Defect redmine-27043: Subversion repositories with spaces in the root URL cause broken file and diff links on the revision page
+* Defect redmine-44476: Fails to fetch revisions if a Git branch name contains a 40-character hexadecimal string
+
+### Security
+
+* Unknown redmine-44429: DOM-Based XSS via Clipboard HTML Paste
+* Unknown redmine-44467: Private/invisible issue subjects leaked via REST API `include=children`
+* Unknown redmine-44468: Private project names + role assignments leaked via `GET /groups/<id>.json?include=memberships`
+
+### UI
+
+* Defect redmine-44445: Selected main menu tab looks detached from the content area due to gaps above and below it
+
 ## RedMica 4.1.5 - 2026-09-24
 
 ### Attachments
