@@ -1,5 +1,27 @@
 # Changelog
 
+## RedMica 4.1.7 - 2026-10-16
+
+### Accounts / authentication
+
+* Feature redmine-44578: Invalidate sessions and autologin tokens when an email address is changed or deleted
+
+### Email notifications
+
+* Defect redmine-44619: "File added" notification fails for Japanese users when exactly two files are added
+
+### Issues
+
+* Defect redmine-44579: Attachments added in a single update may be listed in the wrong order in the issue history on PostgreSQL
+
+### News
+
+* Defect redmine-44361: Preview returns a 404 error on the cross-project news form
+
+### SCM
+
+* Defect redmine-44231: Mercurial repository support is broken with Mercurial 7.2 or later
+
 ## RedMica 4.1.6 - 2026-10-01
 
 ### Administration
