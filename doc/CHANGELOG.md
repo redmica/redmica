@@ -1,5 +1,67 @@
 # Changelog
 
+## RedMica 4.1.8 - 2026-11-04
+
+### Accounts / authentication
+
+* Defect redmine-44654: OAuth API request returns 500 Internal Server Error for an inactive user
+* Defect redmine-44673: "Lost password" function allows to set the same password again even if it was expired
+
+### Attachments
+
+* Defect redmine-44620: Partially written thumbnails may be served during generation or after a failure
+
+### Calendar
+
+* Defect redmine-44643: Versions are shown twice (start and due date) without any visual distinction in the calendar
+
+### Code cleanup/refactoring
+
+* Patch redmine-44597: Avoid 60-second connection timeouts in webhook executor tests on macOS
+* Patch redmine-44653: Remove leftover development hosts from the OAuth redirect URI HTTPS exemption
+
+### Email notifications
+
+* Defect redmine-44650: NoMethodError in issue update notification when bulk deleting a parent issue and its subtask
+
+### Gantt
+
+* Defect redmine-44611: Gantt column resize handles are initially enabled in mobile view
+
+### Gems support
+
+* Defect redmine-44703: Tests using a Regexp with :match in assert_select fail with Nokogiri 1.19.5 and later
+* Defect redmine-44705: SanitizationFilterTest#test_should_sanitize_html_strings fails with Nokogiri 1.19.5 and later
+* Patch redmine-44704: Update Nokogiri to 1.19.7 or later
+
+### Issues
+
+* Defect redmine-44680: Assignee is not added as a watcher when creating an issue with an assignee who has auto-watch for assigned issues enabled
+
+### Security
+
+* Defect redmine-44625: OAuth token scope is ignored in Project.allowed_to_condition
+* Defect redmine-44644: OAuth token scopes are bypassed when creating projects
+* Defect redmine-44657: ReDoS in wiki macro argument parsing
+* Defect redmine-44682: Reflected XSS in attachments#edit_all (unvalidated back_url)
+* Defect redmine-44683: validate_back_url accepts URLs that browsers resolve to another host
+
+### Themes
+
+* Defect redmine-44240: Automatic asset precompilation (redmine_detect_update) fails to detect new assets whose files have older mtimes than the existing manifest
+
+### Time tracking
+
+* Defect redmine-44610: Spent time custom field value is deleted when a time entry is edited by a user who cannot see the field
+
+### Translations
+
+* Patch redmine-44677: Extra space before colon in en.yml key setting_password_required_char_classes
+
+### UI
+
+* Defect redmine-44645: Gravatar images are rendered without width and height attributes
+
 ## RedMica 4.1.7 - 2026-10-16
 
 ### Accounts / authentication
