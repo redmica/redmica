@@ -1,5 +1,227 @@
 # Changelog
 
+## RedMica 4.2.0 - 2026-11-04
+
+### Accounts / authentication
+
+* Defect redmine-44360: Lost password page is unreachable by admins when two-factor authentication setup is required
+* Feature redmine-12197: Allow users to set their avatar in Redmine
+* Feature redmine-44052: Enable sudo mode by default
+* Patch redmine-44368: Revert removal of user scope in 2FA backup code lookup
+
+### Activity view
+
+* Feature redmine-44630: Show the day of the week next to date headings on the activity page
+
+### Administration
+
+* Defect redmine-44289: No status icon is displayed after checking for plugin updates on the Plugins page
+* Defect redmine-44398: Fix typo in log messages: "occured" should be "occurred"
+* Defect redmine-44411: Fix typo in log messages: "nonexistant" should be "nonexistent"
+* Defect redmine-44488: Info text for "Initials" fallback avatars shows Gravatar URL even when a custom avatar_server_url is configured
+
+### Attachments
+
+* Defect redmine-44126: SVG attachments are displayed as XML source instead of image previews
+* Defect redmine-44556: No error is shown when pasting an image after the limit of attachments at once is reached
+* Feature redmine-18556: Raise the limit of attachments at once from 10 to 50 and make it configurable in configuration.yml
+* Feature redmine-43484: Detect attachment content type from file contents instead of trusting client-provided values
+* Feature redmine-44362: Preview PDF compatible Adobe Illustrator files
+* Feature redmine-44385: Replace MiniMime with Marcel in Redmine::MimeType for consistent MIME type lookup
+* Feature redmine-44400: Make the Download button save PDF files instead of displaying them inline in the browser
+* Feature redmine-44435: Preview Rich Text Format (.rtf) files
+* Feature redmine-44460: Show the content type of attachments on the attachment preview page
+* Feature redmine-44626: Use Open Color for the transparency checkerboard on the attachment view page
+* Feature redmine-44642: Include seconds in pasted image filenames so that they sort in paste order
+
+### Code cleanup/refactoring
+
+* Defect redmine-44321: Random test failure in OauthProviderSystemTest due to incomplete sign out
+* Feature redmine-44345: Use SimpleCov's built-in HTML formatter instead of Redmine's own formatter
+* Patch redmine-44074: ignored and unnecessary scope in twofa token lookup
+* Patch redmine-44117: Remove obsolete .hgignore file
+* Patch redmine-44169: Refactor context menus controller to namespaced sub-controllers
+* Patch redmine-44195: Add `__pycache__` directory to .gitignore
+* Patch redmine-44201: Use && instead of & in Attachment#move_to_target_directory! and add test coverage
+* Patch redmine-44205: Refactor actions dropdown to new dropdown component
+* Patch redmine-44259: New context menu controller tests don't run with standard rake tasks
+* Patch redmine-44260: Refactor context menu to use the new dropdown component
+* Patch redmine-44455: Fix tests that fail when the date changes during a test run
+* Patch redmine-44598: Remove remaining JRuby-specific code and comments
+* Patch redmine-44628: Remove the deprecated _is_pdf parameter from Redmine::Thumbnail.generate
+* Patch redmine-44647: Define the monospace font stack as a CSS variable and remove Courier from it
+* Patch redmine-44698: Remove unused tablesort 5.2.1 JavaScript files
+* Patch redmine-44712: Update GitHub Actions workflows to Ubuntu 26.04
+
+### Custom fields
+
+* Defect redmine-44366: Deleting an issue custom field does not delete its workflow field permissions
+* Defect redmine-44376: Cannot deselect current user in multi-select user custom field without also deselecting "<< me >>"
+* Feature redmine-21026: Allow selecting groups in user format custom fields
+* Feature redmine-27097: Raise the maximum length of key/value list custom field values from 60 to 255 characters
+* Feature redmine-44129: Allow relative default values for date format custom fields
+
+### Email notifications
+
+* Feature redmine-44448: Apply the user mention highlighting to email notifications
+
+### Gantt
+
+* Defect redmine-44595: Gantt bars disappear in responsive layouts and progress segments are too wide at low percentages
+* Defect redmine-44694: Missing expand/collapse icons for Gantt projects with only subprojects
+* Feature redmine-44567: Modernize Gantt chart HTML structure
+* Feature redmine-44580: Highlight the entire hovered row in the Gantt chart
+* Feature redmine-44608: Remember and auto-fit Gantt column widths
+* Feature redmine-44689: Use Open Color for Gantt charts
+* Patch redmine-44637: Remove unnecessary Gantt redraws on window resize
+
+### Gems support
+
+* Feature redmine-44634: Escape the tags covered by the tagfilter extension removed in commonmarker 2.10.1
+* Patch redmine-44139: Update Rouge to 5.0
+* Patch redmine-44200: Update I18n gem to 1.15
+* Patch redmine-44264: Update SimpleCov to 1.3
+* Patch redmine-44346: Update RuboCop to 1.92
+* Patch redmine-44352: Update Commonmarker gem to 2.10
+* Patch redmine-44356: Update RuboCop Performance to 1.27
+* Patch redmine-44387: Update MiniMagick to 5.4
+* Patch redmine-44388: Update Rubyzip to 3.7
+* Patch redmine-44390: Update RuboCop Rails to 2.38
+* Patch redmine-44391: Update Doorkeeper to 5.9
+* Patch redmine-44713: Update SQLite3 gem to 2.10
+* Patch redmine-44714: Update Trilogy gem to 2.13
+* Patch redmine-44715: Update pg gem to 1.7
+* Patch redmine-44716: Update net-ldap gem to 0.21
+
+### Groups
+
+* Feature redmine-43355: Add pagination support for members and groups management views
+* Patch redmine-43640: Improve Group Controller – Enable Adding/Removing Multiple Users from Users View
+
+### Hook requests
+
+* Feature redmine-8757: Add hook for bulk edit post-save state
+
+### I18n
+
+* Defect redmine-35248: Hard-coded error messages in IssueStatus
+* Defect redmine-37581: Incorrect number and CSV separators in several locales
+* Feature redmine-39074: Localize the subject and body of the test email
+* Patch redmine-44065: Remove unused i18n keys
+
+### Issues
+
+* Defect redmine-29855: add_working_days may return wrong date when the start date is a non-working day
+* Defect redmine-35192: Watchers pop up window appears after a long time
+* Defect redmine-44258: Deleting an issue journal (note) shifts #note-N anchors of later journals, breaking existing links
+* Defect redmine-44570: Empty journal-note div is rendered for time entries without comments
+* Feature redmine-43883: Reset % Done when copying an issue
+* Feature redmine-44021: Include the latest note author in the assignee dropdown's "Author / Previous assignee" group and rename it to "Author / Recent participants"
+* Feature redmine-44441: Show the assignee's avatar in the Assignee field on the issue page
+* Feature redmine-44552: Add a link from each issue attachment to the note in which it was added
+* Feature redmine-9432: Default value for the private issue flag
+
+### Issues filter
+
+* Feature redmine-44464: Show a warning when a text filter value contains more than 5 search terms
+
+### Issues list
+
+* Feature redmine-35797: Don't show issues without spent time on the issues list with 0.00/0:00 spent time values
+
+### Issues planning
+
+* Feature redmine-1459: Allow holidays to be registered as non-working days
+
+### Performance
+
+* Feature redmine-44363: Improve Activity view performance by preloading associations in activity providers
+* Feature redmine-44364: Improve the performance of the issues API when listing issues
+* Feature redmine-44374: Cache builtin group instances per request to avoid repeated GroupAnonymous and GroupNonMember queries
+* Feature redmine-44382: Reduce the number of SQL queries when filtering issues by "Assignee's group" or "Author's group"
+* Feature redmine-44396: Reduce memory usage by not loading rbpdf until a PDF is generated
+* Feature redmine-44405: Reduce repeated SQL queries caused by User#is_or_belongs_to? when issues are assigned to groups
+* Feature redmine-44407: Preload the attachment authors when rendering a single issue in the REST API
+* Feature redmine-44409: Skip the nested set self-join in Issue.load_visible_total_spent_hours when no issues have subtasks
+* Feature redmine-44426: Use bootsnap to speed up the boot
+* Patch redmine-44423: Improve performance when formatting user mentions
+
+### Permissions and roles
+
+* Feature redmine-44424: Add "Export issues" and "Export time entries" permissions
+
+### Projects
+
+* Feature redmine-44581: Make project members page available to all users who can see the Members box on the overview page
+
+### REST API
+
+* Defect redmine-44152: Custom Fields API does not return visible roles for custom fields other than issue custom fields
+* Defect redmine-44165: Basic authentication challenge is sent for API key authentication failures
+* Feature redmine-18245: Documents REST API
+* Feature redmine-44153: Include associated projects in issue custom fields API response
+* Feature redmine-44288: Add reactions to REST API responses for issues and news
+
+### Rails support
+
+* Patch redmine-44711: Update Rails to 8.1.4.1
+
+### Ruby support
+
+* Patch redmine-44359: Drop support for Ruby 3.2
+
+### Text formatting
+
+* Feature redmine-39528: Change mention link color for users without access to view issues
+* Feature redmine-44061: Support Tab/Shift+Tab indentation of selected textarea lines in CommonMark Markdown
+* Feature redmine-44425: Render Mermaid code blocks as diagrams
+* Feature redmine-44521: Extend Open Color to syntax highlighting
+* Feature redmine-44585: Sanitize the HTML generated by the Textile formatter in the same way as the CommonMark formatter
+
+### Third-party libraries
+
+* Defect redmine-44294: Charts are broken: empty app/assets/javascripts/chart.min.js shadows vendor/javascript/chart.min.js
+* Patch redmine-44018: Update Chart.js to 4.5.1 and migrate to ES Modules
+
+### Time tracking
+
+* Feature redmine-44463: Add "Updated" column to the spent time list
+* Feature redmine-44627: Remove the delete icon from the time entries list
+
+### UI
+
+* Defect redmine-44351: Fix top menu position in Classic theme
+* Defect redmine-44443: Top menu is thinner than expected when the user is not logged in
+* Feature redmine-31353: Replace user related links in the top menu bar with a proper user menu.
+* Feature redmine-43589: Show the "h:mm" placeholder in hours fields only when the time span format is "minutes"
+* Feature redmine-44071: Make context menu width flexible to avoid wrapping labels
+* Feature redmine-44436: Change the sort handle icon of My page blocks to arrows-move
+* Feature redmine-44458: Filter project members by name, role and status in project settings
+* Feature redmine-44509: Dim avatars of inactive users to make them distinguishable at a glance
+* Feature redmine-44561: Increase the contrast of secondary text
+* Feature redmine-44582: Use a neutral text color in notice and warning messages
+* Feature redmine-44646: Allow administrators to upload a custom favicon
+* Feature redmine-44648: Use a consistent font size for help text (em.info) across pages
+* Feature redmine-44649: Increase the font size of the text below the progress bar on the roadmap
+* Feature redmine-44665: Increase the spacing between items in contextual menus
+* Feature redmine-44691: Replace the external link icon with the Tabler "external-link" icon
+* Patch redmine-44111: Improve layout consistency of roadmap, news, and documents index pages
+* Patch redmine-44293: Add a caret to the account menu to indicate it opens a dropdown
+* Patch redmine-44341: Increase top menu hover highlight by increasing the padding of the elements
+* Patch redmine-44453: Add slightly rounded corners (3px) to top menu item highlights
+
+### UI - Responsive
+
+* Feature redmine-44444: Update the mobile header and flyout menu colors to match the redesigned desktop header
+
+### Webhooks
+
+* Feature redmine-44337: Add an administration page listing all webhooks
+
+### Wiki
+
+* Defect redmine-44623: Wiki include() macro adds faulty "Edit this section"-links
+
 ## RedMica 4.1.8 - 2026-11-04
 
 ### Accounts / authentication
@@ -154,7 +376,7 @@
 
 ### Performance
 
-* Defect redmine-44372: Chrome freezes for several minutes when opening the possible values page of a key/value list custom field with thousands of values
+* Defect redmine-44372: Chrome freezes for several minutes when opening pages with thousands of sortable items such as the custom fields list
 * Defect redmine-44412: Themes with custom icons.svg slow down page rendering
 * Feature redmine-44415: Reduce icon rendering time by caching sprite paths
 * Patch redmine-44386: Avoid N+1 queries generated by Webhook#setable_projects
