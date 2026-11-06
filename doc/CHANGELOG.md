@@ -1,5 +1,19 @@
 # Changelog
 
+## RedMica 4.1.9 - 2026-11-06
+
+### Code cleanup/refactoring
+
+* Patch redmine-44712: Update GitHub Actions workflows to Ubuntu 26.04
+
+### Rails support
+
+* Patch redmine-44711: Update Rails to 8.1.4.1
+
+### Text formatting
+
+* Defect redmine-44718: Links to headings containing quotes break after upgrading to Rails 8.1.4.1
+
 ## RedMica 4.1.8 - 2026-11-04
 
 ### Accounts / authentication
